@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "on-secondary-fixed-variant": "#36485b",
+                  "inverse-surface": "#3c2d28",
+                  "on-error-container": "#93000a",
+                  "primary-fixed": "#ffdbd0",
+                  "on-secondary": "#ffffff",
+                  "inverse-primary": "#ffb59d",
+                  "secondary-container": "#cfe2f9",
+                  "on-tertiary-fixed-variant": "#004e60",
+                  "surface-container-high": "#fde3db",
+                  "primary-container": "#ff6b35",
+                  "error": "#ba1a1a",
+                  "tertiary-fixed-dim": "#59d5fb",
+                  "surface-tint": "#ab3500",
+                  "surface-container-highest": "#f7ddd5",
+                  "primary": "#ab3500",
+                  "on-error": "#ffffff",
+                  "surface": "#fff8f6",
+                  "on-primary-fixed": "#390c00",
+                  "on-background": "#261814",
+                  "surface-container": "#ffe9e3",
+                  "surface-bright": "#fff8f6",
+                  "outline": "#8d7168",
+                  "on-primary-fixed-variant": "#832600",
+                  "surface-container-low": "#fff1ed",
+                  "surface-container-lowest": "#ffffff",
+                  "on-tertiary-fixed": "#001f28",
+                  "inverse-on-surface": "#ffede8",
+                  "on-tertiary-container": "#003744",
+                  "on-tertiary": "#ffffff",
+                  "tertiary-fixed": "#b5ebff",
+                  "secondary": "#4e6073",
+                  "on-primary-container": "#5f1900",
+                  "surface-variant": "#f7ddd5",
+                  "surface-dim": "#eed5cd",
+                  "tertiary-container": "#00a7cb",
+                  "on-secondary-container": "#526478",
+                  "error-container": "#ffdad6",
+                  "background": "#fff8f6",
+                  "primary-fixed-dim": "#ffb59d",
+                  "on-surface": "#261814",
+                  "tertiary": "#00677e",
+                  "outline-variant": "#e1bfb5",
+                  "on-surface-variant": "#594139",
+                  "secondary-fixed": "#d1e4fb",
+                  "on-primary": "#ffffff",
+                  "on-secondary-fixed": "#091d2e",
+                  "secondary-fixed-dim": "#b5c8df"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.125rem",
+                  "lg": "0.25rem",
+                  "xl": "0.5rem",
+                  "full": "0.75rem"
+          },
+          "spacing": {
+                  "md": "16px",
+                  "lg": "24px",
+                  "gutter": "16px",
+                  "xs": "4px",
+                  "xl": "32px",
+                  "container-margin": "16px",
+                  "sm": "8px",
+                  "base": "8px"
+          },
+          "fontFamily": {
+                  "h1-mobile": ["Inter"],
+                  "body-sm": ["Inter"],
+                  "label-caps": ["Inter"],
+                  "h2": ["Inter"],
+                  "h3": ["Inter"],
+                  "status-badge": ["Inter"],
+                  "body-lg": ["Inter"],
+                  "h1": ["Inter"]
+          },
+          "fontSize": {
+                  "h1-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                  "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                  "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                  "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                  "h3": ["20px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                  "status-badge": ["12px", {"lineHeight": "1", "fontWeight": "600"}],
+                  "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                  "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .zebra-row:nth-child(even) { background-color: #F8F9FA; }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-lg">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-on-background border-b border-outline-variant dark:border-on-surface-variant shadow-sm flex justify-between items-center w-full px-container-margin h-16 z-50 sticky top-0">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary font-h2 text-h2" data-icon="hard_hat">ShareFat</span>
+<h1 class="font-h2 text-h2 font-bold text-primary dark:text-inverse-primary tracking-tight">Safety &amp; Compliance</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex gap-6">
+<span class="font-h2 text-h2 font-bold text-primary dark:text-inverse-primary tracking-tight cursor-pointer">Dashboard</span>
+<span class="text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low dark:hover:bg-on-secondary-fixed-variant transition-colors px-2 py-1 rounded cursor-pointer">Inspections</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center overflow-hidden">
+<img alt="Site Supervisor Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzvzGVuFpw2IL44f3Q8ZI_8X_BafHjDLp0fqWqqiuIfxKKqlchg2lrv1LKafScrJ8Y9-23mcKkHX1lDSuIxX_u38MuRT4yJ8pzZIloV_E254T93CbWrOZwWQKD1_-7PRAp8rwXsoq1u_9qQv0sDHILf6bdfT5oJqjZw1iAm0RsDqlzAR0ghSPRTyk1fNW_6Y4FsOXr2iXSVqVXc_43CWDV38g6HxCBEhEYzP77C3WtkpkWMbHoDH2ThWwgjELdZGpPne66WGuoVCWL"/>
+</div>
+</div>
+</header>
+<div class="flex">
+<!-- NavigationDrawer (Desktop Only) -->
+<aside class="hidden md:flex flex-col fixed left-0 top-16 h-[calc(100vh-64px)] w-72 bg-surface-container dark:bg-on-background border-r border-outline-variant shadow-md z-40 p-4">
+<div class="mb-8 p-4 bg-surface-container-low rounded-xl flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</div>
+<div>
+<p class="font-h3 text-h3 text-primary">Safety Officer</p>
+<p class="text-body-sm text-on-surface-variant">Site Area A</p>
+</div>
+</div>
+<nav class="space-y-2">
+<a class="flex items-center gap-4 px-4 py-3 bg-primary-container text-on-primary-container font-bold border-r-4 border-primary transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-lg text-body-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="report_problem">report_problem</span>
+<span class="font-body-lg text-body-lg">Incidents</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="event_available">event_available</span>
+<span class="font-body-lg text-body-lg">Inspections</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-lg text-body-lg">Settings</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-72 p-4 md:p-8 space-y-6 pb-24">
+<!-- Hero Bento Section -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Safety Score Card -->
+<div class="md:col-span-2 relative overflow-hidden bg-on-tertiary-container rounded-xl p-8 text-white shadow-lg flex flex-col justify-between min-h-[240px]">
+<div class="relative z-10">
+<h2 class="font-h1 text-h1 text-tertiary-fixed mb-2">Current Safety Score: 98%</h2>
+<p class="font-h3 text-h3 opacity-90">Great Work, Team!</p>
+<p class="font-body-sm mt-4 max-w-md opacity-80">Safety performance is 4% higher than last month. Continue following the protocol for high-elevation zones.</p>
+</div>
+<div class="mt-6 flex gap-3">
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-lg font-bold hover:scale-105 transition-transform active:scale-95">View Trends</button>
+<button class="border border-white/30 backdrop-blur-sm px-6 py-2 rounded-lg font-bold hover:bg-white/10 transition-colors">Download Report</button>
+</div>
+<div class="absolute right-[-20px] bottom-[-20px] opacity-10 rotate-12">
+<span class="material-symbols-outlined text-[200px]" data-icon="verified_user">verified_user</span>
+</div>
+</div>
+<!-- Quick Action: Report Incident -->
+<button class="group bg-error-container hover:bg-error text-on-error-container hover:text-on-error rounded-xl p-8 flex flex-col items-center justify-center gap-4 transition-all duration-300 border-2 border-dashed border-error/30 shadow-md">
+<div class="w-16 h-16 rounded-full bg-error text-on-error flex items-center justify-center group-hover:bg-on-error group-hover:text-error transition-colors">
+<span class="material-symbols-outlined text-4xl" data-icon="report_problem" style="font-variation-settings: 'FILL' 1;">report_problem</span>
+</div>
+<div class="text-center">
+<h3 class="font-h2 text-h2 font-bold mb-1">Report Incident</h3>
+<p class="font-body-sm opacity-80">Immediate logging required for site safety.</p>
+</div>
+</button>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="bg-white border border-outline-variant p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-error-container rounded-lg">
+<span class="material-symbols-outlined text-error" data-icon="priority_high">priority_high</span>
+</div>
+<span class="bg-error/15 text-error text-status-badge px-2 py-1 rounded">Action Required</span>
+</div>
+<p class="text-on-surface-variant font-label-caps">Open Incidents</p>
+<h4 class="font-h1 text-h1 text-error">2</h4>
+</div>
+<div class="bg-white border border-outline-variant p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-secondary-container rounded-lg">
+<span class="material-symbols-outlined text-secondary" data-icon="assignment_late">assignment_late</span>
+</div>
+<span class="bg-secondary/15 text-secondary text-status-badge px-2 py-1 rounded">Next 48 Hours</span>
+</div>
+<p class="text-on-surface-variant font-label-caps">Pending Inspections</p>
+<h4 class="font-h1 text-h1 text-on-secondary-fixed-variant">5</h4>
+</div>
+<div class="bg-white border border-outline-variant p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow sm:col-span-2 lg:col-span-1">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-tertiary-container/20 rounded-lg">
+<span class="material-symbols-outlined text-tertiary" data-icon="timer">timer</span>
+</div>
+<span class="bg-tertiary/15 text-tertiary text-status-badge px-2 py-1 rounded">Record Performance</span>
+</div>
+<p class="text-on-surface-variant font-label-caps">Days Since Last Incident</p>
+<h4 class="font-h1 text-h1 text-tertiary">142</h4>
+</div>
+</div>
+<!-- Upcoming Inspections List -->
+<section class="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+<div class="p-6 border-b border-outline-variant flex justify-between items-center bg-surface-container-lowest">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="checklist">checklist</span>
+<h3 class="font-h3 text-h3 text-primary">Upcoming Inspections</h3>
+</div>
+<button class="text-primary font-bold hover:underline text-body-sm">View All Schedule</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-variant/50 text-on-surface-variant font-label-caps">
+<th class="px-6 py-4 border-b border-outline-variant">Inspection Type</th>
+<th class="px-6 py-4 border-b border-outline-variant">Location</th>
+<th class="px-6 py-4 border-b border-outline-variant">Inspector</th>
+<th class="px-6 py-4 border-b border-outline-variant">Date</th>
+<th class="px-6 py-4 border-b border-outline-variant">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="zebra-row hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4 font-bold text-on-surface">Structural Scaffolding Check</td>
+<td class="px-6 py-4 text-on-surface-variant">North Tower - Zone 4</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<img alt="Inspector Profile" class="w-6 h-6 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxfZ8BcA0j6WclKOiRG91y5Y6ZCxPgb5faTOHzz3oOuzQot2bRKMn_k6tWoqqXKKhPlCQrJ39kV5oxGGkGFdCMTa19ZStNXU0vaC2OvvyuMnKgryrBpHtrAQ2IRDpX0cPyj-RpaMPKmNs2FHf8pp94dvJtfbrq7sRhN-sR9kRc5jmR2hrR3eYyBIQ7bfXT1BC0xUuzY25er0pxqfC_cNAFyZlDvb_-qccgiQLV6lcKAmI7dcPIg2FdNFXN16zuARIlxfw5GDRfAwhG"/>
+<span>James Miller</span>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">Oct 24, 2023</td>
+<td class="px-6 py-4">
+<span class="bg-tertiary-container/30 text-on-tertiary-container text-status-badge px-3 py-1 rounded-full">Scheduled</span>
+</td>
+</tr>
+<tr class="zebra-row hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4 font-bold text-on-surface">Electrical Systems Audit</td>
+<td class="px-6 py-4 text-on-surface-variant">Basement Level 2</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<img alt="Inspector Profile" class="w-6 h-6 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0GffGfHoeWGJ-CnuqTwT0O8jGtarC_Su8Nq9k7JeosdPHHYSki59eqgyh5R5aDOPOCLSJlwQNdifkaJS73w6rjZGbrZWSbhZprXpRt4_OEvrc3pXWWiJGu_px64mPQhOb-wOklG2I_gQ3jJ-ykhZQcVkEu2pcuGuQFEjZXGOzWVwlzMGxC2LkwaLqtspWEa7FUkLkwGwHwxK8sq50BEKqaPjvSj-z6qcExVJx_QeocFDcntEvUbdkPm_R7OATDkE7KUPiUXuRJi9a"/>
+<span>Sarah Reeves</span>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">Oct 25, 2023</td>
+<td class="px-6 py-4">
+<span class="bg-secondary-fixed text-on-secondary-fixed text-status-badge px-3 py-1 rounded-full">Preparation</span>
+</td>
+</tr>
+<tr class="zebra-row hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4 font-bold text-on-surface">PPE Compliance Walkthrough</td>
+<td class="px-6 py-4 text-on-surface-variant">All Site Areas</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<img alt="Inspector Profile" class="w-6 h-6 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAABLF-yarFkmFCFCe1sczefS3FbuqOl0GR1t4YINE8W979ZVqRPd_g62SbNpguruSmvcP9KtnBZQzQCYr3pJEphge5WGUxl5saspjugrF85Y14sSbD8VE5prh1YYWlC3Fy6ahzxVwlyQjgxrVVFQR5fBPrhjbFiY4XcTayDqFLYGVgoj6I8BlbJU-tLdkGA1LBxnJOMyatWgWmJUCS-vOAX313N-FokTfkLtdbTJ4ChgYg-F_Pu4uvjQTIS6Byi9BObJjcOlmjnncB"/>
+<span>Thomas H.</span>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">Oct 26, 2023</td>
+<td class="px-6 py-4">
+<span class="bg-tertiary-container/30 text-on-tertiary-container text-status-badge px-3 py-1 rounded-full">Scheduled</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Equipment Visual Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="relative group rounded-xl overflow-hidden h-64 shadow-md">
+<img alt="Construction crane site" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A wide cinematic shot of a busy construction site during the golden hour, featuring massive yellow cranes and structural steel framing reaching into the sky. The lighting is warm and dramatic, reflecting the industrious atmosphere of a high-stakes infrastructure project. The visual style is clean and professional, with a color palette of deep oranges, steel grays, and crisp whites." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOLZr3QLrKev0tpCfxd7ywnBsgSwwpQ81vLzRmhtUCmHGc4JgiBzrotBP9iHprWa0ZV5mutg5B5H5QHwIsf4RiyJ0XS7NmkLnUGduY967O9hLdSpNIA-7Fo_wcIKAabhvm5hnn5i7w00p3QYh34PbwO9HEfClHMOGc1OQqmskEXyzMw1D-wLoWXzM0S_2jp_FhskYS42Ex6_azzvOkeIVfB0h93oSnpoCQGo_XkWMZBFIN2Udxrz_79M_2fNLuhPxsA31CxnXZhW9B"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-background/80 to-transparent p-6 flex flex-col justify-end">
+<h4 class="text-white font-h3 text-h3">Site Overview: Sector 7</h4>
+<p class="text-white/80 font-body-sm">Last updated: 2 hours ago</p>
+</div>
+</div>
+<div class="bg-surface-container p-6 rounded-xl border border-outline-variant flex flex-col justify-center">
+<h4 class="font-h3 text-h3 text-primary mb-4">Safety Quote of the Day</h4>
+<blockquote class="italic text-on-surface-variant font-body-lg border-l-4 border-primary pl-4">
+            "Safety isn't an expensive luxury. It's a fundamental investment in our people and our future."
+          </blockquote>
+<p class="mt-4 font-label-caps text-on-surface-variant">— Chief Safety Officer</p>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-4 pb-safe bg-surface/90 backdrop-blur-md border-t border-outline-variant shadow-[0_-2px_10px_rgba(0,0,0,0.05)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 scale-95 active:duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-caps text-label-caps">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant active:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="add_alert">add_alert</span>
+<span class="font-label-caps text-label-caps">Report</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant active:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="checklist">checklist</span>
+<span class="font-label-caps text-label-caps">Audit</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant active:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="font-label-caps text-label-caps">Alerts</span>
+</a>
+</nav>
+</body></html>

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#594139",
+                        "surface-bright": "#fff8f6",
+                        "on-tertiary-fixed-variant": "#004e60",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#ffdbd0",
+                        "on-primary-fixed-variant": "#832600",
+                        "surface-tint": "#ab3500",
+                        "background": "#fff8f6",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#f7ddd5",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#5f1900",
+                        "primary-fixed-dim": "#ffb59d",
+                        "on-surface": "#261814",
+                        "tertiary-fixed": "#b5ebff",
+                        "inverse-on-surface": "#ffede8",
+                        "on-background": "#261814",
+                        "outline": "#8d7168",
+                        "primary": "#ab3500",
+                        "tertiary-fixed-dim": "#59d5fb",
+                        "on-tertiary-fixed": "#001f28",
+                        "on-secondary-fixed-variant": "#36485b",
+                        "on-primary-fixed": "#390c00",
+                        "secondary-fixed-dim": "#b5c8df",
+                        "secondary-container": "#cfe2f9",
+                        "inverse-surface": "#3c2d28",
+                        "on-tertiary-container": "#003744",
+                        "on-secondary-container": "#526478",
+                        "surface-container-highest": "#f7ddd5",
+                        "on-error-container": "#93000a",
+                        "outline-variant": "#e1bfb5",
+                        "inverse-primary": "#ffb59d",
+                        "surface-container-high": "#fde3db",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#eed5cd",
+                        "surface-container": "#ffe9e3",
+                        "tertiary-container": "#00a7cb",
+                        "tertiary": "#00677e",
+                        "primary-container": "#ff6b35",
+                        "surface": "#fff8f6",
+                        "surface-container-low": "#fff1ed",
+                        "on-tertiary": "#ffffff",
+                        "secondary": "#4e6073",
+                        "secondary-fixed": "#d1e4fb",
+                        "on-secondary-fixed": "#091d2e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "sm": "8px",
+                        "container-margin": "16px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "status-badge": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "h3": ["Inter"],
+                        "h2": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "h1-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "status-badge": ["12px", {"lineHeight": "1", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "h3": ["20px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "h1-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body-lg text-on-background min-h-screen">
+<!-- TopAppBar Component -->
+<header class="flex justify-between items-center px-lg py-sm w-full sticky top-0 z-40 bg-surface border-b border-outline-variant shadow-sm">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="construction">construction</span>
+<h1 class="font-h2 text-h2 uppercase tracking-tight text-primary">BuildSmart Admin</h1>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex gap-md">
+<span class="font-body-sm text-body-sm font-medium text-on-surface-variant hover:bg-surface-container-low transition-colors px-sm py-xs rounded">Support</span>
+<span class="font-body-sm text-body-sm font-medium text-on-surface-variant hover:bg-surface-container-low transition-colors px-sm py-xs rounded">Docs</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold overflow-hidden border border-outline-variant">
+<img alt="Administrator Profile" data-alt="Professional headshot of a corporate male administrator in a high-tech modern office environment. The lighting is crisp and natural, highlighting a clean-cut appearance. The background shows a blurry glass-walled boardroom with orange and slate accents, maintaining the BuildSmart brand identity and modern corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQv4v7MgRLKVY9tQMCqiThrCN8PPVLfQxV4OlqfG0Cb4lmZa9EmHRnBbynZoqL3xkQ4mKOz3h2feJMoQsgoflhefckQHgqQTjQItdX9fnREl3KWG1dY7nzKP0V823L4GtcCAATYYRQCfumCT3UvIimOIZ0x2rlItRwLwl8bMH1SQ7E_SMiu8PsdV8u2qq4WpazLFzEPIwz86E6cWZYv5deSmGN8Uf2BaLxM0oYNUqJdGjzoOSGc35mzQrrGRYd3IYVaRYukbCne7a3"/>
+</div>
+</div>
+</header>
+<div class="flex">
+<!-- NavigationDrawer Component -->
+<aside class="fixed left-0 top-0 h-full flex flex-col pt-20 z-30 bg-surface-container-low border-r border-outline-variant w-64 hidden md:flex">
+<div class="px-md py-lg mb-md flex flex-col gap-xs">
+<h3 class="font-h3 text-h3 font-bold text-on-surface">BuildSmart HQ</h3>
+<p class="font-body-sm text-body-sm font-semibold uppercase tracking-wider text-primary">Global Administrator</p>
+<p class="text-[10px] text-on-surface-variant">v2.4.0</p>
+</div>
+<nav class="flex flex-col flex-1">
+<div class="text-on-surface-variant hover:bg-surface-container-high rounded-lg mx-2 my-1 flex items-center gap-md px-md py-sm transition-all duration-200 cursor-pointer active:scale-95">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-sm text-body-sm font-semibold uppercase tracking-wider">Dashboard</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-container-high rounded-lg mx-2 my-1 flex items-center gap-md px-md py-sm transition-all duration-200 cursor-pointer active:scale-95">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-body-sm text-body-sm font-semibold uppercase tracking-wider">User Management</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-container-high rounded-lg mx-2 my-1 flex items-center gap-md px-md py-sm transition-all duration-200 cursor-pointer active:scale-95">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+<span class="font-body-sm text-body-sm font-semibold uppercase tracking-wider">Roles &amp; Permissions</span>
+</div>
+<!-- ACTIVE TAB: System Settings -->
+<div class="bg-primary-container text-on-primary-container rounded-lg mx-2 my-1 flex items-center gap-md px-md py-sm transition-all duration-200 cursor-pointer active:scale-95">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-sm text-body-sm font-semibold uppercase tracking-wider">System Settings</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-container-high rounded-lg mx-2 my-1 flex items-center gap-md px-md py-sm transition-all duration-200 cursor-pointer active:scale-95">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-body-sm text-body-sm font-semibold uppercase tracking-wider">Audit Logs</span>
+</div>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-64 p-md lg:p-xl">
+<div class="max-w-4xl mx-auto space-y-lg">
+<header>
+<h2 class="font-h1 text-h1 text-on-surface mb-xs">System Settings</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Configure global preferences and enterprise-grade security protocols for the BuildSmart ecosystem.</p>
+</header>
+<div class="grid grid-cols-1 gap-lg">
+<!-- Category: Company Profile -->
+<section class="bg-surface border border-outline-variant rounded-lg overflow-hidden shadow-sm">
+<div class="bg-surface-container px-md py-sm border-b border-outline-variant flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="business">business</span>
+<h3 class="font-h3 text-h3 text-on-surface">Company Profile</h3>
+</div>
+<div class="divide-y divide-outline-variant">
+<div class="p-md flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="space-y-1">
+<p class="font-body-lg font-bold text-on-surface">Entity Information</p>
+<p class="font-body-sm text-on-surface-variant">Manage legal name, branding assets, and headquarters address.</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="p-md flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="space-y-1">
+<p class="font-body-lg font-bold text-on-surface">Tax &amp; Compliance IDs</p>
+<p class="font-body-sm text-on-surface-variant">Configure EIN, VAT, and industry-specific licensing numbers.</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Category: Regional Defaults -->
+<section class="bg-surface border border-outline-variant rounded-lg overflow-hidden shadow-sm">
+<div class="bg-surface-container px-md py-sm border-b border-outline-variant flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="language">language</span>
+<h3 class="font-h3 text-h3 text-on-surface">Regional Defaults</h3>
+</div>
+<div class="divide-y divide-outline-variant">
+<div class="p-md flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="space-y-1">
+<p class="font-body-lg font-bold text-on-surface">Timezone &amp; Locale</p>
+<p class="font-body-sm text-on-surface-variant">Current: UTC -05:00 (Eastern Time). Language: English (US).</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="p-md flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="space-y-1">
+<p class="font-body-lg font-bold text-on-surface">Units of Measurement</p>
+<p class="font-body-sm text-on-surface-variant">Standardize site metrics (Imperial: Feet, Tons, Gallons).</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Category: Notification Preferences -->
+<section class="bg-surface border border-outline-variant rounded-lg overflow-hidden shadow-sm">
+<div class="bg-surface-container px-md py-sm border-b border-outline-variant flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="notifications_active">notifications_active</span>
+<h3 class="font-h3 text-h3 text-on-surface">Notification Preferences</h3>
+</div>
+<div class="divide-y divide-outline-variant">
+<div class="p-md flex items-center justify-between">
+<div class="space-y-1">
+<p class="font-body-lg font-bold text-on-surface">System Critical Alerts</p>
+<p class="font-body-sm text-on-surface-variant">Push notifications for safety violations and material delays.</p>
+</div>
+<button class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary transition-colors focus:outline-none ring-2 ring-primary ring-offset-2">
+<span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-6"></span>
+</button>
+</div>
+<div class="p-md flex items-center justify-between">
+<div class="space-y-1">
+<p class="font-body-lg font-bold text-on-surface">Weekly Executive Summary</p>
+<p class="font-body-sm text-on-surface-variant">Consolidated email report of site productivity and logistics.</p>
+</div>
+<button class="relative inline-flex h-6 w-11 items-center rounded-full bg-outline-variant transition-colors focus:outline-none">
+<span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-1"></span>
+</button>
+</div>
+<div class="p-md flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="space-y-1">
+<p class="font-body-lg font-bold text-on-surface">External Webhooks</p>
+<p class="font-body-sm text-on-surface-variant">Configure integration endpoints for Slack, Teams, or Zapier.</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Category: Security Policies -->
+<section class="bg-surface border border-outline-variant rounded-lg overflow-hidden shadow-sm">
+<div class="bg-surface-container px-md py-sm border-b border-outline-variant flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="admin_panel_settings">admin_panel_settings</span>
+<h3 class="font-h3 text-h3 text-on-surface">Security Policies</h3>
+</div>
+<div class="divide-y divide-outline-variant">
+<div class="p-md flex items-center justify-between">
+<div class="space-y-1">
+<div class="flex items-center gap-xs">
+<p class="font-body-lg font-bold text-on-surface">Multi-Factor Authentication (MFA)</p>
+<span class="bg-tertiary/15 text-tertiary px-xs py-[1px] rounded font-status-badge text-status-badge uppercase">Recommended</span>
+</div>
+<p class="font-body-sm text-on-surface-variant">Require secondary verification via SMS or Authenticator App.</p>
+</div>
+<button class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary transition-colors focus:outline-none ring-2 ring-primary ring-offset-2">
+<span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-6"></span>
+</button>
+</div>
+<div class="p-md flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="space-y-1">
+<p class="font-body-lg font-bold text-on-surface">Password Expiry Policy</p>
+<p class="font-body-sm text-on-surface-variant">Current: 90 days. Set intervals for mandatory credential rotation.</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="p-md flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="space-y-1">
+<p class="font-body-lg font-bold text-on-surface">IP Access Control</p>
+<p class="font-body-sm text-on-surface-variant">Restrict administrative access to specific office subnetworks.</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Danger Zone Section -->
+<section class="bg-error-container/20 border border-error/20 rounded-lg overflow-hidden">
+<div class="p-md flex items-center justify-between">
+<div class="space-y-1">
+<p class="font-body-lg font-bold text-error">System Data Purge</p>
+<p class="font-body-sm text-on-surface-variant">Permanently delete archived logs older than 7 years.</p>
+</div>
+<button class="bg-transparent border border-error text-error px-md py-sm rounded font-label-caps uppercase hover:bg-error hover:text-on-error transition-colors">Execute Purge</button>
+</div>
+</section>
+</div>
+<!-- Action Footer -->
+<div class="flex justify-end gap-md pt-lg border-t border-outline-variant">
+<button class="px-lg py-sm font-label-caps uppercase border border-secondary text-secondary rounded hover:bg-surface-container-high transition-colors">Discard Changes</button>
+<button class="px-lg py-sm font-label-caps uppercase bg-primary text-on-primary rounded shadow-md hover:opacity-90 active:scale-95 transition-all">Save Global Settings</button>
+</div>
+</div>
+</main>
+</div>
+<!-- Mobile Bottom Navigation -->
+<footer class="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-outline-variant flex justify-around py-sm z-50">
+<div class="flex flex-col items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-bold">HOME</span>
+</div>
+<div class="flex flex-col items-center gap-xs text-primary">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-[10px] font-bold">SETTINGS</span>
+</div>
+<div class="flex flex-col items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="text-[10px] font-bold">USERS</span>
+</div>
+<div class="flex flex-col items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="text-[10px] font-bold">LOGS</span>
+</div>
+</footer>
+</body></html>

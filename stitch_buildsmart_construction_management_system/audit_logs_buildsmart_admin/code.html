@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BuildSmart Admin - Audit Logs</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#594139",
+                        "surface-bright": "#fff8f6",
+                        "on-tertiary-fixed-variant": "#004e60",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#ffdbd0",
+                        "on-primary-fixed-variant": "#832600",
+                        "surface-tint": "#ab3500",
+                        "background": "#fff8f6",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#f7ddd5",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#5f1900",
+                        "primary-fixed-dim": "#ffb59d",
+                        "on-surface": "#261814",
+                        "tertiary-fixed": "#b5ebff",
+                        "inverse-on-surface": "#ffede8",
+                        "on-background": "#261814",
+                        "outline": "#8d7168",
+                        "primary": "#ab3500",
+                        "tertiary-fixed-dim": "#59d5fb",
+                        "on-tertiary-fixed": "#001f28",
+                        "on-secondary-fixed-variant": "#36485b",
+                        "on-primary-fixed": "#390c00",
+                        "secondary-fixed-dim": "#b5c8df",
+                        "secondary-container": "#cfe2f9",
+                        "inverse-surface": "#3c2d28",
+                        "on-tertiary-container": "#003744",
+                        "on-secondary-container": "#526478",
+                        "surface-container-highest": "#f7ddd5",
+                        "on-error-container": "#93000a",
+                        "outline-variant": "#e1bfb5",
+                        "inverse-primary": "#ffb59d",
+                        "surface-container-high": "#fde3db",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#eed5cd",
+                        "surface-container": "#ffe9e3",
+                        "tertiary-container": "#00a7cb",
+                        "tertiary": "#00677e",
+                        "primary-container": "#ff6b35",
+                        "surface": "#fff8f6",
+                        "surface-container-low": "#fff1ed",
+                        "on-tertiary": "#ffffff",
+                        "secondary": "#4e6073",
+                        "secondary-fixed": "#d1e4fb",
+                        "on-secondary-fixed": "#091d2e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "sm": "8px",
+                        "container-margin": "16px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "status-badge": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "h3": ["Inter"],
+                        "h2": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "h1-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "status-badge": ["12px", {"lineHeight": "1", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "h3": ["20px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "h1-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #F4F6F8; }
+        .zebra-row:nth-child(even) { background-color: #F8F9FA; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-background">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim text-primary dark:text-primary-fixed-dim border-b border-outline-variant dark:border-on-surface-variant shadow-sm flex justify-between items-center px-lg py-sm w-full sticky top-0 z-40">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="construction">construction</span>
+<h1 class="font-h1 text-h1 uppercase tracking-tight font-black text-primary dark:text-primary-fixed">BuildSmart Admin</h1>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex gap-lg items-center">
+<a class="text-on-surface-variant dark:text-on-secondary-fixed-variant font-medium hover:bg-surface-container-low transition-colors px-md py-xs rounded" href="#">Dashboard</a>
+<a class="text-primary dark:text-primary-fixed font-bold border-b-2 border-primary px-md py-xs" href="#">Audit Logs</a>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold border-2 border-outline shadow-sm overflow-hidden">
+<img alt="Administrator Profile" data-alt="A professional headshot of a senior administrator in a high-tech corporate office environment. The lighting is bright and clean, emphasizing a modern light-mode aesthetic. The subject wears a sharp charcoal suit, conveying authority and technical expertise. The background features blurred glass partitions and warm architectural wood tones, matching the refined industrial design palette of whites and earth tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzhb6eKluv3X28-ap-m2xD_QKzmPwmF791m05gaJVOy7oh7qmUHBZKmA39RQ5AOZTwiyJhnMTsDhk1jo5GtPY_0zAOQ8MaNolx_X4hc7CNw78KxQHwXrS9rqXYP5d8MiLfxABVhAWgOxcgC-3Q5h4k4MjuxUAcy6qRAdmLpax9pcvlZ3Nbn87p1E0CddR-RXUgyTOtlIKdfwfMEhYqkpcwb55rHi5kgdBMDq8a-Ihzg400qfjK0-1-9_GhJwN_h2gqC-m8G7AMYBRu"/>
+</div>
+</div>
+</header>
+<div class="flex min-h-[calc(100vh-64px)]">
+<!-- NavigationDrawer -->
+<nav class="fixed left-0 top-0 h-full flex flex-col pt-20 z-30 bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant dark:border-on-surface-variant w-64 hidden lg:flex">
+<div class="px-md py-lg border-b border-outline-variant mb-md">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-body-lg">corporate_fare</span>
+</div>
+<div>
+<p class="font-h3 text-h3 font-bold text-on-surface dark:text-on-background leading-tight">BuildSmart HQ</p>
+<p class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">Global Administrator</p>
+</div>
+</div>
+</div>
+<div class="flex-grow">
+<a class="text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-lg mx-2 my-1 flex items-center gap-md px-md py-sm transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-sm text-body-sm font-semibold uppercase tracking-wider">Dashboard</span>
+</a>
+<a class="text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-lg mx-2 my-1 flex items-center gap-md px-md py-sm transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-body-sm text-body-sm font-semibold uppercase tracking-wider">User Management</span>
+</a>
+<a class="text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-lg mx-2 my-1 flex items-center gap-md px-md py-sm transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+<span class="font-body-sm text-body-sm font-semibold uppercase tracking-wider">Roles &amp; Permissions</span>
+</a>
+<a class="text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-lg mx-2 my-1 flex items-center gap-md px-md py-sm transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-sm text-body-sm font-semibold uppercase tracking-wider">System Settings</span>
+</a>
+<a class="bg-primary-container text-on-primary-container dark:bg-primary dark:text-on-primary rounded-lg mx-2 my-1 flex items-center gap-md px-md py-sm active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-body-sm text-body-sm font-semibold uppercase tracking-wider">Audit Logs</span>
+</a>
+</div>
+<div class="p-md text-[10px] text-on-surface-variant opacity-50 font-bold">
+                VERSION v2.4.0
+            </div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow lg:ml-64 p-container-margin md:p-xl">
+<div class="max-w-7xl mx-auto space-y-lg">
+<!-- Header & Action Row -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<span class="material-symbols-outlined text-primary" data-icon="history">history</span>
+<span class="font-label-caps text-label-caps text-primary uppercase">Security &amp; Compliance</span>
+</div>
+<h2 class="font-h1 text-h1 text-on-surface">Administrative Audit Logs</h2>
+<p class="text-body-sm text-on-surface-variant mt-xs">Real-time monitoring of all system-level modifications and security events.</p>
+</div>
+<div class="flex gap-sm">
+<button class="bg-white border border-outline px-md py-sm rounded-lg flex items-center gap-sm text-on-surface font-semibold hover:bg-surface-container-low transition-all shadow-sm">
+<span class="material-symbols-outlined text-[20px]" data-icon="file_download">file_download</span>
+                            Export CSV
+                        </button>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-lg flex items-center gap-sm font-semibold hover:opacity-90 transition-all shadow-md active:scale-95">
+<span class="material-symbols-outlined text-[20px]" data-icon="refresh">refresh</span>
+                            Refresh
+                        </button>
+</div>
+</div>
+<!-- Filters Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-md bg-white p-lg rounded-xl border border-outline-variant shadow-sm">
+<div class="space-y-xs">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Date Range</label>
+<div class="relative">
+<input class="w-full pl-10 pr-md py-sm border-b-2 border-outline-variant focus:border-primary transition-colors bg-surface-bright outline-none font-body-sm" placeholder="Last 7 Days" type="text"/>
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="calendar_today">calendar_today</span>
+</div>
+</div>
+<div class="space-y-xs">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Administrator</label>
+<div class="relative">
+<select class="w-full pl-10 pr-md py-sm border-b-2 border-outline-variant focus:border-primary transition-colors bg-surface-bright outline-none font-body-sm appearance-none">
+<option>All Users</option>
+<option>Sarah Jenkins (Admin)</option>
+<option>Robert Chen (DevOps)</option>
+</select>
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="person">person</span>
+</div>
+</div>
+<div class="space-y-xs">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Action Type</label>
+<div class="relative">
+<select class="w-full pl-10 pr-md py-sm border-b-2 border-outline-variant focus:border-primary transition-colors bg-surface-bright outline-none font-body-sm appearance-none">
+<option>All Actions</option>
+<option>Role Updates</option>
+<option>Policy Changes</option>
+<option>Auth Failures</option>
+</select>
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="filter_list">filter_list</span>
+</div>
+</div>
+<div class="flex items-end">
+<div class="relative w-full">
+<input class="w-full pl-10 pr-md py-sm border-b-2 border-outline-variant focus:border-primary transition-colors bg-surface-bright outline-none font-body-sm" placeholder="Search keywords..." type="text"/>
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+</div>
+</div>
+</div>
+<!-- High-Density Logs Card -->
+<div class="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-md py-sm font-label-caps text-label-caps text-on-surface-variant uppercase">Timestamp</th>
+<th class="px-md py-sm font-label-caps text-label-caps text-on-surface-variant uppercase">User ID</th>
+<th class="px-md py-sm font-label-caps text-label-caps text-on-surface-variant uppercase">Action</th>
+<th class="px-md py-sm font-label-caps text-label-caps text-on-surface-variant uppercase">Resource</th>
+<th class="px-md py-sm font-label-caps text-label-caps text-on-surface-variant uppercase">IP Address</th>
+<th class="px-md py-sm font-label-caps text-label-caps text-on-surface-variant uppercase">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="zebra-row hover:bg-primary-fixed/10 transition-colors">
+<td class="px-md py-md font-mono text-[13px] text-on-surface whitespace-nowrap">2023-10-27 14:22:09</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-sm">
+<div class="w-6 h-6 rounded bg-on-surface text-white text-[10px] flex items-center justify-center font-bold">SJ</div>
+<span class="text-body-sm font-semibold">s.jenkins@buildsmart.com</span>
+</div>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-xs text-primary font-bold text-body-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="policy">policy</span>
+                                            Updated Budget Policy
+                                        </div>
+</td>
+<td class="px-md py-md text-body-sm text-on-surface-variant font-mono">/api/v2/finance/rules</td>
+<td class="px-md py-md text-body-sm font-mono">192.168.1.105</td>
+<td class="px-md py-md">
+<span class="bg-primary/10 text-primary px-sm py-[2px] rounded text-status-badge">SUCCESS</span>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="zebra-row hover:bg-primary-fixed/10 transition-colors">
+<td class="px-md py-md font-mono text-[13px] text-on-surface whitespace-nowrap">2023-10-27 14:15:33</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-sm">
+<div class="w-6 h-6 rounded bg-secondary text-white text-[10px] flex items-center justify-center font-bold">RC</div>
+<span class="text-body-sm font-semibold">r.chen@buildsmart.com</span>
+</div>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-xs text-on-surface font-bold text-body-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="manage_accounts">manage_accounts</span>
+                                            Changed Role: Project Lead
+                                        </div>
+</td>
+<td class="px-md py-md text-body-sm text-on-surface-variant font-mono">user_88291_meta</td>
+<td class="px-md py-md text-body-sm font-mono">203.0.113.42</td>
+<td class="px-md py-md">
+<span class="bg-primary/10 text-primary px-sm py-[2px] rounded text-status-badge">SUCCESS</span>
+</td>
+</tr>
+<!-- Row 3 (Alert State) -->
+<tr class="zebra-row hover:bg-error-container/20 transition-colors">
+<td class="px-md py-md font-mono text-[13px] text-on-surface whitespace-nowrap">2023-10-27 13:58:11</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-sm">
+<div class="w-6 h-6 rounded bg-error text-white text-[10px] flex items-center justify-center font-bold">SY</div>
+<span class="text-body-sm font-semibold">system.worker_04</span>
+</div>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-xs text-error font-bold text-body-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="report">report</span>
+                                            Unauthorized Access Attempt
+                                        </div>
+</td>
+<td class="px-md py-md text-body-sm text-on-surface-variant font-mono">/secure/vault/keys</td>
+<td class="px-md py-md text-body-sm font-mono text-error font-bold">45.22.11.9</td>
+<td class="px-md py-md">
+<span class="bg-error/15 text-error px-sm py-[2px] rounded text-status-badge">FAILED</span>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="zebra-row hover:bg-primary-fixed/10 transition-colors">
+<td class="px-md py-md font-mono text-[13px] text-on-surface whitespace-nowrap">2023-10-27 13:42:00</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-sm">
+<div class="w-6 h-6 rounded bg-tertiary text-white text-[10px] flex items-center justify-center font-bold">MA</div>
+<span class="text-body-sm font-semibold">m.anderson@buildsmart.com</span>
+</div>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-xs text-on-surface font-bold text-body-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="cloud_upload">cloud_upload</span>
+                                            Uploaded Site Manifest
+                                        </div>
+</td>
+<td class="px-md py-md text-body-sm text-on-surface-variant font-mono">proj_manifest_Q4_23.xml</td>
+<td class="px-md py-md text-body-sm font-mono">192.168.1.212</td>
+<td class="px-md py-md">
+<span class="bg-primary/10 text-primary px-sm py-[2px] rounded text-status-badge">SUCCESS</span>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="zebra-row hover:bg-primary-fixed/10 transition-colors">
+<td class="px-md py-md font-mono text-[13px] text-on-surface whitespace-nowrap">2023-10-27 13:30:15</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-sm">
+<div class="w-6 h-6 rounded bg-on-surface text-white text-[10px] flex items-center justify-center font-bold">SJ</div>
+<span class="text-body-sm font-semibold">s.jenkins@buildsmart.com</span>
+</div>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-xs text-on-surface font-bold text-body-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="settings_input_component">settings_input_component</span>
+                                            Modified API Gateway Config
+                                        </div>
+</td>
+<td class="px-md py-md text-body-sm text-on-surface-variant font-mono">gateway_primary.conf</td>
+<td class="px-md py-md text-body-sm font-mono">192.168.1.105</td>
+<td class="px-md py-md">
+<span class="bg-primary/10 text-primary px-sm py-[2px] rounded text-status-badge">SUCCESS</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-lg py-md border-t border-outline-variant flex items-center justify-between bg-surface-container-lowest">
+<p class="text-body-sm text-on-surface-variant font-medium">Showing <span class="text-on-surface font-bold">1 - 50</span> of 12,492 events</p>
+<div class="flex gap-xs">
+<button class="p-sm rounded border border-outline-variant hover:bg-surface-container-high transition-colors text-on-surface">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</button>
+<button class="px-md py-sm rounded bg-primary text-on-primary font-bold text-body-sm">1</button>
+<button class="px-md py-sm rounded hover:bg-surface-container-high text-on-surface font-medium text-body-sm">2</button>
+<button class="px-md py-sm rounded hover:bg-surface-container-high text-on-surface font-medium text-body-sm">3</button>
+<span class="px-sm self-center">...</span>
+<button class="px-md py-sm rounded hover:bg-surface-container-high text-on-surface font-medium text-body-sm">250</button>
+<button class="p-sm rounded border border-outline-variant hover:bg-surface-container-high transition-colors text-on-surface">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Footer Summary Statistics -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<div class="bg-white p-lg rounded-xl border border-outline-variant shadow-sm flex items-center justify-between">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">Critical Alerts (24h)</p>
+<h3 class="text-h2 font-h2 text-error mt-xs">12</h3>
+</div>
+<div class="w-12 h-12 rounded-full bg-error/10 flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-3xl" data-icon="warning" data-weight="fill">warning</span>
+</div>
+</div>
+<div class="bg-white p-lg rounded-xl border border-outline-variant shadow-sm flex items-center justify-between">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">Admin Sessions</p>
+<h3 class="text-h2 font-h2 text-primary mt-xs">8 Active</h3>
+</div>
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl" data-icon="groups" data-weight="fill">groups</span>
+</div>
+</div>
+<div class="bg-white p-lg rounded-xl border border-outline-variant shadow-sm flex items-center justify-between">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">Log Retention</p>
+<h3 class="text-h2 font-h2 text-on-surface mt-xs">90 Days</h3>
+</div>
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-3xl" data-icon="data_usage" data-weight="fill">data_usage</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Mobile Navigation -->
+<div class="md:hidden fixed bottom-0 left-0 w-full bg-surface border-t border-outline-variant flex justify-around py-sm z-50">
+<a class="flex flex-col items-center gap-xs text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-bold uppercase">Home</span>
+</a>
+<a class="flex flex-col items-center gap-xs text-primary" href="#">
+<span class="material-symbols-outlined" data-weight="fill">history</span>
+<span class="text-[10px] font-bold uppercase">Audit</span>
+</a>
+<a class="flex flex-col items-center gap-xs text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-bold uppercase">Users</span>
+</a>
+<a class="flex flex-col items-center gap-xs text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-bold uppercase">Config</span>
+</a>
+</div>
+</body></html>

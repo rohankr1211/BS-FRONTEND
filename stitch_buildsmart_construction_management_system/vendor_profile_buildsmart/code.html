@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#fff8f6",
+                    "surface-container-low": "#fff1ed",
+                    "on-error": "#ffffff",
+                    "surface-container-highest": "#f7ddd5",
+                    "on-tertiary-container": "#003744",
+                    "on-primary-container": "#5f1900",
+                    "error": "#ba1a1a",
+                    "on-surface-variant": "#594139",
+                    "surface-bright": "#fff8f6",
+                    "inverse-primary": "#ffb59d",
+                    "secondary-container": "#cfe2f9",
+                    "on-tertiary": "#ffffff",
+                    "surface-tint": "#ab3500",
+                    "on-secondary-container": "#526478",
+                    "on-background": "#261814",
+                    "primary-fixed": "#ffdbd0",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed": "#091d2e",
+                    "tertiary-fixed-dim": "#59d5fb",
+                    "on-error-container": "#93000a",
+                    "tertiary": "#00677e",
+                    "outline": "#8d7168",
+                    "primary-container": "#ff6b35",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed": "#d1e4fb",
+                    "surface-container": "#ffe9e3",
+                    "on-primary-fixed": "#390c00",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed-variant": "#832600",
+                    "secondary-fixed-dim": "#b5c8df",
+                    "surface-dim": "#eed5cd",
+                    "primary": "#ab3500",
+                    "on-tertiary-fixed-variant": "#004e60",
+                    "primary-fixed-dim": "#ffb59d",
+                    "surface-variant": "#f7ddd5",
+                    "on-tertiary-fixed": "#001f28",
+                    "secondary": "#4e6073",
+                    "inverse-surface": "#3c2d28",
+                    "tertiary-container": "#00a7cb",
+                    "surface-container-high": "#fde3db",
+                    "surface": "#fff8f6",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#b5ebff",
+                    "outline-variant": "#e1bfb5",
+                    "on-secondary-fixed-variant": "#36485b",
+                    "inverse-on-surface": "#ffede8",
+                    "on-surface": "#261814"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "container-margin": "16px",
+                    "xs": "4px",
+                    "xl": "32px",
+                    "md": "16px",
+                    "base": "8px",
+                    "sm": "8px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "body-sm": ["Inter"],
+                    "h1-mobile": ["Inter"],
+                    "status-badge": ["Inter"],
+                    "h1": ["Inter"],
+                    "h2": ["Inter"],
+                    "h3": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-caps": ["Inter"]
+            },
+            "fontSize": {
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "h1-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "status-badge": ["12px", {"lineHeight": "1", "fontWeight": "600"}],
+                    "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "h3": ["20px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #F4F6F8; /* Design System Level 0 */
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-lg text-on-background">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none flex justify-between items-center px-gutter w-full h-16 z-50 fixed top-0 left-0">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" data-icon="construction">construction</span>
+<h1 class="font-h1 text-h1 font-bold text-primary dark:text-primary-fixed">BuildSmart</h1>
+</div>
+<div class="flex items-center gap-md">
+<nav class="hidden md:flex gap-lg items-center">
+<a class="text-primary dark:text-primary-fixed-dim font-bold transition-colors" href="#">Vendors</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors px-3 py-1 rounded" href="#">Contracts</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors px-3 py-1 rounded" href="#">Invoices</a>
+</nav>
+<img alt="User profile photo" class="w-10 h-10 rounded-full border-2 border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8GiOsMR-4hxaGYDFDcaObC6DfAYrQqn7xbt6z6Q568y0puhn-WAZsjEVYwUjUeHypHoirZf69BqPql9KAmG_JFL_Wpk1NlzhKDkFWClL5h4eugHuy0U9IieEmI_m0KNZMPEiJnLcfjgvn5yr6H9dCpC777dm7wMLTMlTpNuyq3go5sxwInEskY4NirqWVNBX6VvD38F5sH2jiTjuB1Lsb7zUdOUpth3cSLiqZjpWJy8aYC40L1Lfg_JDYF2GSut3QO-L_tNiJTDp0"/>
+</div>
+</header>
+<main class="mt-20 mb-24 px-gutter max-w-7xl mx-auto">
+<!-- Vendor Profile Header Card -->
+<section class="bg-surface p-xl border border-outline-variant shadow-sm rounded-xl mb-lg">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md">
+<div class="flex items-center gap-md">
+<div class="w-16 h-16 bg-primary-container flex items-center justify-center rounded-xl">
+<span class="material-symbols-outlined text-on-primary-container text-4xl" data-icon="factory">factory</span>
+</div>
+<div>
+<h2 class="font-h2 text-h2 text-on-surface">Precision Steel Corp</h2>
+<p class="text-on-surface-variant font-body-sm flex items-center gap-xs">
+<span class="material-symbols-outlined text-base" data-icon="location_on">location_on</span> 
+                            42 Industrial Way, Chicago, IL 60601
+                        </p>
+</div>
+</div>
+<div class="flex gap-sm">
+<button class="bg-primary text-on-primary px-lg py-sm rounded-lg font-bold hover:shadow-md transition-all active:scale-95 h-[44px] flex items-center gap-xs">
+<span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+                        Edit Profile
+                    </button>
+<button class="border border-secondary text-secondary px-lg py-sm rounded-lg font-bold hover:bg-surface-container-low transition-all h-[44px] flex items-center gap-xs">
+<span class="material-symbols-outlined text-lg" data-icon="mail">mail</span>
+                        Message
+                    </button>
+</div>
+</div>
+</section>
+<!-- Bento Layout for Metrics & Details -->
+<div class="bento-grid">
+<!-- Performance Column -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-md">
+<!-- Metrics Card -->
+<div class="bg-surface p-md border border-outline-variant shadow-sm rounded-xl">
+<h3 class="font-h3 text-h3 text-on-surface mb-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary" data-icon="analytics">analytics</span>
+                        Performance
+                    </h3>
+<div class="space-y-lg">
+<div>
+<div class="flex justify-between items-center mb-xs">
+<span class="text-on-surface-variant font-label-caps">On-time Delivery %</span>
+<span class="text-primary font-bold">98.5%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 98.5%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-xs">
+<span class="text-on-surface-variant font-label-caps">Safety Compliance</span>
+<span class="text-primary font-bold">100%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 100%"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-md pt-md border-t border-outline-variant">
+<div>
+<p class="text-on-surface-variant text-[10px] uppercase font-bold tracking-wider">Quality Rating</p>
+<p class="text-h3 font-h3 text-primary">4.9<span class="text-body-sm text-on-surface-variant">/5.0</span></p>
+</div>
+<div>
+<p class="text-on-surface-variant text-[10px] uppercase font-bold tracking-wider">Active Jobs</p>
+<p class="text-h3 font-h3 text-primary">12</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Contact Info Card -->
+<div class="bg-surface p-md border border-outline-variant shadow-sm rounded-xl">
+<h3 class="font-h3 text-h3 text-on-surface mb-md">Key Contacts</h3>
+<div class="space-y-md">
+<div class="flex items-center gap-md">
+<img alt="Account Manager" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtTo44RNEYcl1uBRqW9XAVUDtYUY3QqTX2S8HmApPBIhDdMQSTXlN3Qr-yqqr7HzOC95fs8JdPSMdukWCdKsRK46oVnvtiDVXimH5mWkR2cjrKqY-CPTB7Dsc7Lz4DRDCTz36GOdgWudSEphkPHR1pX8ueiC5TNrEUVp9SXrqbhfdmuGqOYj1pPWvF4KEoMfZpyjeZeZoJLz7MRtowsCQ8EZ1n2j4DTTxzU4r_9cPKxDvGPFKNuKLqEO-Ox8yWBkuzUuo2OWYDGnsN"/>
+<div>
+<p class="font-bold text-on-surface">Amanda Miller</p>
+<p class="text-body-sm text-on-surface-variant">Lead Account Manager</p>
+<p class="text-body-sm text-primary">+1 (555) 123-4567</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Current Contracts & History Column -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-md">
+<!-- Current Contracts Section -->
+<div class="bg-surface border border-outline-variant shadow-sm rounded-xl overflow-hidden">
+<div class="p-md bg-surface-container-low border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-h3 text-h3 text-on-surface flex items-center gap-xs">
+<span class="material-symbols-outlined" data-icon="assignment_turned_in">assignment_turned_in</span>
+                            Current Contracts
+                        </h3>
+<span class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">3 Active</span>
+</div>
+<div class="divide-y divide-outline-variant">
+<div class="p-md hover:bg-surface-container transition-colors">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-bold text-on-surface">Structural Steel - Phase II (Project Alpha)</p>
+<p class="text-body-sm text-on-surface-variant">ID: #CON-99238 • Ends Oct 2024</p>
+</div>
+<div class="text-right">
+<p class="font-bold text-primary">$450,000.00</p>
+<span class="text-status-badge font-status-badge text-tertiary bg-tertiary-fixed px-2 py-0.5 rounded">IN PROGRESS</span>
+</div>
+</div>
+</div>
+<div class="p-md hover:bg-surface-container transition-colors">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-bold text-on-surface">Reinforced Rebar Supply (Hub North)</p>
+<p class="text-body-sm text-on-surface-variant">ID: #CON-99105 • Ends Dec 2024</p>
+</div>
+<div class="text-right">
+<p class="font-bold text-primary">$125,000.00</p>
+<span class="text-status-badge font-status-badge text-on-secondary-fixed-variant bg-secondary-fixed px-2 py-0.5 rounded">PENDING RENEWAL</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Invoices List -->
+<div class="bg-surface border border-outline-variant shadow-sm rounded-xl overflow-hidden">
+<div class="p-md flex justify-between items-center">
+<h3 class="font-h3 text-h3 text-on-surface flex items-center gap-xs">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+                            Recent Invoices
+                        </h3>
+<button class="text-primary font-bold text-body-sm hover:underline">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-y border-outline-variant">
+<tr>
+<th class="p-md font-label-caps text-on-surface-variant">Invoice #</th>
+<th class="p-md font-label-caps text-on-surface-variant">Date</th>
+<th class="p-md font-label-caps text-on-surface-variant">Amount</th>
+<th class="p-md font-label-caps text-on-surface-variant">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container transition-colors">
+<td class="p-md font-bold">INV-2024-001</td>
+<td class="p-md text-body-sm">May 12, 2024</td>
+<td class="p-md font-bold">$12,450.00</td>
+<td class="p-md">
+<span class="text-status-badge font-status-badge text-on-tertiary-fixed-variant bg-tertiary-fixed px-2 py-0.5 rounded">PAID</span>
+</td>
+</tr>
+<tr class="bg-surface-container-low/30 hover:bg-surface-container transition-colors">
+<td class="p-md font-bold">INV-2024-042</td>
+<td class="p-md text-body-sm">May 01, 2024</td>
+<td class="p-md font-bold">$8,900.00</td>
+<td class="p-md">
+<span class="text-status-badge font-status-badge text-on-tertiary-fixed-variant bg-tertiary-fixed px-2 py-0.5 rounded">PAID</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container transition-colors">
+<td class="p-md font-bold">INV-2024-098</td>
+<td class="p-md text-body-sm">Apr 24, 2024</td>
+<td class="p-md font-bold">$15,200.00</td>
+<td class="p-md">
+<span class="text-status-badge font-status-badge text-on-error-container bg-error-container px-2 py-0.5 rounded">OVERDUE</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Site Visualization (Industrial Context) -->
+<div class="relative h-64 rounded-xl overflow-hidden shadow-lg border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A wide cinematic shot of a modern construction site with heavy industrial machinery and structural steel frames under a bright, high-contrast morning sky. The atmosphere is professional and high-performance, featuring a palette of construction oranges and industrial grays. The lighting is crisp, highlighting the precision of the steel engineering work." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCg4qfMQJietTA8KiriA-p1AyUg_OVAFnQn1xQYVh3n9maWz87iBbnqMsDbTzFEK5AoOtb5XdV74-evA7oA6Xb38XyDAWdrOYQDTlA_leg5Ss8UPSWgeZvmnvllsOmrn1FVQM5h9HRnjJ0Po7umitSSry0HJ-EBJSvnl0lkHzXay-8voHl7yEv5_0TG1gh5no1OMr33hVa2G2J_GBqq62oARC-Xw4TJd8HWmPLT4bsNDSfe2NSjhHT3vLi4zxoab5R_eug2F-07MflB"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-lg">
+<div class="text-white">
+<p class="font-h3 text-h3">Current Delivery Status</p>
+<p class="text-body-sm opacity-90">Shipment ID: TRK-990 — ETA 2 Hours — O'Hare Terminal Site</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline bg-surface dark:bg-surface-dim shadow-lg dark:shadow-none fixed bottom-0 left-0 w-full flex justify-around items-center h-16 px-2 pb-safe md:hidden z-50">
+<div class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary-fixed text-on-secondary-container dark:text-on-secondary-fixed rounded-full px-4 py-1">
+<span class="material-symbols-outlined" data-icon="business">business</span>
+<span class="font-label-caps text-label-caps">Directory</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1 hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-colors active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+<span class="font-label-caps text-label-caps">Agreements</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1 hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-colors active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-caps text-label-caps">Payouts</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1 hover:bg-surface-variant dark:hover:bg-surface-container-highest transition-colors active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="person_search">person_search</span>
+<span class="font-label-caps text-label-caps">Profiles</span>
+</div>
+</nav>
+</body></html>

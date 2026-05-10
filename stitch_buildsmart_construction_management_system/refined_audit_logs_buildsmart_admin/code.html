@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BuildSmart Admin - Audit Logs</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#594139",
+                        "surface-bright": "#fff8f6",
+                        "on-tertiary-fixed-variant": "#004e60",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#ffdbd0",
+                        "on-primary-fixed-variant": "#832600",
+                        "surface-tint": "#ab3500",
+                        "background": "#fff8f6",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#f7ddd5",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#5f1900",
+                        "primary-fixed-dim": "#ffb59d",
+                        "on-surface": "#261814",
+                        "tertiary-fixed": "#b5ebff",
+                        "inverse-on-surface": "#ffede8",
+                        "on-background": "#261814",
+                        "outline": "#8d7168",
+                        "primary": "#ab3500",
+                        "tertiary-fixed-dim": "#59d5fb",
+                        "on-tertiary-fixed": "#001f28",
+                        "on-secondary-fixed-variant": "#36485b",
+                        "on-primary-fixed": "#390c00",
+                        "secondary-fixed-dim": "#b5c8df",
+                        "secondary-container": "#cfe2f9",
+                        "inverse-surface": "#3c2d28",
+                        "on-tertiary-container": "#003744",
+                        "on-secondary-container": "#526478",
+                        "surface-container-highest": "#f7ddd5",
+                        "on-error-container": "#93000a",
+                        "outline-variant": "#e1bfb5",
+                        "inverse-primary": "#ffb59d",
+                        "surface-container-high": "#fde3db",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#eed5cd",
+                        "surface-container": "#ffe9e3",
+                        "tertiary-container": "#00a7cb",
+                        "tertiary": "#00677e",
+                        "primary-container": "#ff6b35",
+                        "surface": "#fff8f6",
+                        "surface-container-low": "#fff1ed",
+                        "on-tertiary": "#ffffff",
+                        "secondary": "#4e6073",
+                        "secondary-fixed": "#d1e4fb",
+                        "on-secondary-fixed": "#091d2e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "sm": "8px",
+                        "container-margin": "16px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "status-badge": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "h3": ["Inter"],
+                        "h2": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "h1-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "status-badge": ["12px", {"lineHeight": "1", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "h3": ["20px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "h1-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #F4F6F8; }
+        /* Hide scrollbar for horizontal scrolling elements */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="text-on-background bg-background">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim text-primary border-b border-outline-variant shadow-sm flex justify-between items-center px-lg py-sm w-full sticky top-0 z-40">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="construction">construction</span>
+<h1 class="font-h1-mobile text-h1-mobile uppercase tracking-tight font-black text-primary">BuildSmart</h1>
+</div>
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold border-2 border-outline shadow-sm overflow-hidden">
+<img alt="Administrator Profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzhb6eKluv3X28-ap-m2xD_QKzmPwmF791m05gaJVOy7oh7qmUHBZKmA39RQ5AOZTwiyJhnMTsDhk1jo5GtPY_0zAOQ8MaNolx_X4hc7CNw78KxQHwXrS9rqXYP5d8MiLfxABVhAWgOxcgC-3Q5h4k4MjuxUAcy6qRAdmLpax9pcvlZ3Nbn87p1E0CddR-RXUgyTOtlIKdfwfMEhYqkpcwb55rHi5kgdBMDq8a-Ihzg400qfjK0-1-9_GhJwN_h2gqC-m8G7AMYBRu"/>
+</div>
+</div>
+</header>
+<div class="flex min-h-[calc(100vh-64px)] pb-20">
+<!-- NavigationDrawer (Desktop Only) -->
+<nav class="fixed left-0 top-0 h-full flex flex-col pt-20 z-30 bg-surface-container-low border-r border-outline-variant w-64 hidden lg:flex">
+<div class="px-md py-lg border-b border-outline-variant mb-md">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-body-lg">corporate_fare</span>
+</div>
+<div>
+<p class="font-h3 text-h3 font-bold text-on-surface leading-tight">BuildSmart HQ</p>
+<p class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">Global Admin</p>
+</div>
+</div>
+</div>
+<div class="flex-grow">
+<a class="text-on-surface-variant hover:bg-surface-container-high rounded-lg mx-2 my-1 flex items-center gap-md px-md py-sm transition-all duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-sm font-semibold uppercase tracking-wider">Dashboard</span>
+</a>
+<a class="bg-primary-container text-on-primary-container rounded-lg mx-2 my-1 flex items-center gap-md px-md py-sm" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-body-sm font-semibold uppercase tracking-wider">Audit Logs</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high rounded-lg mx-2 my-1 flex items-center gap-md px-md py-sm" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-sm font-semibold uppercase tracking-wider">Users</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high rounded-lg mx-2 my-1 flex items-center gap-md px-md py-sm" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-sm font-semibold uppercase tracking-wider">Settings</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow lg:ml-64 p-container-margin">
+<div class="max-w-7xl mx-auto space-y-md">
+<!-- Compact Header -->
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-h2 text-h2 text-on-surface">Audit Logs</h2>
+<p class="text-[12px] text-on-surface-variant uppercase font-bold tracking-wider">Security &amp; Compliance</p>
+</div>
+<button class="bg-primary text-on-primary p-sm rounded-full shadow-md active:scale-95">
+<span class="material-symbols-outlined">refresh</span>
+</button>
+</div>
+<!-- Stats Horizontal Scroll -->
+<div class="flex gap-md overflow-x-auto no-scrollbar py-xs">
+<div class="flex-shrink-0 w-40 bg-white p-md rounded-xl border border-outline-variant shadow-sm">
+<p class="text-[10px] font-label-caps text-on-surface-variant uppercase">Critical Alerts</p>
+<div class="flex items-center justify-between mt-xs">
+<span class="text-h3 font-bold text-error">12</span>
+<span class="material-symbols-outlined text-error text-[20px]" data-icon="warning">warning</span>
+</div>
+</div>
+<div class="flex-shrink-0 w-40 bg-white p-md rounded-xl border border-outline-variant shadow-sm">
+<p class="text-[10px] font-label-caps text-on-surface-variant uppercase">Admin Sessions</p>
+<div class="flex items-center justify-between mt-xs">
+<span class="text-h3 font-bold text-primary">8 Active</span>
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="groups">groups</span>
+</div>
+</div>
+<div class="flex-shrink-0 w-40 bg-white p-md rounded-xl border border-outline-variant shadow-sm">
+<p class="text-[10px] font-label-caps text-on-surface-variant uppercase">Log Retention</p>
+<div class="flex items-center justify-between mt-xs">
+<span class="text-h3 font-bold text-on-surface">90 Days</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]" data-icon="data_usage">data_usage</span>
+</div>
+</div>
+</div>
+<!-- Compact Filter Bar / Chips -->
+<div class="space-y-sm">
+<div class="flex items-center gap-sm">
+<div class="relative flex-grow">
+<input class="w-full pl-10 pr-md py-sm bg-white border border-outline-variant rounded-full text-body-sm outline-none focus:border-primary shadow-sm" placeholder="Search events..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+</div>
+<button class="bg-white border border-outline-variant p-sm rounded-full flex items-center justify-center text-on-surface-variant shadow-sm">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+</button>
+</div>
+<div class="flex gap-xs overflow-x-auto no-scrollbar pb-xs">
+<span class="px-md py-1.5 bg-primary text-on-primary rounded-full text-status-badge whitespace-nowrap">All Logs</span>
+<span class="px-md py-1.5 bg-white border border-outline-variant text-on-surface-variant rounded-full text-status-badge whitespace-nowrap">Role Updates</span>
+<span class="px-md py-1.5 bg-white border border-outline-variant text-on-surface-variant rounded-full text-status-badge whitespace-nowrap">Auth Failures</span>
+<span class="px-md py-1.5 bg-white border border-outline-variant text-on-surface-variant rounded-full text-status-badge whitespace-nowrap">Last 24h</span>
+<span class="px-md py-1.5 bg-white border border-outline-variant text-on-surface-variant rounded-full text-status-badge whitespace-nowrap">Admin Only</span>
+</div>
+</div>
+<!-- Grouped Audit Logs -->
+<div class="space-y-lg">
+<!-- Group: Today -->
+<section class="space-y-sm">
+<div class="flex items-center gap-md">
+<h3 class="font-label-caps text-label-caps text-primary uppercase">Today</h3>
+<div class="flex-grow h-[1px] bg-outline-variant"></div>
+</div>
+<div class="bg-white rounded-xl border border-outline-variant shadow-sm divide-y divide-outline-variant">
+<!-- Entry 1 -->
+<div class="p-md flex items-start gap-md">
+<div class="w-10 h-10 rounded-lg bg-tertiary-container flex items-center justify-center text-on-tertiary-container">
+<span class="material-symbols-outlined">settings_input_component</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<p class="font-bold text-on-surface text-body-sm">Modified API Gateway Config</p>
+<span class="bg-primary/10 text-primary text-[10px] px-sm py-[2px] rounded font-bold uppercase">Update</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-0.5">
+<span class="font-semibold">s.jenkins@buildsmart.com</span> • 13:30:15 • 192.168.1.105
+                                </p>
+</div>
+</div>
+<!-- Entry 2 (Security Alert) -->
+<div class="p-md flex items-start gap-md bg-error-container/5">
+<div class="w-10 h-10 rounded-lg bg-error-container flex items-center justify-center text-error">
+<span class="material-symbols-outlined">report</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<p class="font-bold text-error text-body-sm">Unauthorized Access Attempt</p>
+<span class="bg-error/15 text-error text-[10px] px-sm py-[2px] rounded font-bold uppercase tracking-tight">Security</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-0.5">
+<span class="font-semibold text-error">system.worker_04</span> • 13:58:11 • 45.22.11.9
+                                </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Group: Yesterday -->
+<section class="space-y-sm">
+<div class="flex items-center gap-md">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase">Yesterday</h3>
+<div class="flex-grow h-[1px] bg-outline-variant"></div>
+</div>
+<div class="bg-white rounded-xl border border-outline-variant shadow-sm divide-y divide-outline-variant">
+<!-- Entry 3 -->
+<div class="p-md flex items-start gap-md">
+<div class="w-10 h-10 rounded-lg bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined">manage_accounts</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<p class="font-bold text-on-surface text-body-sm">User Deleted: Contractor 402</p>
+<span class="bg-error/10 text-error text-[10px] px-sm py-[2px] rounded font-bold uppercase">Deletion</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-0.5">
+<span class="font-semibold">r.chen@buildsmart.com</span> • 17:42:00 • 203.0.113.42
+                                </p>
+</div>
+</div>
+<!-- Entry 4 -->
+<div class="p-md flex items-start gap-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined">cloud_upload</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<p class="font-bold text-on-surface text-body-sm">Uploaded Site Manifest</p>
+<span class="bg-on-surface-variant/10 text-on-surface-variant text-[10px] px-sm py-[2px] rounded font-bold uppercase">System</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-0.5">
+<span class="font-semibold">m.anderson@buildsmart.com</span> • 14:15:22 • 192.168.1.212
+                                </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Group: Oct 26, 2023 -->
+<section class="space-y-sm">
+<div class="flex items-center gap-md">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase">Oct 26, 2023</h3>
+<div class="flex-grow h-[1px] bg-outline-variant"></div>
+</div>
+<div class="bg-white rounded-xl border border-outline-variant shadow-sm p-md">
+<div class="flex items-center justify-center py-md">
+<button class="text-primary font-bold text-body-sm flex items-center gap-xs">
+                                Load 15 more events
+                                <span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+<!-- Results Summary -->
+<div class="text-center pb-md">
+<p class="text-body-sm text-on-surface-variant font-medium">Showing 1 - 20 of 12,492 events</p>
+</div>
+</div>
+</main>
+</div>
+<!-- Mobile Navigation Bar -->
+<div class="lg:hidden fixed bottom-0 left-0 w-full bg-surface border-t border-outline-variant flex justify-around items-center h-16 z-50 px-md">
+<a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant w-1/4 h-full" href="#">
+<span class="material-symbols-outlined text-[24px]">dashboard</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center gap-xs text-primary w-1/4 h-full border-t-2 border-primary mt-[-2px]" href="#">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">history</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Audit</span>
+</a>
+<a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant w-1/4 h-full" href="#">
+<span class="material-symbols-outlined text-[24px]">group</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Users</span>
+</a>
+<a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant w-1/4 h-full" href="#">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Config</span>
+</a>
+</div>
+</body></html>

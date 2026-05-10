@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SiteOps Pro - Construction Project Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#ffe9e3",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#d1e4fb",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#f7ddd5",
+                        "primary": "#ab3500",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#00a7cb",
+                        "background": "#fff8f6",
+                        "tertiary-fixed-dim": "#59d5fb",
+                        "surface-container-low": "#fff1ed",
+                        "secondary-container": "#cfe2f9",
+                        "on-secondary-fixed-variant": "#36485b",
+                        "on-secondary-fixed": "#091d2e",
+                        "on-tertiary-container": "#003744",
+                        "on-secondary-container": "#526478",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "inverse-on-surface": "#ffede8",
+                        "on-tertiary-fixed": "#001f28",
+                        "outline-variant": "#e1bfb5",
+                        "on-primary-fixed-variant": "#832600",
+                        "surface-variant": "#f7ddd5",
+                        "on-primary-container": "#5f1900",
+                        "on-background": "#261814",
+                        "primary-fixed-dim": "#ffb59d",
+                        "surface": "#fff8f6",
+                        "primary-fixed": "#ffdbd0",
+                        "outline": "#8d7168",
+                        "secondary": "#4e6073",
+                        "primary-container": "#ff6b35",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#390c00",
+                        "on-surface": "#261814",
+                        "surface-container-high": "#fde3db",
+                        "surface-dim": "#eed5cd",
+                        "surface-bright": "#fff8f6",
+                        "secondary-fixed-dim": "#b5c8df",
+                        "tertiary-fixed": "#b5ebff",
+                        "tertiary": "#00677e",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#3c2d28",
+                        "inverse-primary": "#ffb59d",
+                        "surface-tint": "#ab3500",
+                        "on-tertiary-fixed-variant": "#004e60",
+                        "on-surface-variant": "#594139",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "lg": "24px",
+                        "base": "8px",
+                        "container-margin": "16px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "status-badge": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "h3": ["Inter"],
+                        "h2": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "h1": ["Inter"],
+                        "h1-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "status-badge": ["12px", {"lineHeight": "1", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "h3": ["20px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "h1-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+        .zebra-row:nth-child(even) {
+            background-color: #F8F9FA;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-lg">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline shadow-sm flex items-center justify-between px-container-margin h-14 w-full">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" style="font-size: 24px;">construction</span>
+<h1 class="font-h2 text-h2 font-bold text-primary dark:text-primary-fixed-dim">SiteOps Pro</h1>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex items-center gap-lg mr-md">
+<nav class="flex gap-md font-label-caps text-label-caps">
+<a class="text-primary dark:text-primary-fixed-dim" href="#">Dashboard</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Logs</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Crew</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Materials</a>
+</nav>
+</div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+<img alt="Project Manager Profile" class="w-8 h-8 rounded-full border border-outline-variant" data-alt="A professional headshot of a Hispanic project manager wearing a clean white shirt and a modern hard hat. The background is a blurred office environment with architectural blueprints. The lighting is professional and soft, matching a light-mode corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7neKA3aUL4Ugz_hWwLryLCSmZEgWAFA_PoJohy8qXwRnS4o5WAbcDwBE-CSoz_DFci9TM-2p4U8QJ-2G3cQN9JYFijKtBoPlUNbbZc5wqoxx1vDh2z0MAjxaCPJWYPKzc914GMNJ_0sMray3l4b5yxn7rKd6zxNTRi430KZCYzHSW_8YouscAOeGRgUQb7irTr27xvx3a_-tcdrTz_KaEBf3tCqiTRRP5KzIzfeh7yxO173kvZJDp4fQYVGJcMmp4w3lcnfTovZC0"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-20 pb-24 md:pb-10 px-container-margin max-w-7xl mx-auto">
+<!-- Header Section -->
+<section class="mb-xl flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h2 class="font-h1 text-h1-mobile md:text-h1">North Site - Phase 2</h2>
+<p class="text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                    Chicago, IL Industrial District
+                </p>
+</div>
+<div class="flex gap-sm">
+<button class="bg-primary hover:opacity-90 text-on-primary px-lg h-11 flex items-center gap-sm rounded transition-all active:scale-95">
+<span class="material-symbols-outlined">add</span>
+<span class="font-label-caps text-label-caps">New Log</span>
+</button>
+<button class="border-2 border-secondary text-secondary hover:bg-secondary/5 px-lg h-11 flex items-center gap-sm rounded transition-all active:scale-95">
+<span class="material-symbols-outlined">person_add</span>
+<span class="font-label-caps text-label-caps">Assign Crew</span>
+</button>
+</div>
+</section>
+<!-- Dashboard Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-md">
+<!-- Project Health Card -->
+<div class="md:col-span-4 bg-white border border-outline-variant p-md rounded-xl shadow-sm flex flex-col justify-between min-h-[180px]">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">analytics</span>
+<h3 class="font-h3 text-h3">Project Health</h3>
+</div>
+<span class="bg-tertiary-container/15 text-tertiary-container px-sm py-xs rounded font-status-badge text-status-badge">ON TRACK</span>
+</div>
+<div class="mt-md">
+<div class="flex justify-between mb-xs">
+<span class="text-body-sm text-on-surface-variant">Overall Progress</span>
+<span class="text-body-sm font-bold">72%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[72%]"></div>
+</div>
+</div>
+<p class="text-body-sm text-on-surface-variant mt-sm">3 days ahead of schedule for primary structural work.</p>
+</div>
+<!-- Critical Alert Card -->
+<div class="md:col-span-8 bg-error-container/20 border border-error/20 p-md rounded-xl shadow-sm flex items-center gap-lg">
+<div class="bg-error/10 p-md rounded-full text-error">
+<span class="material-symbols-outlined text-[48px]">thunderstorm</span>
+</div>
+<div>
+<div class="flex items-center gap-sm text-error">
+<span class="material-symbols-outlined text-[20px]">warning</span>
+<h3 class="font-h3 text-h3">Weather Warning</h3>
+</div>
+<p class="text-on-surface mt-xs">Heavy thunderstorms predicted for tomorrow (08:00 - 14:00). Prepare site for high winds and secure all crane operations.</p>
+<button class="mt-sm text-error font-bold flex items-center gap-xs text-body-sm">
+                        View Safety Protocol <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Upcoming Milestones -->
+<div class="md:col-span-7 bg-white border border-outline-variant rounded-xl shadow-sm overflow-hidden">
+<div class="p-md border-b border-outline-variant flex justify-between items-center">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">event_available</span>
+<h3 class="font-h3 text-h3">Upcoming Milestones</h3>
+</div>
+<button class="text-primary font-bold text-body-sm">View Schedule</button>
+</div>
+<div class="p-0">
+<div class="zebra-row flex items-center justify-between p-md">
+<div class="flex items-center gap-md">
+<div class="text-center w-12">
+<p class="font-label-caps text-label-caps text-on-surface-variant">OCT</p>
+<p class="font-h2 text-h2">14</p>
+</div>
+<div>
+<p class="font-h3 text-h3">Concrete Pour - Slab A</p>
+<p class="text-body-sm text-on-surface-variant">Trucks scheduled: 6:00 AM</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+<div class="zebra-row flex items-center justify-between p-md">
+<div class="flex items-center gap-md">
+<div class="text-center w-12">
+<p class="font-label-caps text-label-caps text-on-surface-variant">OCT</p>
+<p class="font-h2 text-h2">16</p>
+</div>
+<div>
+<p class="font-h3 text-h3">Foundation Inspection</p>
+<p class="text-body-sm text-on-surface-variant">County inspector: R. Thompson</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+<div class="zebra-row flex items-center justify-between p-md">
+<div class="flex items-center gap-md">
+<div class="text-center w-12">
+<p class="font-label-caps text-label-caps text-on-surface-variant">OCT</p>
+<p class="font-h2 text-h2">19</p>
+</div>
+<div>
+<p class="font-h3 text-h3">Steel Delivery</p>
+<p class="text-body-sm text-on-surface-variant">Sections 4-9 arriving via Heavy Haul</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Site Map Visual -->
+<div class="md:col-span-5 bg-white border border-outline-variant rounded-xl shadow-sm flex flex-col">
+<div class="p-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">map</span>
+<h3 class="font-h3 text-h3">Live Site Activity</h3>
+</div>
+<div class="flex-grow relative min-h-[250px] bg-surface-container overflow-hidden rounded-b-xl">
+<img alt="Construction site map layout" class="absolute inset-0 w-full h-full object-cover" data-alt="An aerial, high-angle architectural photograph of a modern construction site featuring large orange cranes and a grid-like foundation layout. The image uses a clean, industrial aesthetic with sharp lines and high contrast. The lighting is bright daylight, highlighting the organized machinery and steel structures. This reflects a high-performance, professional project management environment." data-location="Chicago" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8q3GWKtGUTNWdcwpPusonrNNRCY5yoiB-d8kqKhX6GLBRK5WrLntBplDQTIZMM6w3LP4RMQULNVsqoN0rWBHD9p-ZPNWdaIbmguXVxeR1d_XfNNcnosYb9IQNlVk08njCBUMXDFRbEDOavCApDiZ1d9QH-J15qSPWjCshA4R66teDbknjeAEc-9gYdxJugeg1fN-iGfbjpqMwOVciWQAJUTbnI2hQmUR_p3tH6sUeVd9UIa6LU0GhiJ22T9ZYtRdbrGpr9GR3Au8y"/>
+<div class="absolute inset-0 bg-black/10"></div>
+<div class="absolute top-4 right-4 bg-white/90 backdrop-blur p-sm rounded shadow-md text-xs font-bold">
+<div class="flex items-center gap-xs text-primary">
+<div class="w-2 h-2 rounded-full bg-primary"></div> Crane A: Operational
+                        </div>
+<div class="flex items-center gap-xs text-tertiary mt-1">
+<div class="w-2 h-2 rounded-full bg-tertiary"></div> Zone 4: Cleared
+                        </div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 bg-surface-container dark:bg-surface-container-highest border-t border-outline-variant dark:border-outline shadow-md flex justify-around items-center h-16 w-full pb-safe">
+<div class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim font-bold transition-all active:scale-90">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant transition-all active:scale-90">
+<span class="material-symbols-outlined">event_note</span>
+<span class="font-label-caps text-label-caps">Logs</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant transition-all active:scale-90">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-caps text-label-caps">Crew</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant transition-all active:scale-90">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-label-caps text-label-caps">Materials</span>
+</div>
+</nav>
+<!-- FAB (Contextual for Dashboard) -->
+<button class="fixed bottom-20 right-6 md:bottom-10 md:right-10 bg-primary-container text-on-primary-container w-14 h-14 rounded-full shadow-xl flex items-center justify-center transition-all hover:scale-105 active:scale-90 z-40">
+<span class="material-symbols-outlined text-[32px]">add</span>
+</button>
+</body></html>

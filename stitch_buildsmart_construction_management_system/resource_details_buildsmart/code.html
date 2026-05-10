@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F4F6F8;
+        }
+        .zebra-stripe:nth-child(even) {
+            background-color: #F8F9FA;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed-variant": "#832600",
+                      "on-tertiary-container": "#003744",
+                      "on-secondary-fixed": "#091d2e",
+                      "surface-tint": "#ab3500",
+                      "secondary": "#4e6073",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-bright": "#fff8f6",
+                      "on-tertiary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "secondary-fixed-dim": "#b5c8df",
+                      "on-surface": "#261814",
+                      "primary-fixed-dim": "#ffb59d",
+                      "on-secondary-container": "#526478",
+                      "surface-container": "#ffe9e3",
+                      "on-tertiary-fixed": "#001f28",
+                      "primary-container": "#ff6b35",
+                      "outline-variant": "#e1bfb5",
+                      "surface": "#fff8f6",
+                      "tertiary-fixed-dim": "#59d5fb",
+                      "inverse-surface": "#3c2d28",
+                      "outline": "#8d7168",
+                      "tertiary-fixed": "#b5ebff",
+                      "secondary-container": "#cfe2f9",
+                      "on-primary": "#ffffff",
+                      "surface-container-highest": "#f7ddd5",
+                      "primary-fixed": "#ffdbd0",
+                      "surface-dim": "#eed5cd",
+                      "error": "#ba1a1a",
+                      "on-primary-fixed": "#390c00",
+                      "surface-variant": "#f7ddd5",
+                      "inverse-primary": "#ffb59d",
+                      "surface-container-high": "#fde3db",
+                      "secondary-fixed": "#d1e4fb",
+                      "on-background": "#261814",
+                      "tertiary-container": "#00a7cb",
+                      "tertiary": "#00677e",
+                      "on-tertiary-fixed-variant": "#004e60",
+                      "primary": "#ab3500",
+                      "on-surface-variant": "#594139",
+                      "surface-container-low": "#fff1ed",
+                      "inverse-on-surface": "#ffede8",
+                      "background": "#fff8f6",
+                      "on-error": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-fixed-variant": "#36485b",
+                      "on-primary-container": "#5f1900"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "sm": "8px",
+                      "base": "8px",
+                      "xs": "4px",
+                      "xl": "32px",
+                      "lg": "24px",
+                      "gutter": "16px",
+                      "md": "16px",
+                      "container-margin": "16px"
+              },
+              "fontFamily": {
+                      "h1-mobile": ["Inter"],
+                      "h1": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "h2": ["Inter"],
+                      "status-badge": ["Inter"],
+                      "h3": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "h1-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "status-badge": ["12px", {"lineHeight": "1", "fontWeight": "600"}],
+                      "h3": ["20px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline shadow-sm flex justify-between items-center px-container-margin h-16">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer">arrow_back</span>
+<h1 class="font-h2 text-h2 font-bold text-primary dark:text-primary-fixed-dim">BuildSmart</h1>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">notifications</span>
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden">
+<img alt="User Profile Photo" class="w-full h-full object-cover" data-alt="A professional headshot of a middle-aged construction project manager wearing a white hard hat and a safety vest. He is smiling confidently against a blurred background of a modern steel-framed building construction site during the golden hour. The lighting is warm and cinematic, emphasizing the professional and reliable brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWtOMZ9_Uw8TC6_rwFj5fHGXpcoiquscNEl7ioEQGLAjfJyQddMXdI2hLPxwVLUcyY5bQKIcBLcYxKowUXjkS93rY9H_HE_uvs8PC05FQTjvKpO862SrZ8OlH6406KR8LPcj8M_4Rbwhj3tH6mXq9Zzk6hk4G9xcgmtB7_VPfw5kVy_3HMX2rpDEJ3s_--nSXBpuSoJrByR_XgsL5p29HCyLZ-r-SuKBgkPWV9J03HUl1RiQvp92ptMgMA_ijCm-ZPryY-_8ccUzUv"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-24 px-container-margin max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- Header Section: Resource Identity -->
+<div class="lg:col-span-12 flex flex-col md:flex-row md:items-end justify-between gap-md mb-4">
+<div>
+<nav class="flex items-center gap-xs text-on-surface-variant mb-xs">
+<span class="font-label-caps text-label-caps">RESOURCES</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="font-label-caps text-label-caps">HEAVY EQUIPMENT</span>
+</nav>
+<h1 class="font-h1 text-h1 text-on-surface">Caterpillar 320 Excavator</h1>
+<div class="flex items-center gap-sm mt-xs">
+<span class="bg-tertiary-container/15 text-tertiary px-sm py-xs rounded font-status-badge text-status-badge flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+                        Operational
+                    </span>
+<span class="text-on-surface-variant font-body-sm text-body-sm">ID: CAT-320-2023-084</span>
+</div>
+</div>
+<div class="flex gap-sm">
+<button class="bg-surface border border-outline text-on-surface px-lg h-[44px] rounded-lg font-bold hover:bg-surface-container-low transition-colors flex items-center gap-xs active:scale-95 transition-transform">
+<span class="material-symbols-outlined">print</span>
+                    Export PDF
+                </button>
+<button class="bg-primary text-on-primary px-lg h-[44px] rounded-lg font-bold hover:opacity-90 transition-opacity flex items-center gap-xs active:scale-95 transition-transform">
+<span class="material-symbols-outlined">edit</span>
+                    Edit Asset
+                </button>
+</div>
+</div>
+<!-- Left Column: Specs & History -->
+<div class="lg:col-span-8 flex flex-col gap-lg">
+<!-- Asset Gallery / Main Visual -->
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<div class="relative aspect-video">
+<img alt="Caterpillar 320" class="w-full h-full object-cover" data-alt="A high-resolution photograph of a yellow Caterpillar 320 excavator parked on a graded construction site with loose earth and gravel. The lighting is crisp, midday sun reflecting off the industrial metal surfaces. The background shows distant construction cranes and a clear blue sky, emphasizing ruggedness and high-performance site machinery in a professional industrial context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYjYtUsdQddXFYFuZU3ySvlXHkBQFLUAB3runaAcZ1reG8jn0fA26npbKBY473RaoELC1zytoDbLRavM7_879E-8Wlvkr0yhr1Ke5gxaqVBrDJENtYgVAFqqTZewlD0Q-DOSd5BWxbuAh4nj1urGt7eq3LLoyXg9T5Ugln6pboObbR1qT0LPzdvM6PhmWt4MjzWbZnaO5-hHrb_QP5aETl-aSEUT0t7KSLnAI7p0DI7EVEwxhDJkhbFYCtyuz26MghFlWcr9mXPgfb"/>
+<div class="absolute bottom-4 left-4 flex gap-xs">
+<span class="bg-black/60 text-white px-md py-xs rounded-full text-xs backdrop-blur-md">1/6 Photos</span>
+</div>
+</div>
+</div>
+<!-- Bento Grid: Specifications -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<div class="bg-white border border-outline-variant p-md rounded-xl shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center gap-sm text-primary mb-sm">
+<span class="material-symbols-outlined">settings_input_component</span>
+<h3 class="font-label-caps text-label-caps uppercase text-on-surface-variant">Performance</h3>
+</div>
+<div class="space-y-xs">
+<p class="font-body-sm text-body-sm text-on-surface-variant">Net Power</p>
+<p class="font-h3 text-h3">172 HP</p>
+</div>
+</div>
+<div class="bg-white border border-outline-variant p-md rounded-xl shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center gap-sm text-primary mb-sm">
+<span class="material-symbols-outlined">weight</span>
+<h3 class="font-label-caps text-label-caps uppercase text-on-surface-variant">Weight</h3>
+</div>
+<div class="space-y-xs">
+<p class="font-body-sm text-body-sm text-on-surface-variant">Operating Weight</p>
+<p class="font-h3 text-h3">22,500 kg</p>
+</div>
+</div>
+<div class="bg-white border border-outline-variant p-md rounded-xl shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center gap-sm text-primary mb-sm">
+<span class="material-symbols-outlined">speed</span>
+<h3 class="font-label-caps text-label-caps uppercase text-on-surface-variant">Usage</h3>
+</div>
+<div class="space-y-xs">
+<p class="font-body-sm text-body-sm text-on-surface-variant">Total Hours</p>
+<p class="font-h3 text-h3">1,240 hrs</p>
+</div>
+</div>
+</div>
+<!-- Maintenance History (Zebra Striped Table) -->
+<div class="bg-white border border-outline-variant rounded-xl shadow-sm overflow-hidden">
+<div class="px-md py-lg border-b border-outline-variant flex justify-between items-center">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">history</span>
+<h2 class="font-h3 text-h3">Maintenance History</h2>
+</div>
+<button class="text-primary font-bold text-body-sm hover:underline">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low text-on-surface-variant font-label-caps text-label-caps">
+<tr>
+<th class="px-md py-sm">Date</th>
+<th class="px-md py-sm">Service Type</th>
+<th class="px-md py-sm">Provider</th>
+<th class="px-md py-sm">Status</th>
+</tr>
+</thead>
+<tbody class="text-body-sm">
+<tr class="zebra-stripe border-b border-outline-variant/30">
+<td class="px-md py-md font-bold">Oct 12, 2023</td>
+<td class="px-md py-md">Hydraulic System Flush</td>
+<td class="px-md py-md">CAT Global Services</td>
+<td class="px-md py-md">
+<span class="bg-green-100 text-green-800 px-sm py-1 rounded-full text-[10px] font-bold">COMPLETED</span>
+</td>
+</tr>
+<tr class="zebra-stripe border-b border-outline-variant/30">
+<td class="px-md py-md font-bold">Aug 05, 2023</td>
+<td class="px-md py-md">Routine 1000hr Inspection</td>
+<td class="px-md py-md">CAT Global Services</td>
+<td class="px-md py-md">
+<span class="bg-green-100 text-green-800 px-sm py-1 rounded-full text-[10px] font-bold">COMPLETED</span>
+</td>
+</tr>
+<tr class="zebra-stripe">
+<td class="px-md py-md font-bold">May 19, 2023</td>
+<td class="px-md py-md">Track Tension Adjustment</td>
+<td class="px-md py-md">Site Maintenance Team</td>
+<td class="px-md py-md">
+<span class="bg-green-100 text-green-800 px-sm py-1 rounded-full text-[10px] font-bold">COMPLETED</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Right Column: Allocation Form -->
+<div class="lg:col-span-4 flex flex-col gap-lg">
+<!-- Quick Status Card -->
+<div class="bg-white border-2 border-primary-container p-md rounded-xl shadow-md">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+<h2 class="font-h3 text-h3 text-on-surface">Resource Allocation</h2>
+</div>
+<form class="space-y-md">
+<!-- Project Selection -->
+<div class="space-y-xs">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Select Project</label>
+<select class="w-full h-[48px] border-outline-variant border-2 rounded-lg px-md focus:border-primary focus:ring-0 transition-colors bg-white">
+<option>Bridge Expansion - North Wing</option>
+<option>Downtown Logistics Hub</option>
+<option>Residential Tower A - Excavation</option>
+</select>
+</div>
+<!-- Dates -->
+<div class="grid grid-cols-2 gap-sm">
+<div class="space-y-xs">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Start Date</label>
+<input class="w-full h-[48px] border-outline-variant border-2 rounded-lg px-md focus:border-primary focus:ring-0 transition-colors" type="date"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase">End Date</label>
+<input class="w-full h-[48px] border-outline-variant border-2 rounded-lg px-md focus:border-primary focus:ring-0 transition-colors" type="date"/>
+</div>
+</div>
+<!-- Supervisor -->
+<div class="space-y-xs">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Assigned Supervisor</label>
+<select class="w-full h-[48px] border-outline-variant border-2 rounded-lg px-md focus:border-primary focus:ring-0 transition-colors bg-white">
+<option>Robert Chen (Field Mgr)</option>
+<option>Sarah Jenkins (Site Lead)</option>
+<option>Mike Thompson (Equipment Sup)</option>
+</select>
+</div>
+<!-- Conflict Checker -->
+<button class="w-full py-md border-2 border-dashed border-outline-variant text-on-surface-variant rounded-xl flex items-center justify-center gap-sm hover:border-primary hover:text-primary transition-all group" type="button">
+<span class="material-symbols-outlined group-hover:animate-pulse">event_busy</span>
+<span class="font-bold">Check Conflicts</span>
+</button>
+<!-- Alert Box (Hidden/Conditional styling) -->
+<div class="bg-secondary-container/30 p-sm rounded-lg flex gap-sm items-start">
+<span class="material-symbols-outlined text-secondary text-[20px]">info</span>
+<p class="text-body-sm text-on-secondary-fixed-variant">This resource is currently allocated to <span class="font-bold">Port Terminal P4</span> until Nov 02.</p>
+</div>
+<button class="w-full h-[52px] bg-primary-container text-on-primary-container rounded-lg font-bold text-body-lg shadow-lg hover:shadow-xl hover:opacity-90 active:scale-95 transition-all mt-4">
+                        Confirm Allocation
+                    </button>
+</form>
+</div>
+<!-- Current Site Location -->
+<div class="bg-white border border-outline-variant rounded-xl shadow-sm overflow-hidden">
+<div class="p-md">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-sm">GPS Tracking</h3>
+<div class="h-40 bg-surface-container rounded-lg overflow-hidden relative">
+<!-- Map Placeholder -->
+<div class="absolute inset-0 bg-cover bg-center" data-location="Chicago" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC4BQlyytS8BeKxkCSUwykp3mhE-oT8IvOD_sTa91waOkOzOOVFI3_ZfpFS9JIIcbLURvZ-kB1K4I-jw5_LpJVVBEDDzqDA4K1ixNbGJtA0E-fAoJHcjnTqHKze4PU35aTTx4tziSXQpBMa5sFA_h4qdR_pKUoe5jYzTpj05pHuG6RpRxbzRfXy27TEWqczoj403iTM9lFz-rTKACExg82PNAR3Q-GVNfH45DcNLCqX6m9qLpnQgJw-J6o-gxXXIzeVbhHnhyLyJf4B')"></div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="bg-primary text-on-primary w-8 h-8 rounded-full flex items-center justify-center shadow-2xl border-2 border-white">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+</div>
+</div>
+<div class="mt-md flex justify-between items-center">
+<span class="text-body-sm">Last Ping: 4 mins ago</span>
+<span class="text-primary font-bold text-body-sm cursor-pointer">Live View</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- NavigationDrawer (Mobile suppressed, visible on large screens as sidebar if needed, but here as a hidden shell component) -->
+<nav class="hidden fixed left-0 top-0 h-full w-80 z-[60] bg-surface-container dark:bg-surface-container-highest flex-col py-lg shadow-xl">
+<div class="px-lg mb-xl">
+<h2 class="font-h3 text-h3 font-bold text-primary">BuildSmart Pro</h2>
+<p class="text-on-surface-variant text-body-sm">Project Manager</p>
+</div>
+<div class="flex flex-col gap-xs">
+<div class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:bg-surface-variant mx-2 rounded-xl cursor-pointer transition-colors">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-body-lg">Finance</span>
+</div>
+<div class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:bg-surface-variant mx-2 rounded-xl cursor-pointer transition-colors">
+<span class="material-symbols-outlined">engineering</span>
+<span class="font-body-lg">Safety</span>
+</div>
+<div class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:bg-surface-variant mx-2 rounded-xl cursor-pointer transition-colors">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-lg">Resources</span>
+</div>
+<div class="flex items-center gap-md px-lg py-md text-on-surface-variant hover:bg-surface-variant mx-2 rounded-xl cursor-pointer transition-colors">
+<span class="material-symbols-outlined">handshake</span>
+<span class="font-body-lg">Vendors</span>
+</div>
+</div>
+<div class="mt-auto px-lg pt-lg border-t border-outline-variant/30">
+<p class="text-[10px] text-on-surface-variant">V2.4.1</p>
+</div>
+</nav>
+<!-- BottomNavBar (Mobile) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-surface dark:bg-inverse-surface border-t border-outline-variant md:hidden">
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant p-2">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-sm text-[10px]">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant p-2">
+<span class="material-symbols-outlined">architecture</span>
+<span class="font-body-sm text-[10px]">Projects</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assignment</span>
+<span class="font-body-sm text-[10px]">Logs</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant p-2">
+<span class="material-symbols-outlined">person</span>
+<span class="font-body-sm text-[10px]">Profile</span>
+</div>
+</nav>
+</body></html>

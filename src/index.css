@@ -1,0 +1,62 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Construction Theme Colors */
+  --bs-primary: #FF6B35;
+  --bs-primary-rgb: 255, 107, 53;
+  --primary-dark: #E55A2B;
+  --bs-secondary: #2C3E50;
+  --bs-secondary-rgb: 44, 62, 80;
+  --bs-success: #28A745;
+  --bs-warning: #FFC107;
+  --bs-danger: #DC3545;
+  --bs-info: #17A2B8;
+  --bs-light: #F8F9FA;
+  --bs-dark: #1A1A2E;
+  --bs-body-bg: #F4F6F8;
+  --bs-body-font-family: 'Inter', sans-serif;
+  --bs-font-sans-serif: 'Inter', sans-serif;
+}
+
+body {
+  background-color: var(--bs-body-bg);
+  font-family: var(--bs-body-font-family);
+  color: var(--bs-dark);
+}
+
+/* Override Bootstrap specific colors where needed */
+.btn-primary {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+  background-color: var(--primary-dark) !important;
+  border-color: var(--primary-dark) !important;
+}
+
+/* Custom utility classes */
+.text-primary-dark {
+  color: var(--primary-dark) !important;
+}
+
+.bg-primary-dark {
+  background-color: var(--primary-dark) !important;
+}
+
+.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+.shadow {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Background image for landing/login pages */
+.construction-overlay {
+  background-image: linear-gradient(rgba(26, 26, 46, 0.8), rgba(26, 26, 46, 0.85)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuAGyL_uJ3g6madiF0jJbBTCdga37CZUQYQvP6MxnyfMJ8qvzDb1JMDUMAzGDH9uLuEXi0cz9-0--CKry8V3-flnvGSR0bgQa2uyGoTA26WsWJ4EYjWIwklMuCLyUIMyLUVEhAchumySzay5cNM_CLFKAyFFdZ2eHCnCdboTwyReZisy6NRahdq2Nq2CzNDsdZ4ve1z5VxT32gnc7lNcs885wVXT-K2AFkJBiAHZVTxnykZlvpdWsMWkWgDMhwRoPudU5ybYfXu1cOJ1');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}

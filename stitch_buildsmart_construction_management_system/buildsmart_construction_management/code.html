@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BuildSmart | Modern Construction Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#ffb59d",
+                        "secondary-container": "#cfe2f9",
+                        "tertiary": "#00677e",
+                        "tertiary-fixed": "#b5ebff",
+                        "primary-fixed": "#ffdbd0",
+                        "surface-container-low": "#fff1ed",
+                        "primary-container": "#ff6b35",
+                        "on-error": "#ffffff",
+                        "surface-container": "#ffe9e3",
+                        "outline": "#8d7168",
+                        "on-tertiary-container": "#003744",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#fff8f6",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#00a7cb",
+                        "primary": "#ab3500",
+                        "secondary-fixed-dim": "#b5c8df",
+                        "secondary-fixed": "#d1e4fb",
+                        "surface-variant": "#f7ddd5",
+                        "on-background": "#261814",
+                        "on-primary-fixed": "#390c00",
+                        "on-surface-variant": "#594139",
+                        "on-surface": "#261814",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#091d2e",
+                        "on-primary-container": "#5f1900",
+                        "on-tertiary-fixed": "#001f28",
+                        "tertiary-fixed-dim": "#59d5fb",
+                        "surface-dim": "#eed5cd",
+                        "inverse-primary": "#ffb59d",
+                        "outline-variant": "#e1bfb5",
+                        "on-secondary-container": "#526478",
+                        "inverse-surface": "#3c2d28",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#ab3500",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#4e6073",
+                        "on-primary-fixed-variant": "#832600",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#f7ddd5",
+                        "inverse-on-surface": "#ffede8",
+                        "background": "#fff8f6",
+                        "on-tertiary-fixed-variant": "#004e60",
+                        "surface-bright": "#fff8f6",
+                        "on-secondary-fixed-variant": "#36485b",
+                        "surface-container-high": "#fde3db",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "container-margin": "16px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "base": "8px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "h1": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "h1-mobile": ["Inter"],
+                        "h2": ["Inter"],
+                        "h3": ["Inter"],
+                        "status-badge": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "h1-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "h3": ["20px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "status-badge": ["12px", {"lineHeight": "1", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .zebra-stripe:nth-child(even) { background-color: #f8f9fa; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-lg">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline shadow-sm flex justify-between items-center px-container-margin h-16">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">architecture</span>
+<h1 class="font-h2 text-h2 font-bold text-primary dark:text-primary-fixed-dim">BuildSmart</h1>
+</div>
+<nav class="hidden md:flex gap-lg items-center">
+<a class="text-primary font-bold font-body-sm transition-colors hover:text-primary-container" href="#">Home</a>
+<a class="text-on-surface-variant font-body-sm transition-colors hover:bg-surface-container-low px-2 py-1 rounded" href="#">Solutions</a>
+<a class="text-on-surface-variant font-body-sm transition-colors hover:bg-surface-container-low px-2 py-1 rounded" href="#">Pricing</a>
+<button class="ml-4 px-lg py-2 bg-primary text-on-primary rounded-xl font-bold transition-all active:scale-95 hover:bg-primary-container">Get Started</button>
+<button class="px-lg py-2 border-2 border-secondary text-secondary rounded-xl font-bold transition-all active:scale-95 hover:bg-secondary-container">Login</button>
+</nav>
+<div class="md:hidden">
+<span class="material-symbols-outlined text-on-surface-variant text-3xl">menu</span>
+</div>
+</header>
+<main class="pt-16">
+<!-- Hero Section -->
+<section class="relative h-[751px] flex items-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover grayscale-[30%] contrast-125" data-alt="A cinematic, wide-angle shot of a sprawling modern construction site at dusk, featuring towering cranes silhouetted against a deep amber and slate sky. The lighting is dramatic and industrial, highlighting the structural steel beams and concrete foundations. The color palette emphasizes rich oranges and deep blues, creating a professional and high-performance atmosphere consistent with a modern corporate architectural brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVfViq_d2vcYFeMYM3Fg24z1s19-_3neFmeFVr6AoAVdiEpQ-MHK3AIXOgUlalIBbyzHeD4ctFUif82hq1ChMfJjNRrlka83m6v2qsnXRukFZQDYTOL6LfiiciZf2I42Oe0h3YyPZW9XbFJvMG3VoFq3SjPbPQHf7XUa4O_TUPZgUGYh9Sw7LsSlKdt6iVyHx4j5eGvpJVS-sul8HTtPbpCmxqdimyN8uWX5TO1Uz3sFzF-d3fhW0nA1FVbjD12zzAFOZkwK5Kupef"/>
+<div class="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent"></div>
+</div>
+<div class="container mx-auto px-container-margin relative z-10 max-w-4xl">
+<div class="inline-flex items-center bg-primary-container/20 px-3 py-1 rounded-full mb-lg border border-primary-container/30">
+<span class="text-primary font-status-badge text-status-badge uppercase tracking-wider">New SiteOps V2.4</span>
+</div>
+<h2 class="font-h1 text-h1 md:text-[56px] leading-tight mb-md text-on-background">
+                    Build Smarter, <br/><span class="text-primary">Together.</span>
+</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl mb-xl">
+                    The precision of modern architecture meets industrial-grade performance. Streamline your job site, finance, and safety protocols with the world's most intuitive construction manifest.
+                </p>
+<div class="flex flex-col sm:flex-row gap-md">
+<button class="px-xl py-4 bg-primary text-on-primary rounded-xl font-bold text-lg shadow-lg hover:shadow-xl hover:bg-primary-container transition-all active:scale-95 flex items-center justify-center gap-2">
+                        Start Your Project <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="px-xl py-4 border-2 border-outline text-on-surface-variant bg-white/50 backdrop-blur-sm rounded-xl font-bold text-lg hover:bg-white transition-all active:scale-95">
+                        Watch Demo
+                    </button>
+</div>
+</div>
+</section>
+<!-- Bento Grid Features -->
+<section class="py-xl bg-surface">
+<div class="container mx-auto px-container-margin">
+<div class="flex flex-col md:flex-row justify-between items-end mb-xl gap-md">
+<div>
+<h3 class="font-h2 text-h2 text-on-background mb-2">Integrated Solutions</h3>
+<p class="text-on-surface-variant font-body-sm">Everything you need to manage a high-density job site.</p>
+</div>
+<a class="text-primary font-bold flex items-center gap-1 hover:underline" href="#">Explore all features <span class="material-symbols-outlined">chevron_right</span></a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg">
+<!-- SiteOps -->
+<div class="md:col-span-8 bg-white border border-outline-variant rounded-xl p-xl shadow-sm hover:shadow-md transition-shadow group">
+<div class="flex justify-between items-start mb-lg">
+<div class="p-3 bg-secondary-container rounded-lg">
+<span class="material-symbols-outlined text-on-secondary-container text-3xl">engineering</span>
+</div>
+<span class="text-status-badge font-status-badge bg-green-100 text-green-800 px-2 py-1 rounded">Active Tracking</span>
+</div>
+<h4 class="font-h3 text-h3 mb-md">SiteOps Management</h4>
+<p class="text-on-surface-variant font-body-sm mb-lg">Real-time labor tracking and equipment logistics. Monitor site progress with millimeter precision using integrated CAD overlays.</p>
+<img class="w-full h-64 object-cover rounded-xl" data-alt="A high-density data visualization interface displayed on a tablet, showing architectural wireframes and real-time site logistics. The tablet is held by a construction manager on a brightly lit, modern construction site. The image has a clean, professional aesthetic with high contrast and a focus on technological efficiency in an industrial setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtKOkPkOhhDE2XvlyMLdxRuSGKnX0NljSPUr9kWLk28FP_dS99tabSRZcrTcQpzqYOd7BIXNFrcd3hGLPThTXV6KK1PDJHevYD0_ddnBF-SLcNkLVIB9dae7zRwQ07H7Mp-leE4eFU6GnBAC5lQLfk86YYzKMDA4Sedjf-cTvAAd6NyuKi0cmaG_R4I7iG-1VRuam3KC1jAzEC2ur10JAs8RjVfugdjPI__X2cj6tQR_YvsBFgn9wduafHbwOjqa5aiU9HoHn4_Yv7"/>
+</div>
+<!-- Finance -->
+<div class="md:col-span-4 bg-inverse-surface text-inverse-on-surface rounded-xl p-xl shadow-sm flex flex-col justify-between">
+<div>
+<div class="p-3 bg-primary-container/20 rounded-lg w-fit mb-lg">
+<span class="material-symbols-outlined text-primary-fixed-dim text-3xl">payments</span>
+</div>
+<h4 class="font-h3 text-h3 mb-md text-white">Finance &amp; Billing</h4>
+<p class="text-surface-variant font-body-sm">Automated procurement, vendor payments, and budget forecasting built for industrial-scale projects.</p>
+</div>
+<div class="mt-lg border-t border-outline-variant pt-lg">
+<div class="flex items-center justify-between mb-sm">
+<span class="font-label-caps">Monthly Budget</span>
+<span class="text-primary-fixed-dim font-bold">$1.2M</span>
+</div>
+<div class="w-full bg-surface-variant/20 h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full w-[65%]"></div>
+</div>
+</div>
+</div>
+<!-- Safety -->
+<div class="md:col-span-4 bg-white border border-outline-variant rounded-xl p-xl shadow-sm">
+<div class="p-3 bg-error-container/30 rounded-lg w-fit mb-lg">
+<span class="material-symbols-outlined text-error text-3xl">health_and_safety</span>
+</div>
+<h4 class="font-h3 text-h3 mb-md">Safety Protocols</h4>
+<p class="text-on-surface-variant font-body-sm">Incident reporting and compliance tracking. Keep your team safe with automated OSHA-ready reporting tools.</p>
+</div>
+<!-- Resource Management -->
+<div class="md:col-span-8 bg-white border border-outline-variant rounded-xl p-xl shadow-sm flex flex-col md:flex-row gap-lg items-center">
+<div class="flex-1">
+<div class="p-3 bg-tertiary-container/20 rounded-lg w-fit mb-lg">
+<span class="material-symbols-outlined text-tertiary text-3xl">inventory_2</span>
+</div>
+<h4 class="font-h3 text-h3 mb-md">Resource Logistics</h4>
+<p class="text-on-surface-variant font-body-sm">Smart inventory management that anticipates shortages before they happen. Track every bolt and beam across multiple job sites.</p>
+</div>
+<div class="flex-1 w-full bg-surface-container rounded-lg p-md">
+<ul class="space-y-sm">
+<li class="flex items-center gap-2 p-2 bg-white rounded border border-outline-variant">
+<span class="material-symbols-outlined text-primary-container">square</span>
+<span class="text-body-sm font-bold">Reinforced Steel</span>
+<span class="ml-auto text-status-badge text-green-600">In Stock</span>
+</li>
+<li class="flex items-center gap-2 p-2 bg-white rounded border border-outline-variant">
+<span class="material-symbols-outlined text-primary-container">square</span>
+<span class="text-body-sm font-bold">Lumber Grade A</span>
+<span class="ml-auto text-status-badge text-primary">Low Stock</span>
+</li>
+<li class="flex items-center gap-2 p-2 bg-white rounded border border-outline-variant">
+<span class="material-symbols-outlined text-primary-container">square</span>
+<span class="text-body-sm font-bold">Concrete Mix</span>
+<span class="ml-auto text-status-badge text-green-600">Arriving Today</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonials -->
+<section class="py-xl bg-surface-container-low">
+<div class="container mx-auto px-container-margin">
+<div class="max-w-3xl mx-auto text-center mb-xl">
+<h3 class="font-h2 text-h2 mb-md">Trusted by the Builders of the Modern World</h3>
+<div class="flex justify-center gap-sm mb-lg">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Testimonial 1 -->
+<div class="bg-white p-lg rounded-xl shadow-sm border border-outline-variant relative">
+<span class="material-symbols-outlined absolute top-4 right-4 text-surface-container-highest text-4xl">format_quote</span>
+<p class="font-body-sm text-on-surface-variant italic mb-xl">"BuildSmart transformed our project margins. We reduced material waste by 18% in the first quarter of adoption."</p>
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-primary-fixed overflow-hidden">
+<img data-alt="A professional portrait of a senior project manager with a graying beard, wearing a high-quality navy suit. The lighting is soft and studio-quality against a neutral corporate background. The overall mood is confident and authoritative, reflecting the premium industrial nature of the BuildSmart brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_caqxEhAk4gIGb4nW8UkfAH9luE5UcjaOcAMDhu4jUlQZQxOVsNjH4t-mrsgTh268b2btz1tyrj128Sqq0v8s_1zKqygUNQQuPS7qtbH-Iwl2IezRy0NGJlTSvLMoKqoTu06ALWepVMaS-n7jcfx-mOV6d9xLPsETL0RlzLqJPZAr7HIZUgpwBj5MwnqqxFjx4YikkVkLiHl451Oaj8R0Qoz70611t0I8dh6tuIk03lS9ilZt2FBS13oOAJU0un8vLlyypyXN3tFN"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">David Chen</p>
+<p class="text-xs text-on-surface-variant uppercase tracking-widest font-label-caps">Director, Skyline Dev</p>
+</div>
+</div>
+</div>
+<!-- Testimonial 2 -->
+<div class="bg-white p-lg rounded-xl shadow-sm border border-outline-variant relative">
+<span class="material-symbols-outlined absolute top-4 right-4 text-surface-container-highest text-4xl">format_quote</span>
+<p class="font-body-sm text-on-surface-variant italic mb-xl">"The safety module alone is worth the investment. Compliance reporting that used to take days now takes minutes."</p>
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed overflow-hidden">
+<img data-alt="A professional headshot of a female construction executive in a modern office environment. She is smiling confidently and wearing a smart professional blazer. The lighting is bright and natural, coming from a window. The style is clean, modern, and perfectly aligned with a professional corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVgCR-HJzJ0WFYzGM7qWEJ82HEPbKVSGTIrytiSrnJZOgpBxdzn6lCZAfQoAKquKLtyTIAtdiKW-I4CwUVlO2WS8lhvpRS0RDhD4Dj_aT_d745oJlIBSHuqQHGQo1f03FOPWH0MatIlCp6IOWtrpEhl2Sy9CWNArbamkvBIKAkAKYUPJP4UhAETLMbwVke7ZFomuYSdyBjzlfCrkKIbaC9CLrFTXCAyRfq5NXiqMYL7X8q3oF99H6Frpw7K47o_oHVW3lxZdhqosil"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">Sarah Mitchell</p>
+<p class="text-xs text-on-surface-variant uppercase tracking-widest font-label-caps">COO, Ironwood Const.</p>
+</div>
+</div>
+</div>
+<!-- Testimonial 3 -->
+<div class="bg-white p-lg rounded-xl shadow-sm border border-outline-variant relative">
+<span class="material-symbols-outlined absolute top-4 right-4 text-surface-container-highest text-4xl">format_quote</span>
+<p class="font-body-sm text-on-surface-variant italic mb-xl">"Finally, a digital toolbelt that feels as rugged as the equipment we use on site. Intuitive, fast, and reliable."</p>
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-tertiary-fixed overflow-hidden">
+<img data-alt="A portrait of a male lead engineer with a thoughtful expression, wearing a high-vis vest over a professional shirt. The background is a blurred-out active construction project with structural elements visible. The lighting is crisp and detailed, capturing a rugged but highly professional industrial persona." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCe3t3DoItAPvDHWYdsg9gRmfTW9bJSEHXxv9KZQi46fcA6UAcsdnjoknXFtPaNi-dJy0zOrCeLQe43FUvHtb0_3Rp31TKgnZLZ7gILoKW43kckjcYXFmLSbGS6Ajz7CaQQ3tJTW46S5bkfdQWKZPVgcS8ACLJ-riRl6jG3KupJv1MnHHrSh7rs2gEyG-UUcAlFD4QpT0hlP3Sloz7esr_kSfZShJX0J10XSzYghbHAS92DjqPkMYLCnz4kjA1ZI-yC9MF9zumy-iLZ"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">Marcus Thorne</p>
+<p class="text-xs text-on-surface-variant uppercase tracking-widest font-label-caps">Lead Engineer, TerraCorp</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-[120px] bg-primary relative overflow-hidden">
+<div class="absolute inset-0 opacity-10">
+<svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="40" id="grid" patternunits="userSpaceOnUse" width="40">
+<path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"></path>
+</pattern>
+</defs>
+<rect fill="url(#grid)" height="100%" width="100%"></rect>
+</svg>
+</div>
+<div class="container mx-auto px-container-margin text-center relative z-10">
+<h2 class="font-h1 text-[40px] md:text-[56px] text-on-primary mb-lg">Ready to build smarter?</h2>
+<p class="text-primary-fixed max-w-2xl mx-auto mb-xl font-body-lg">Join over 5,000 developers and contractors who are revolutionizing the construction industry with BuildSmart.</p>
+<div class="flex flex-col sm:flex-row justify-center gap-md">
+<button class="px-xl py-4 bg-white text-primary rounded-xl font-bold text-lg hover:bg-surface-container transition-all active:scale-95 shadow-xl">
+                        Schedule a Consultation
+                    </button>
+<button class="px-xl py-4 border-2 border-primary-fixed text-on-primary rounded-xl font-bold text-lg hover:bg-white/10 transition-all active:scale-95">
+                        View Pricing Plans
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-inverse-surface text-surface-variant py-xl">
+<div class="container mx-auto px-container-margin">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-xl mb-xl">
+<div class="col-span-1 md:col-span-1">
+<div class="flex items-center gap-base mb-lg">
+<span class="material-symbols-outlined text-primary-fixed-dim text-3xl">architecture</span>
+<h1 class="font-h3 text-h3 font-bold text-white">BuildSmart</h1>
+</div>
+<p class="text-sm">Building the foundations of the future with rugged, reliable, and refined digital tools.</p>
+</div>
+<div>
+<h5 class="text-white font-bold mb-lg uppercase tracking-widest text-xs">Platform</h5>
+<ul class="space-y-sm text-sm">
+<li><a class="hover:text-primary-fixed-dim transition-colors" href="#">SiteOps</a></li>
+<li><a class="hover:text-primary-fixed-dim transition-colors" href="#">Finance Management</a></li>
+<li><a class="hover:text-primary-fixed-dim transition-colors" href="#">Safety &amp; Compliance</a></li>
+<li><a class="hover:text-primary-fixed-dim transition-colors" href="#">Resource Tracking</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-white font-bold mb-lg uppercase tracking-widest text-xs">Company</h5>
+<ul class="space-y-sm text-sm">
+<li><a class="hover:text-primary-fixed-dim transition-colors" href="#">About Us</a></li>
+<li><a class="hover:text-primary-fixed-dim transition-colors" href="#">Careers</a></li>
+<li><a class="hover:text-primary-fixed-dim transition-colors" href="#">Case Studies</a></li>
+<li><a class="hover:text-primary-fixed-dim transition-colors" href="#">Contact</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-white font-bold mb-lg uppercase tracking-widest text-xs">Legal</h5>
+<ul class="space-y-sm text-sm">
+<li><a class="hover:text-primary-fixed-dim transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-primary-fixed-dim transition-colors" href="#">Terms of Service</a></li>
+<li><a class="hover:text-primary-fixed-dim transition-colors" href="#">Cookie Policy</a></li>
+</ul>
+</div>
+</div>
+<div class="pt-xl border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-md">
+<p class="text-xs">© 2024 BuildSmart Technologies Inc. All rights reserved.</p>
+<div class="flex gap-lg">
+<span class="material-symbols-outlined cursor-pointer hover:text-white">public</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-white">share</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-white">mail</span>
+</div>
+</div>
+</div>
+</footer>
+</body></html>
