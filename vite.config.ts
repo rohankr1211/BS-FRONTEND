@@ -10,6 +10,7 @@ export default defineConfig({
       '/users': { target: 'http://localhost:8081', changeOrigin: true },
       '/admin': { target: 'http://localhost:8081', changeOrigin: true },
       '/internal': { target: 'http://localhost:8081', changeOrigin: true },
+      '/notifications': { target: 'http://localhost:8081', changeOrigin: true },
     },
   },
 })

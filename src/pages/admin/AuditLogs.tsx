@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Row, Col, Card, Form, InputGroup, Button, Table, Badge, Spinner, Alert } from 'react-bootstrap';
-import { 
-  FaFileDownload, FaSyncAlt, FaCalendarAlt, FaUser, FaFilter, 
-  FaSearch, FaShieldAlt, FaUserCog, FaExclamationTriangle, 
-  FaCloudUploadAlt, FaCogs 
+import {
+  FaFileDownload, FaSyncAlt, FaCalendarAlt, FaUser, FaFilter,
+  FaSearch, FaShieldAlt, FaUserCog,
+  FaCloudUploadAlt, FaCogs
 } from 'react-icons/fa';
 import { auditService } from '../../services/auditService';
 import type { AuditLog } from '../../services/auditService';
@@ -230,49 +230,6 @@ export const AuditLogs: React.FC = () => {
           </div>
         </Card.Footer>
       </Card>
-      
-      {/* Footer Summary Stats */}
-      <Row className="g-4">
-        <Col md={4}>
-          <Card className="border-0 shadow-sm rounded-4 h-100">
-            <Card.Body className="d-flex align-items-center justify-content-between p-4">
-              <div>
-                <p className="text-muted small fw-bold text-uppercase mb-1">Critical Alerts (24h)</p>
-                <h3 className="fw-bold text-danger mb-0">0</h3>
-              </div>
-              <div className="bg-danger bg-opacity-10 text-danger p-3 rounded-circle">
-                <FaExclamationTriangle size={24} />
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={4}>
-          <Card className="border-0 shadow-sm rounded-4 h-100">
-            <Card.Body className="d-flex align-items-center justify-content-between p-4">
-              <div>
-                <p className="text-muted small fw-bold text-uppercase mb-1">Admin Sessions</p>
-                <h3 className="fw-bold text-primary mb-0">Active</h3>
-              </div>
-              <div className="bg-primary bg-opacity-10 text-primary p-3 rounded-circle">
-                <FaUserCog size={24} />
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={4}>
-          <Card className="border-0 shadow-sm rounded-4 h-100">
-            <Card.Body className="d-flex align-items-center justify-content-between p-4">
-              <div>
-                <p className="text-muted small fw-bold text-uppercase mb-1">Log Retention</p>
-                <h3 className="fw-bold text-dark mb-0">90 Days</h3>
-              </div>
-              <div className="bg-light text-secondary p-3 rounded-circle">
-                <FaSyncAlt size={24} />
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
     </div>
   );
 };

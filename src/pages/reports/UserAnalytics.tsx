@@ -7,8 +7,10 @@ import type {
   UserAnalyticsRecord, UserMockRecord 
 } from '../../services/analyticsService';
 import { ChartCard } from '../../components/common/ChartCard';
+import { useAuth } from '../../hooks/useAuth';
 
 export const UserAnalytics: React.FC = () => {
+  const { user } = useAuth();
   const [summary, setSummary] = useState<UserAnalyticsRecord | null>(null);
   const [users, setUsers] = useState<UserMockRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -17,14 +19,34 @@ export const UserAnalytics: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [sumRes, usersRes] = await Promise.all([
-          mockService.getUserAnalyticsSummary(),
-          mockService.getAllUsersList()
-        ]);
-        setSummary(sumRes);
+        const usersRes = await mockService.getAllUsersList(user?.role) || [];
+        
+        // Derive real stats from the users list
+        const realStats: UserAnalyticsRecord = {
+          totalUsers: usersRes.length,
+          activeUsers: usersRes.filter(u => u && u.status === 'ACTIVE').length,
+          inactiveUsers: usersRes.filter(u => u && u.status === 'INACTIVE').length,
+          suspendedUsers: usersRes.filter(u => u && u.status === 'SUSPENDED').length,
+          usersByRole: usersRes.reduce((acc, u) => {
+            if (u && u.role) {
+              acc[u.role] = (acc[u.role] || 0) + 1;
+            }
+            return acc;
+          }, {} as Record<string, number>)
+        };
+        
+        setSummary(realStats);
         setUsers(usersRes);
       } catch (e) {
-        console.error(e);
+        console.error("UserAnalytics Fetch Error:", e);
+        setSummary({
+          totalUsers: 0,
+          activeUsers: 0,
+          inactiveUsers: 0,
+          suspendedUsers: 0,
+          usersByRole: {}
+        });
+        setUsers([]);
       } finally {
         setLoading(false);
       }
@@ -173,24 +195,33 @@ export const UserAnalytics: React.FC = () => {
                   {loading ? (
                     <tr><td colSpan={4} className="text-center py-4 text-muted">Loading users...</td></tr>
                   ) : filteredUsers.length === 0 ? (
-                    <tr><td colSpan={4} className="text-center py-4 text-muted">No users found matching "{search}".</td></tr>
+                    <tr>
+                      <td colSpan={4} className="text-center py-4 text-muted">
+                        {users.length === 0 ? (
+                          <div className="text-danger">
+                            <p className="mb-0 fw-bold">Failed to load user data.</p>
+                            <small>The backend might be unavailable or returned an error.</small>
+                          </div>
+                        ) : `No users found matching "${search}".`}
+                      </td>
+                    </tr>
                   ) : (
                     filteredUsers.map((user) => (
-                      <tr key={user.id}>
+                      <tr key={user.id || user.userId}>
                         <td className="py-3 px-4">
-                          <div className="fw-bold text-dark">{user.name}</div>
-                          <div className="small text-muted">{user.email}</div>
+                          <div className="fw-bold text-dark">{user.name || 'Unknown User'}</div>
+                          <div className="small text-muted">{user.email || 'No email'}</div>
                         </td>
                         <td className="py-3 px-4">
-                          <Badge bg="light" text="dark" className="border">
-                            {user.role.replace('_', ' ')}
+                          <Badge bg="light" text="dark" className="border text-uppercase">
+                            {user.role ? user.role.replace('_', ' ') : 'USER'}
                           </Badge>
                         </td>
                         <td className="py-3 px-4">
-                          {getStatusBadge(user.status)}
+                          {getStatusBadge(user.status || 'ACTIVE')}
                         </td>
                         <td className="py-3 px-4 text-muted small">
-                          {new Date(user.lastLogin).toLocaleString()}
+                          {user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : 'Never'}
                         </td>
                       </tr>
                     ))

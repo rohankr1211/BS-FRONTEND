@@ -8,9 +8,10 @@ interface AuthContextType extends AuthState {
   updateProfile: (user: Partial<User>) => void;
 }
 
+const savedUser = localStorage.getItem('user');
 const initialState: AuthState = {
   token: localStorage.getItem('token'),
-  user: null, // Will be fetched/populated if token exists
+  user: savedUser ? JSON.parse(savedUser) : null,
   isAuthenticated: !!localStorage.getItem('token'),
   isLoading: true, // Start true while we check if token is valid
 };
@@ -73,11 +74,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const login = (token: string, user: User) => {
     localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
     dispatch({ type: 'LOGIN_SUCCESS', payload: { token, user } });
   };
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     dispatch({ type: 'LOGOUT' });
   };
 

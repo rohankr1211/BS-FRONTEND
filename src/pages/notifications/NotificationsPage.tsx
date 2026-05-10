@@ -11,11 +11,12 @@ const PRIORITY_CONFIG: Record<string, { bg: string; label: string }> = {
   CRITICAL: { bg: 'danger', label: 'Critical' },
 };
 
-const getEventIcon = (type: string) => {
-  if (type.startsWith('TASK')) return <FaTasks className="text-primary" />;
-  if (type.startsWith('APPROVAL')) return <FaCheckCircle className="text-success" />;
-  if (type.startsWith('INVOICE')) return <FaFileInvoice className="text-info" />;
-  if (type.startsWith('SAFETY')) return <FaShieldAlt className="text-danger" />;
+const getEventIcon = (type?: string) => {
+  const safeType = type || '';
+  if (safeType.startsWith('TASK')) return <FaTasks className="text-primary" />;
+  if (safeType.startsWith('APPROVAL')) return <FaCheckCircle className="text-success" />;
+  if (safeType.startsWith('INVOICE')) return <FaFileInvoice className="text-info" />;
+  if (safeType.startsWith('SAFETY')) return <FaShieldAlt className="text-danger" />;
   return <FaBell className="text-muted" />;
 };
 
@@ -88,7 +89,7 @@ export const NotificationsPage: React.FC = () => {
                   <p className="text-muted mb-0">No notifications found.</p>
                 </Card>
               ) : filtered.map(n => {
-                const pri = PRIORITY_CONFIG[n.priority];
+                const pri = PRIORITY_CONFIG[n.priority] || PRIORITY_CONFIG.MEDIUM;
                 return (
                   <Card key={n.id} className={`border-0 shadow-sm rounded-4 overflow-hidden ${!n.read ? 'border-start border-4 border-primary' : ''}`}>
                     <Card.Body className="p-4">
@@ -101,9 +102,9 @@ export const NotificationsPage: React.FC = () => {
                             <div>
                               <Badge bg={pri.bg} className="mb-2">{pri.label} Priority</Badge>
                               <h6 className={`mb-1 ${!n.read ? 'fw-bold' : 'text-dark'}`}>{n.message}</h6>
-                              <div className="small text-muted">
-                                {n.fromRole.replace('_', ' ')} · {new Date(n.createdAt).toLocaleString()}
-                              </div>
+                                <div className="small text-muted">
+                                  {(n.fromRole || 'SYSTEM').replace('_', ' ')} · {new Date(n.createdAt).toLocaleString()}
+                                </div>
                             </div>
                             <div className="d-flex gap-2">
                               {!n.read && (

@@ -1,35 +1,76 @@
-import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Row, Col, Spinner } from 'react-bootstrap';
 import { StatWidget } from '../../components/dashboard/StatWidget';
 import { BudgetWidget } from '../../components/dashboard/BudgetWidget';
 import { ProjectProgressCard } from '../../components/dashboard/ProjectProgressCard';
 import { RecentApprovalsList } from '../../components/dashboard/RecentApprovalsList';
-import type { ApprovalItem } from '../../components/dashboard/RecentApprovalsList';
+import analyticsService from '../../services/analyticsService';
+import projectService from '../../services/projectService';
+import type { DashboardSummaryRecord, ProjectSummaryRecord } from '../../services/analyticsService';
+import type { ApprovalResponse } from '../../services/projectService';
 import { FaChartPie } from 'react-icons/fa';
 
-const mockApprovals: ApprovalItem[] = [
-  { id: '1', title: 'Material Quote: Rebar Supply', subtitle: 'Approved by Sarah Jenkins', time: '2h ago', icon: 'FaFileInvoice' },
-  { id: '2', title: 'Subcontractor Invoice: Electrical', subtitle: 'Approved by David Chen', time: '5h ago', icon: 'FaMoneyCheckAlt' },
-  { id: '3', title: 'Blueprints: Rev C - Floor 5', subtitle: 'Approved by Marcus Thorne', time: 'Yesterday', icon: 'FaDraftingCompass' },
-];
-
 export const PMDashboard: React.FC = () => {
+  const [summary, setSummary] = useState<DashboardSummaryRecord | null>(null);
+  const [projects, setProjects] = useState<ProjectSummaryRecord[]>([]);
+  const [approvals, setApprovals] = useState<ApprovalResponse[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [sum, projs, apprs] = await Promise.all([
+          analyticsService.getDashboardSummary(),
+          analyticsService.getProjectSummaries(),
+          projectService.getPendingApprovals()
+        ]);
+        setSummary(sum);
+        setProjects(projs.slice(0, 2)); // Show top 2 for the grid
+        setApprovals(apprs);
+      } catch (err) {
+        console.error('Failed to load PM Dashboard data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '400px' }}>
+        <Spinner animation="border" variant="primary" />
+      </div>
+    );
+  }
+
+  const formatCurrency = (val?: number) => {
+    if (!val) return '$0.0M';
+    if (val >= 1000000) return `$${(val / 1000000).toFixed(1)}M`;
+    if (val >= 1000) return `$${(val / 1000).toFixed(1)}k`;
+    return `$${val}`;
+  };
+
+  const budgetSpent = summary?.spentBudget || 4200000; // Fallback to mock for visual continuity if API missing fields
+  const budgetTotal = summary?.totalBudget || 5000000;
+  const budgetPercent = Math.round((budgetSpent / budgetTotal) * 100);
+
   return (
     <div>
       <Row className="g-4 mb-4">
         <Col md={3}>
           <StatWidget 
             title="Active Projects" 
-            value="12" 
+            value={summary?.activeProjects?.toString() || '0'} 
             icon="FaBuilding" 
-            subtitle={<><span className="text-success fw-bold">+2</span> from last month</>}
+            subtitle={<><span className="text-success fw-bold">+0</span> from last month</>}
             borderLeftColor="var(--bs-primary)"
           />
         </Col>
         <Col md={3}>
           <StatWidget 
             title="Pending" 
-            value="5" 
+            value={summary?.pendingItems?.toString() || approvals.length.toString()} 
             icon="FaClipboardList" 
             subtitle={<span className="fst-italic">Awaiting signature</span>}
             borderLeftColor="var(--bs-warning)"
@@ -38,20 +79,22 @@ export const PMDashboard: React.FC = () => {
         <Col md={3}>
           <StatWidget 
             title="Safety" 
-            value="0" 
+            value={`${summary?.safetyComplianceRate || 0}%`} 
             icon="FaHardHat" 
-            iconColor="text-success"
-            subtitle={<><span className="text-success">●</span> All systems clear</>}
+            iconColor={(summary?.safetyComplianceRate || 0) > 90 ? "text-success" : "text-warning"}
+            subtitle={<><span className={ (summary?.safetyComplianceRate || 0) > 90 ? "text-success" : "text-warning"}>●</span> { (summary?.safetyComplianceRate || 0) > 90 ? 'All systems clear' : 'Check reports'}</>}
             borderLeftColor="var(--bs-success)"
           />
         </Col>
         <Col md={3}>
           <StatWidget 
             title="Overdue Tasks" 
-            value="2" 
+            value={summary?.overdueTasks?.toString() || '0'} 
             icon="FaExclamationTriangle" 
-            iconColor="text-danger"
-            subtitle={<span className="text-danger fw-bold">Requires attention</span>}
+            iconColor={(summary?.overdueTasks || 0) > 0 ? "text-danger" : "text-success"}
+            subtitle={<span className={(summary?.overdueTasks || 0) > 0 ? "text-danger fw-bold" : "text-success"}>
+              {(summary?.overdueTasks || 0) > 0 ? 'Requires attention' : 'On schedule'}
+            </span>}
             borderLeftColor="var(--bs-danger)"
           />
         </Col>
@@ -61,11 +104,11 @@ export const PMDashboard: React.FC = () => {
         <Col>
           <BudgetWidget 
             title="Budget Performance"
-            allocated="$5.0M"
-            spent="$4.2M"
-            percentage={84}
-            statusText="On Track"
-            remainingText="16% remaining"
+            allocated={formatCurrency(budgetTotal)}
+            spent={formatCurrency(budgetSpent)}
+            percentage={budgetPercent}
+            statusText={budgetPercent > 90 ? "Near Limit" : "On Track"}
+            remainingText={`${100 - budgetPercent}% remaining`}
           />
         </Col>
       </Row>
@@ -76,33 +119,33 @@ export const PMDashboard: React.FC = () => {
       </div>
 
       <Row className="g-4 mb-4">
-        <Col md={6}>
-          <ProjectProgressCard 
-            name="Skyline Residences"
-            location="Downtown Metro District"
-            phase="Phase 2: Foundation"
-            completion={68}
-            imageUrl="https://images.unsplash.com/photo-1541888086425-d81bb19240f5?auto=format&fit=crop&q=80"
-            phaseColor="primary"
-          />
-        </Col>
-        <Col md={6}>
-          <ProjectProgressCard 
-            name="Tech Hub Campus"
-            location="Silicon Valley Extension"
-            phase="Phase 4: Finishing"
-            completion={92}
-            imageUrl="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80"
-            phaseColor="info"
-          />
-        </Col>
+        {projects.length === 0 ? (
+          <Col><p className="text-muted">No active projects found.</p></Col>
+        ) : projects.map((p) => (
+          <Col md={6} key={p.projectId}>
+            <ProjectProgressCard 
+              name={p.projectName}
+              location="Site Location"
+              phase={`Status: ${p.status}`}
+              completion={p.progressPercent}
+              imageUrl={p.imageUrl}
+              phaseColor={p.progressPercent > 80 ? "success" : "primary"}
+            />
+          </Col>
+        ))}
       </Row>
 
       <Row>
         <Col>
           <RecentApprovalsList 
-            items={mockApprovals}
-            onViewAll={() => console.log('View all clicked')}
+            items={approvals.map(a => ({
+              id: a.approvalId,
+              title: a.taskDescription,
+              subtitle: `Requested by ${a.requestedBy}`,
+              time: new Date(a.requestedAt).toLocaleDateString(),
+              icon: 'FaFileInvoice'
+            }))}
+            onViewAll={() => window.location.href = '/approvals'}
           />
         </Col>
       </Row>

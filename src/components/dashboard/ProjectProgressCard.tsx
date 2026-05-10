@@ -1,12 +1,13 @@
 import React from 'react';
 import { Card, ProgressBar } from 'react-bootstrap';
+import { getRandomProjectImage } from '../../utils/projectImages';
 
 interface ProjectProgressCardProps {
   name: string;
   location: string;
   phase: string;
   completion: number;
-  imageUrl: string;
+  imageUrl?: string;
   phaseColor?: string;
 }
 
@@ -18,10 +19,12 @@ export const ProjectProgressCard: React.FC<ProjectProgressCardProps> = ({
   imageUrl,
   phaseColor = 'primary'
 }) => {
+  const displayImageUrl = imageUrl || getRandomProjectImage();
+
   return (
     <Card className="h-100 border-0 shadow-sm rounded-4 overflow-hidden group-hover">
       <div className="position-relative" style={{ height: '160px' }}>
-        <Card.Img variant="top" src={imageUrl} className="h-100 object-fit-cover opacity-75" />
+        <Card.Img variant="top" src={displayImageUrl} className="h-100 object-fit-cover opacity-75" />
         <div className="position-absolute bottom-0 start-0 p-2">
           <span className={`badge bg-white text-${phaseColor} shadow-sm px-2 py-1`}>
             {phase}

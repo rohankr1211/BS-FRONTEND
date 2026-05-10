@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Badge, Button, Modal, Form } from 'react-bootstrap';
-import { FaSyncAlt, FaCheckCircle, FaClipboardList } from 'react-icons/fa';
+import { Card, Badge, Button, Modal, Form, Collapse } from 'react-bootstrap';
+import { FaSyncAlt, FaCheckCircle, FaClipboardList, FaChevronDown, FaChevronUp, FaUser, FaCalendarAlt, FaProjectDiagram } from 'react-icons/fa';
 import safetyService from '../../services/safetyService';
 import type { SafetyTaskResponse } from '../../services/safetyService';
 
@@ -21,7 +21,12 @@ const SubmitModal: React.FC<{ task: SafetyTaskResponse | null; onHide: () => voi
     e.preventDefault();
     if (!task || !description.trim()) return;
     setSubmitting(true);
-    await safetyService.submitTask(task.assignedTaskId, description);
+    const taskId = task.assignedTaskId || (task as any).id || (task as any).taskId;
+    if (!taskId) {
+      console.error('❌ Could not find a valid ID for task:', task);
+      return;
+    }
+    await safetyService.submitTask(taskId, { description: description });
     setDescription('');
     onSubmitted();
     onHide();
@@ -62,12 +67,35 @@ export const SafetyTasksPage: React.FC = () => {
   const [submitTask, setSubmitTask] = useState<SafetyTaskResponse | null>(null);
   const [syncing, setSyncing] = useState(false);
   const [syncMsg, setSyncMsg] = useState('');
+  const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
+
+  const toggleExpand = (taskId: string) => {
+    setExpandedTaskId(expandedTaskId === taskId ? null : taskId);
+  };
+
+  const formatDate = (dateStr: string | null) => {
+    if (!dateStr) return 'N/A';
+    try {
+      const date = new Date(dateStr);
+      if (isNaN(date.getTime())) return 'N/A';
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    } catch {
+      return 'N/A';
+    }
+  };
 
   const load = async () => {
     setLoading(true);
-    const data = await safetyService.getTasks();
-    setTasks(data);
-    setLoading(false);
+    try {
+      const data = await safetyService.getTasks();
+      console.log('📋 Safety Tasks Data:', data);
+      setTasks(Array.isArray(data) ? data : (data?.content || []));
+    } catch (err) {
+      console.error('Failed to load safety tasks:', err);
+      setTasks([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { load(); }, []);
@@ -126,8 +154,12 @@ export const SafetyTasksPage: React.FC = () => {
         <div className="d-flex flex-column gap-3">
           {filtered.map(task => {
             const sta = STATUS_CONFIG[task.status];
+            const isExpanded = expandedTaskId === task.assignedTaskId;
             return (
-              <Card key={task.assignedTaskId} className={`border-0 shadow-sm rounded-4 border-start border-4 border-${sta.bg}`}>
+              <Card key={task.assignedTaskId} 
+                className={`border-0 shadow-sm rounded-4 border-start border-4 border-${sta.bg} task-card-hover`}
+                style={{ transition: 'all 0.2s ease', cursor: 'pointer' }}
+                onClick={() => toggleExpand(task.assignedTaskId)}>
                 <Card.Body className="p-4">
                   <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3">
                     <div className="flex-grow-1">
@@ -135,30 +167,83 @@ export const SafetyTasksPage: React.FC = () => {
                         <h6 className="fw-bold mb-0">{task.taskDescription}</h6>
                         <Badge bg={sta.bg} className={task.status === 'PENDING' ? 'text-dark' : ''}>{sta.label}</Badge>
                       </div>
-                      <div className="small text-muted mb-1">
-                        <span className="fw-semibold text-dark">{task.projectName}</span>
-                        &nbsp;·&nbsp; Assigned by {task.assignedByName}
-                        &nbsp;·&nbsp; {new Date(task.assignedAt).toLocaleDateString()}
+                      <div className="d-flex flex-wrap gap-3 small text-muted mb-2">
+                        <span className="d-flex align-items-center gap-1">
+                          <FaProjectDiagram className="text-primary" /> {task.projectName}
+                        </span>
+                        <span className="d-flex align-items-center gap-1">
+                          <FaUser className="text-secondary" /> {task.assignedByName}
+                        </span>
+                        <span className="d-flex align-items-center gap-1">
+                          <FaCalendarAlt className="text-info" /> {formatDate(task.assignedAt)}
+                        </span>
+                        {task.submittedAt && (
+                          <span className="d-flex align-items-center gap-1">
+                            <FaCheckCircle className="text-success" /> Submitted: {formatDate(task.submittedAt)}
+                          </span>
+                        )}
                       </div>
-                      {task.submissionDescription && (
-                        <div className="mt-2 p-2 bg-light rounded-3 small">
-                          <span className="text-muted fw-bold">Submission: </span>
-                          {task.submissionDescription}
-                        </div>
+                    </div>
+                    <div className="d-flex align-items-center gap-2 flex-shrink-0">
+                      {task.status === 'PENDING' && (
+                        <Button variant="success" size="sm" className="rounded-3 d-flex align-items-center gap-2 px-3"
+                          onClick={(e) => { e.stopPropagation(); setSubmitTask(task); }}>
+                          <FaCheckCircle /> Submit
+                        </Button>
                       )}
                       {task.status === 'REJECTED' && (
-                        <div className="mt-2 p-2 bg-danger bg-opacity-10 rounded-3 small text-danger">
-                          Task was rejected by the Project Manager. Please review and resubmit.
-                        </div>
+                        <Button variant="warning" size="sm" className="rounded-3 d-flex align-items-center gap-2 px-3"
+                          onClick={(e) => { e.stopPropagation(); setSubmitTask(task); }}>
+                          <FaCheckCircle /> Resubmit
+                        </Button>
                       )}
-                    </div>
-                    {task.status === 'PENDING' && (
-                      <Button variant="success" size="sm" className="rounded-3 d-flex align-items-center gap-2 flex-shrink-0 px-3"
-                        onClick={() => setSubmitTask(task)}>
-                        <FaCheckCircle /> Submit
+                      <Button variant="light" size="sm" className="rounded-circle p-2"
+                        onClick={(e) => { e.stopPropagation(); toggleExpand(task.assignedTaskId); }}>
+                        {isExpanded ? <FaChevronUp /> : <FaChevronDown />}
                       </Button>
-                    )}
+                    </div>
                   </div>
+
+                  <Collapse in={isExpanded}>
+                    <div>
+                      <div className="mt-3 pt-3 border-top">
+                        <div className="row g-3">
+                          <div className="col-md-6">
+                            <div className="small text-muted mb-1">Project ID</div>
+                            <div className="fw-semibold">{task.projectId}</div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="small text-muted mb-1">Task ID</div>
+                            <div className="fw-semibold font-monospace">{task.taskId}</div>
+                          </div>
+                          {task.submissionDescription && (
+                            <div className="col-12">
+                              <div className="p-3 bg-light rounded-3">
+                                <div className="small text-muted fw-bold mb-1">Submission Notes</div>
+                                <div className="small">{task.submissionDescription}</div>
+                              </div>
+                            </div>
+                          )}
+                          {task.status === 'REJECTED' && (
+                            <div className="col-12">
+                              <div className="p-3 bg-danger bg-opacity-10 rounded-3">
+                                <div className="small text-danger fw-bold mb-1">Rejection Reason</div>
+                                <div className="small text-danger">Task was rejected by the Project Manager. Please review the feedback and resubmit with updated information.</div>
+                              </div>
+                            </div>
+                          )}
+                          {task.status === 'COMPLETED' && (
+                            <div className="col-12">
+                              <div className="p-3 bg-success bg-opacity-10 rounded-3">
+                                <div className="small text-success fw-bold mb-1">Approval Status</div>
+                                <div className="small text-success">This task has been reviewed and approved by the Project Manager.</div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </Collapse>
                 </Card.Body>
               </Card>
             );

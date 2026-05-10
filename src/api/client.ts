@@ -22,8 +22,13 @@ client.interceptors.request.use((config) => {
 client.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 || error.response?.status === 403) {
+    // Check if the request explicitly asked to skip the global redirect (e.g. for best-effort background syncs)
+    const config = error.config;
+    const skipRedirect = config?._skipRedirect === true;
+
+    if ((error.response?.status === 401 || error.response?.status === 403) && !skipRedirect) {
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
       // Redirect to login if not already there
       if (window.location.pathname !== '/login') {
         window.location.href = '/login';

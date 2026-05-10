@@ -11,23 +11,32 @@ const STATUS_CONFIG: Record<string, { bg: string }> = {
   DRAFT:      { bg: 'warning' }
 };
 
-const PROJECTS = [
-  { id: 'PRJ-001', name: 'Metro Tower A' },
-  { id: 'PRJ-002', name: 'Riverfront Marina' },
-  { id: 'PRJ-003', name: 'Tech Hub Campus' }
-];
-
+// Dynamic project selection removed as per user request
 const CreateContractModal: React.FC<{ show: boolean; onHide: () => void; onCreated: () => void }> = ({ show, onHide, onCreated }) => {
-  const [form, setForm] = useState({ contractTitle: '', description: '', startDate: '', endDate: '', value: 0, terms: '', projectId: '' });
+  const [form, setForm] = useState({ 
+    projectId: '', 
+    startDate: '', 
+    endDate: '', 
+    value: 0, 
+    taskId: '', 
+    status: 'DRAFT' 
+  });
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    await vendorService.createContract(form);
-    onCreated(); onHide();
-    setForm({ contractTitle: '', description: '', startDate: '', endDate: '', value: 0, terms: '', projectId: '' });
-    setSubmitting(false);
+    try {
+      console.log("Creating Contract with Swagger-verified payload:", form);
+      await vendorService.createContract(form);
+      onCreated(); 
+      onHide();
+      setForm({ projectId: '', startDate: '', endDate: '', value: 0, taskId: '', status: 'DRAFT' });
+    } catch (err) {
+      console.error("Failed to create contract", err);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -40,47 +49,61 @@ const CreateContractModal: React.FC<{ show: boolean; onHide: () => void; onCreat
           <Row className="g-3">
             <Col md={8}>
               <Form.Group>
-                <Form.Label className="small fw-bold text-muted">CONTRACT TITLE *</Form.Label>
-                <Form.Control value={form.contractTitle} onChange={e => setForm(f => ({ ...f, contractTitle: e.target.value }))} required className="rounded-3" placeholder="e.g. Steel Supply Agreement" />
+                <Form.Label className="small fw-bold text-muted">PROJECT ID *</Form.Label>
+                <Form.Control 
+                  value={form.projectId} 
+                  onChange={e => setForm(f => ({ ...f, projectId: e.target.value }))} 
+                  required 
+                  className="rounded-3" 
+                  placeholder="e.g. CHEBS26002" 
+                />
               </Form.Group>
             </Col>
             <Col md={4}>
               <Form.Group>
-                <Form.Label className="small fw-bold text-muted">PROJECT</Form.Label>
-                <Form.Select value={form.projectId} onChange={e => setForm(f => ({ ...f, projectId: e.target.value }))} className="rounded-3">
-                  <option value="">Select project...</option>
-                  {PROJECTS.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+                <Form.Label className="small fw-bold text-muted">TASK ID *</Form.Label>
+                <Form.Control 
+                  value={form.taskId} 
+                  onChange={e => setForm(f => ({ ...f, taskId: e.target.value }))} 
+                  required 
+                  className="rounded-3" 
+                  placeholder="e.g. VN003" 
+                />
+              </Form.Group>
+            </Col>
+            <Col md={12}>
+              <Form.Group>
+                <Form.Label className="small fw-bold text-muted">STATUS *</Form.Label>
+                <Form.Select 
+                  value={form.status} 
+                  onChange={e => setForm(f => ({ ...f, status: e.target.value }))} 
+                  required 
+                  className="rounded-3"
+                >
+                  <option value="DRAFT">Draft</option>
+                  <option value="ACTIVE">Active</option>
+                  <option value="COMPLETED">Completed</option>
+                  <option value="EXPIRED">Expired</option>
+                  <option value="TERMINATED">Terminated</option>
                 </Form.Select>
               </Form.Group>
             </Col>
             <Col md={12}>
               <Form.Group>
-                <Form.Label className="small fw-bold text-muted">DESCRIPTION</Form.Label>
-                <Form.Control as="textarea" rows={2} value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} className="rounded-3" />
-              </Form.Group>
-            </Col>
-            <Col md={4}>
-              <Form.Group>
                 <Form.Label className="small fw-bold text-muted">VALUE (USD) *</Form.Label>
                 <Form.Control type="number" value={form.value} onChange={e => setForm(f => ({ ...f, value: Number(e.target.value) }))} required min={1} className="rounded-3" />
               </Form.Group>
             </Col>
-            <Col md={4}>
+            <Col md={6}>
               <Form.Group>
                 <Form.Label className="small fw-bold text-muted">START DATE *</Form.Label>
                 <Form.Control type="date" value={form.startDate} onChange={e => setForm(f => ({ ...f, startDate: e.target.value }))} required className="rounded-3" />
               </Form.Group>
             </Col>
-            <Col md={4}>
+            <Col md={6}>
               <Form.Group>
                 <Form.Label className="small fw-bold text-muted">END DATE *</Form.Label>
                 <Form.Control type="date" value={form.endDate} onChange={e => setForm(f => ({ ...f, endDate: e.target.value }))} required className="rounded-3" />
-              </Form.Group>
-            </Col>
-            <Col md={12}>
-              <Form.Group>
-                <Form.Label className="small fw-bold text-muted">PAYMENT TERMS</Form.Label>
-                <Form.Control as="textarea" rows={2} value={form.terms} onChange={e => setForm(f => ({ ...f, terms: e.target.value }))} className="rounded-3" placeholder="e.g. Payment due 30 days net..." />
               </Form.Group>
             </Col>
           </Row>
@@ -100,7 +123,12 @@ export const ContractsPage: React.FC = () => {
   const [showCreate, setShowCreate] = useState(false);
   const [statusFilter, setStatusFilter] = useState('ALL');
 
-  const load = async () => { setLoading(true); setContracts(await vendorService.getContracts()); setLoading(false); };
+  const load = async () => { 
+    setLoading(true); 
+    const res = await vendorService.getContracts();
+    setContracts(res?.content || []);
+    setLoading(false); 
+  };
   useEffect(() => { load(); }, []);
 
   const filtered = statusFilter === 'ALL' ? contracts : contracts.filter(c => c.status === statusFilter);

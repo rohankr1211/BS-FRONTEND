@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Badge, Button, Table, Modal, Form } from 'react-bootstrap';
-import { FaPlus, FaFilter } from 'react-icons/fa';
+import { Card, Badge, Button, Table, Modal, Form, Spinner } from 'react-bootstrap';
+import { FaPlus, FaFilter, FaTrash } from 'react-icons/fa';
 import safetyService from '../../services/safetyService';
+import projectService from '../../services/projectService';
 import type { InspectionResponse } from '../../services/safetyService';
+import type { ProjectResponse } from '../../services/projectService';
 
 const STATUS_CONFIG: Record<string, { bg: string; label: string }> = {
   SCHEDULED:   { bg: 'primary',   label: 'Scheduled' },
@@ -11,13 +13,7 @@ const STATUS_CONFIG: Record<string, { bg: string; label: string }> = {
   CANCELLED:   { bg: 'secondary', label: 'Cancelled' }
 };
 
-const PROJECTS = [
-  { id: 'PRJ-001', name: 'Metro Tower A' },
-  { id: 'PRJ-002', name: 'Riverfront Marina' },
-  { id: 'PRJ-003', name: 'Tech Hub Campus' }
-];
-
-const CreateInspectionModal: React.FC<{ show: boolean; onHide: () => void; onCreated: () => void }> = ({ show, onHide, onCreated }) => {
+const CreateInspectionModal: React.FC<{ projects: ProjectResponse[]; show: boolean; onHide: () => void; onCreated: () => void }> = ({ projects, show, onHide, onCreated }) => {
   const [types, setTypes] = useState<string[]>([]);
   const [form, setForm] = useState({ projectId: '', inspectionType: '', findings: '' });
   const [submitting, setSubmitting] = useState(false);
@@ -25,13 +21,18 @@ const CreateInspectionModal: React.FC<{ show: boolean; onHide: () => void; onCre
 
   useEffect(() => { safetyService.getInspectionTypes().then(setTypes); }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.projectId) { setError('Please select a project.'); return; }
     if (!form.inspectionType) { setError('Please select an inspection type.'); return; }
     setSubmitting(true);
     try {
-      await safetyService.createInspection(form);
+      await safetyService.createInspection({
+        projectId: form.projectId,
+        inspectionType: form.inspectionType,
+        findings: form.findings || "Initial inspection findings", // Ensure it's not empty if backend is strict
+        assignedTaskId: "" // Added required field from schema
+      });
       onCreated();
       onHide();
       setForm({ projectId: '', inspectionType: '', findings: '' });
@@ -48,11 +49,16 @@ const CreateInspectionModal: React.FC<{ show: boolean; onHide: () => void; onCre
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
-            <Form.Label className="small fw-bold text-muted">PROJECT *</Form.Label>
-            <Form.Select value={form.projectId} onChange={e => setForm(f => ({ ...f, projectId: e.target.value }))} className="rounded-3" required>
-              <option value="">Select project...</option>
-              {PROJECTS.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
-            </Form.Select>
+            <Form.Label className="small fw-bold text-muted">PROJECT ID *</Form.Label>
+            <Form.Control 
+              type="text" 
+              value={form.projectId} 
+              onChange={e => setForm(f => ({ ...f, projectId: e.target.value.toUpperCase() }))} 
+              placeholder="e.g. PRJ-001"
+              className="rounded-3" 
+              required 
+            />
+            <Form.Text className="text-muted small">Enter the unique ID of the project.</Form.Text>
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label className="small fw-bold text-muted">INSPECTION TYPE *</Form.Label>
@@ -83,20 +89,62 @@ const CreateInspectionModal: React.FC<{ show: boolean; onHide: () => void; onCre
 
 export const InspectionsPage: React.FC = () => {
   const [inspections, setInspections] = useState<InspectionResponse[]>([]);
+  const [projects, setProjects] = useState<ProjectResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
   const [statusFilter, setStatusFilter] = useState('ALL');
+  const [updatingId, setUpdatingId] = useState('');
+  const [deletingId, setDeletingId] = useState('');
 
   const load = async () => {
     setLoading(true);
-    const data = await safetyService.getInspections({
-      status: statusFilter !== 'ALL' ? statusFilter : undefined
-    });
-    setInspections(data);
-    setLoading(false);
+    try {
+      // 1. Fetch Projects (Best effort, skip redirect on 401)
+      const projData = await projectService.getProjects({ _skipRedirect: true }).catch(err => {
+        console.error('Failed to load projects for inspections:', err);
+        return [];
+      });
+      setProjects(projData);
+
+      // 2. Fetch Inspections (With skipRedirect for debugging)
+      const data = await safetyService.getInspections({
+        status: statusFilter !== 'ALL' ? statusFilter : undefined
+      });
+      setInspections(Array.isArray(data) ? data : (data?.content || []));
+    } catch (err) {
+      console.error('Final Inspections Load Error:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { load(); }, [statusFilter]);
+
+  const handleStatusChange = async (id: string, status: string) => {
+    setUpdatingId(id);
+    try {
+      await safetyService.updateInspectionStatus(id, status);
+      await load();
+    } catch (err) {
+      console.error('Failed to update inspection status:', err);
+    } finally {
+      setUpdatingId('');
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this SCHEDULED inspection?')) return;
+    setDeletingId(id);
+    try {
+      await safetyService.deleteInspection(id);
+      await load();
+    } catch (err) {
+      console.error('Failed to delete inspection:', err);
+      alert('Failed to delete inspection. Only SCHEDULED inspections can be deleted.');
+    } finally {
+      setDeletingId('');
+    }
+  };
 
   return (
     <div className="p-4">
@@ -138,14 +186,13 @@ export const InspectionsPage: React.FC = () => {
                 <th className="py-3 px-4 border-0">Officer</th>
                 <th className="py-3 px-4 border-0">Findings</th>
                 <th className="py-3 px-4 border-0">Status</th>
+                <th className="py-3 px-4 border-0">Actions</th>
               </tr>
             </thead>
             <tbody>
               {inspections.length === 0 ? (
-                <tr><td colSpan={7} className="text-center py-5 text-muted">No inspections found.</td></tr>
-              ) : inspections.map(ins => {
-                const sta = STATUS_CONFIG[ins.status];
-                return (
+                <tr><td colSpan={8} className="text-center py-5 text-muted">No inspections found.</td></tr>
+              ) : inspections.map(ins => (
                   <tr key={ins.inspectionId}>
                     <td className="py-3 px-4 font-monospace small text-muted">{ins.inspectionId}</td>
                     <td className="py-3 px-4 small fw-semibold">{ins.projectName}</td>
@@ -158,17 +205,37 @@ export const InspectionsPage: React.FC = () => {
                       {ins.findings || <span className="text-muted fst-italic">No findings yet</span>}
                     </td>
                     <td className="py-3 px-4">
-                      <Badge bg={sta.bg} className={ins.status === 'IN_PROGRESS' ? 'text-dark' : ''}>{sta.label}</Badge>
+                      <select className="form-select form-select-sm rounded-3 w-auto"
+                        value={ins.status}
+                        disabled={updatingId === ins.inspectionId}
+                        onChange={e => handleStatusChange(ins.inspectionId, e.target.value)}>
+                        <option value="SCHEDULED">Scheduled</option>
+                        <option value="IN_PROGRESS">In Progress</option>
+                        <option value="COMPLETED">Completed</option>
+                        <option value="CANCELLED">Cancelled</option>
+                      </select>
+                    </td>
+                    <td className="py-3 px-4">
+                      {ins.status === 'SCHEDULED' && (
+                        <Button
+                          variant="outline-danger"
+                          size="sm"
+                          className="rounded-3"
+                          disabled={deletingId === ins.inspectionId}
+                          onClick={() => handleDelete(ins.id)}
+                        >
+                          <FaTrash />
+                        </Button>
+                      )}
                     </td>
                   </tr>
-                );
-              })}
+              ))}
             </tbody>
           </Table>
         </Card>
       )}
 
-      <CreateInspectionModal show={showCreate} onHide={() => setShowCreate(false)} onCreated={load} />
+      <CreateInspectionModal projects={projects} show={showCreate} onHide={() => setShowCreate(false)} onCreated={load} />
     </div>
   );
 };

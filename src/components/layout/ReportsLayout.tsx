@@ -13,6 +13,7 @@ const ADMIN_PM_TABS = [
   { label: 'Vendors',            path: '/reports/vendors',        icon: 'FaTruck' },
   { label: 'Site Engineers',     path: '/reports/site-engineers', icon: 'FaHardHat' },
   { label: 'Resources',          path: '/reports/resources',      icon: 'FaBoxes' },
+  { label: 'Safety',             path: '/reports/safety',         icon: 'FaShieldAlt' },
   { label: 'Users',              path: '/reports/users',          icon: 'FaUsers' },
 ];
 
@@ -35,10 +36,10 @@ export const ReportsLayout: React.FC = () => {
     return <Navigate to="/reports/safety" replace />;
   }
 
-  // Admin/PM trying to access safety analytics → redirect to overview
-  if (isAdminOrPM && location.pathname.startsWith('/reports/safety')) {
-    return <Navigate to="/reports/dashboard" replace />;
-  }
+  // Admin/PM trying to access safety analytics → ALLOWED now
+  // if (isAdminOrPM && location.pathname.startsWith('/reports/safety')) {
+  //   return <Navigate to="/reports/dashboard" replace />;
+  // }
 
   const reportTabs = isSafetyOfficer ? SAFETY_TABS : ADMIN_PM_TABS;
 

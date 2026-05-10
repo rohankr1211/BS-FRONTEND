@@ -125,6 +125,30 @@ export const financeService = {
     await client.post(`/api/expenses/${id}/approval`);
   },
 
+  // Finance Approval (PM) - PM approval of Finance budgets and expenses
+  getPendingExpenses: async (): Promise<ExpenseResponse[]> => {
+    const res = await client.get<any>('/api/finance/expenses/pending');
+    const data = res.data?.data || res.data;
+    return Array.isArray(data) ? data : (data?.content || []);
+  },
+  getPendingBudgets: async (): Promise<BudgetResponse[]> => {
+    const res = await client.get<any>('/api/finance/budgets/pending');
+    const data = res.data?.data || res.data;
+    return Array.isArray(data) ? data : (data?.content || []);
+  },
+  rejectExpense: async (expenseId: string, rejectionReason: string): Promise<void> => {
+    await client.post(`/api/finance/expenses/${expenseId}/reject?rejectionReason=${rejectionReason}`);
+  },
+  approveFinanceExpense: async (expenseId: string): Promise<void> => {
+    await client.post(`/api/finance/expenses/${expenseId}/approve`);
+  },
+  rejectBudget: async (budgetId: string, rejectionReason: string): Promise<void> => {
+    await client.post(`/api/finance/budgets/${budgetId}/reject?rejectionReason=${rejectionReason}`);
+  },
+  approveFinanceBudget: async (budgetId: string): Promise<void> => {
+    await client.post(`/api/finance/budgets/${budgetId}/approve`);
+  },
+
   // Payments
   getPayments: async (): Promise<PaymentResponse[]> => {
     const res = await client.get<any>('/api/payments/status/PROCESSED?page=0&size=100');
@@ -165,8 +189,8 @@ export const financeService = {
   submitTask: async (id: string): Promise<void> => {
     await client.post(`/api/finance/tasks/${id}/submit`);
   },
-  syncTasks: async (): Promise<{ message: string }> => {
-    await client.post('/api/finance/tasks/sync');
+  syncTasks: async (config?: any): Promise<{ message: string }> => {
+    await client.post('/api/finance/tasks/sync', {}, config);
     return { message: 'Tasks synchronized successfully.' };
   },
 

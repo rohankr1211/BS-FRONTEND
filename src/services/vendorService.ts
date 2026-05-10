@@ -28,6 +28,7 @@ export interface DocumentResponse {
   contentType: string;
   uploadedBy: string;
   uploadedAt: string;
+  submittedAt: string | null;
   status: 'DRAFT' | 'PENDING' | 'APPROVED' | 'REJECTED';
 }
 
@@ -161,6 +162,19 @@ const vendorService = {
     return res.data?.data || res.data;
   },
 
+  // Vendor Approval (PM) - PM review and approval of vendor invoices
+  getPendingInvoices: async (): Promise<InvoiceResponse[]> => {
+    const res = await client.get<any>('/api/vendor/invoices/pending');
+    const data = res.data?.data || res.data;
+    return Array.isArray(data) ? data : (data?.content || []);
+  },
+  rejectInvoice: async (approvalId: string, rejectionReason: string): Promise<void> => {
+    await client.post(`/api/vendor/invoices/${approvalId}/reject?rejectionReason=${rejectionReason}`);
+  },
+  approveInvoice: async (approvalId: string): Promise<void> => {
+    await client.post(`/api/vendor/invoices/${approvalId}/approve`);
+  },
+
   // Deliveries
   getDeliveries: async (page = 0, size = 10, sortBy = 'deliveryId', sortDir = 'asc'): Promise<any> => {
     const res = await client.get<any>(`/api/deliveries?page=${page}&size=${size}&sortBy=${sortBy}&sortDir=${sortDir}`);
@@ -198,7 +212,11 @@ const vendorService = {
     const res = await client.get<any>(`/api/documents?page=${page}&size=${size}&sortBy=${sortBy}&sortDir=${sortDir}`);
     const data = res.data?.data || res.data;
     if (Array.isArray(data)) return { content: data, totalElements: data.length };
-    return data;
+    // Handle paginated response structure
+    if (data && typeof data === 'object' && data.content) {
+      return { content: Array.isArray(data.content) ? data.content : [], totalElements: data.totalElements || 0 };
+    }
+    return { content: Array.isArray(data) ? data : [], totalElements: Array.isArray(data) ? data.length : 0 };
   },
   getDocumentById: async (id: string): Promise<DocumentResponse> => {
     const res = await client.get<any>(`/api/documents/${id}`);
@@ -211,6 +229,11 @@ const vendorService = {
   },
   getDocumentsByType: async (type: string): Promise<DocumentResponse[]> => {
     const res = await client.get<any>(`/api/documents/type/${type}`);
+    const data = res.data?.data || res.data;
+    return Array.isArray(data) ? data : (data?.content || []);
+  },
+  getDocumentsByStatus: async (status: string): Promise<DocumentResponse[]> => {
+    const res = await client.get<any>(`/api/documents/status/${status}`);
     const data = res.data?.data || res.data;
     return Array.isArray(data) ? data : (data?.content || []);
   },
@@ -246,6 +269,16 @@ const vendorService = {
     const res = await client.get<any>(`/api/vendors/${id}`);
     return res.data?.data || res.data;
   },
+  createVendor: async (payload: any): Promise<any> => {
+    const res = await client.post<any>('/api/vendors', payload);
+    return res.data?.data || res.data;
+  },
+  updateVendor: async (id: string, payload: any): Promise<void> => {
+    await client.put(`/api/vendors/${id}`, payload);
+  },
+  deleteVendor: async (id: string): Promise<void> => {
+    await client.delete(`/api/vendors/${id}`);
+  },
 
   // Vendor Tasks
   getTasks: async (): Promise<VendorTaskResponse[]> => {
@@ -261,8 +294,8 @@ const vendorService = {
   submitTask: async (assignedTaskId: string, payload: any): Promise<void> => {
     await client.post(`/api/vendor/tasks/${assignedTaskId}/submit`, payload);
   },
-  syncTasks: async (): Promise<{ message: string }> => {
-    await client.post('/api/vendor/tasks/sync');
+  syncTasks: async (config?: any): Promise<{ message: string }> => {
+    await client.post('/api/vendor/tasks/sync', {}, config);
     return { message: 'Tasks synchronized successfully.' };
   },
 
@@ -276,17 +309,39 @@ const vendorService = {
     }
   },
 
-  // Notifications
+  // Vendor Notifications
   getNotifications: async (): Promise<any[]> => {
-    const res = await client.get<any>('/api/vendor/notifications');
+    const res = await client.get<any>('/api/vendor-notifications');
     const data = res.data?.data || res.data;
     return Array.isArray(data) ? data : (data?.content || []);
   },
   markRead: async (id: string): Promise<void> => {
-    await client.patch(`/api/vendor/notifications/${id}/read`);
+    await client.patch(`/api/vendor-notifications/${id}/read`);
   },
   markAllRead: async (): Promise<void> => {
-    await client.post('/api/vendor/notifications/read-all');
+    await client.post('/api/vendor-notifications/read-all');
+  },
+
+  // Vendor Integration (Internal)
+  syncFromPm: async (): Promise<void> => {
+    await client.post('/api/vendor-integration/sync-from-pm');
+  },
+  updateApprovalStatus: async (approvalId: string, params: { status: string; rejectedBy: string; approvedByName: string; rejectionReason: string }): Promise<void> => {
+    await client.put(`/api/vendor-integration/approvals/${approvalId}/status`, null, { params });
+  },
+  getTasksByProjectIntegration: async (projectId: string): Promise<any[]> => {
+    const res = await client.get<any>(`/api/vendor-integration/projects/${projectId}/tasks`);
+    return res.data?.data || res.data;
+  },
+  notifyVendorTask: async (payload: { vendorId: string; taskId: string; projectId: string; description: string; plannedStart: string; plannedEnd: string; assignedDepartment: string }): Promise<void> => {
+    await client.post('/api/vendor-integration/tasks/notify', null, { params: payload });
+  },
+  syncDeliveryFromSite: async (deliveryId: string): Promise<void> => {
+    await client.post(`/api/vendor-integration/deliveries/${deliveryId}/sync-from-site`);
+  },
+  updateSiteDeliveryStatus: async (deliveryId: string, params: { status: string; remarks: string }): Promise<void> => {
+    await client.patch(`/api/vendor-integration/deliveries/${deliveryId}/site-status`, null, { params });
   }
 };
+
 export default vendorService;

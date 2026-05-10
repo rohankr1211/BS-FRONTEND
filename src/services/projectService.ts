@@ -1,4 +1,5 @@
 import client from '../api/client';
+import { getRandomProjectImage } from '../utils/projectImages';
 
 // ── Types ──────────────────────────────────────
 
@@ -19,6 +20,7 @@ export interface ProjectResponse {
   completedMilestones: number;
   totalTasks: number;
   completedTasks: number;
+  imageUrl?: string;
 }
 
 export interface MilestoneResponse {
@@ -101,10 +103,10 @@ export interface CreateProjectPayload {
   startDate: string;
   endDate: string;
   budget: number;
+  imageUrl?: string;
 }
 
 export interface CreateTaskPayload {
-  projectId: string;
   description: string;
   assignedDepartment: string;
   assignedTo: string;
@@ -125,14 +127,24 @@ export interface ResolveIssuePayload {
 
 const projectService = {
   // Projects
-  getProjects: async (): Promise<ProjectResponse[]> => {
-    const res = await client.get<any>('/api/projects');
+  getProjects: async (config?: any): Promise<ProjectResponse[]> => {
+    const res = await client.get<any>('/api/projects', config);
     const data = res.data?.data || res.data;
-    return Array.isArray(data) ? data : (data?.content || []);
+    const projects = Array.isArray(data) ? data : (data?.content || []);
+    // Assign random images to projects that don't have one
+    return projects.map((p: any) => ({
+      ...p,
+      imageUrl: p.imageUrl || getRandomProjectImage()
+    }));
   },
   getProject: async (projectId: string): Promise<ProjectResponse> => {
     const res = await client.get<any>(`/api/projects/${projectId}`);
-    return res.data?.data || res.data;
+    const project = res.data?.data || res.data;
+    // Assign a random image if the project doesn't have one
+    return {
+      ...project,
+      imageUrl: project?.imageUrl || getRandomProjectImage()
+    };
   },
   createProject: async (payload: CreateProjectPayload): Promise<ProjectResponse> => {
     const res = await client.post<any>('/api/projects', payload);
@@ -207,6 +219,9 @@ const projectService = {
     const res = await client.get<any>(`/api/projects/issues${projectId ? `?projectId=${projectId}` : ''}`);
     const data = res.data?.data || res.data;
     return Array.isArray(data) ? data : (data?.content || []);
+  },
+  resolveIssue: async (issueId: string, payload: ResolveIssuePayload): Promise<void> => {
+    await client.post(`/api/projects/issues/${issueId}/resolve`, payload);
   },
 
   // Templates

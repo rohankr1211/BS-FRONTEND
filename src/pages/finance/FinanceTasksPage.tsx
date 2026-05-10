@@ -50,7 +50,18 @@ export const FinanceTasksPage: React.FC = () => {
                       </div>
                       <div className="small text-muted mb-1"><span className="fw-semibold text-dark">{task.projectName}</span> · Assigned by {task.assignedByName} · {new Date(task.assignedAt).toLocaleDateString()}</div>
                     </div>
-                    {task.status === 'PENDING' && <Button variant="dark" size="sm" className="rounded-3 px-4" style={{ backgroundColor: '#2c3e50' }} disabled={submitting === task.assignedTaskId} onClick={() => handleSubmit(task.assignedTaskId)}>{submitting === task.assignedTaskId ? '...' : 'Complete Task'}</Button>}
+                    {task.status === 'PENDING' && (
+                      <Button 
+                        variant="dark" 
+                        size="sm" 
+                        className="rounded-3 px-4" 
+                        style={{ backgroundColor: '#2c3e50' }} 
+                        disabled={!!submitting} 
+                        onClick={() => handleSubmit(task.assignedTaskId || (task as any).id || (task as any).taskId)}
+                      >
+                        {submitting === (task.assignedTaskId || (task as any).id || (task as any).taskId) ? '...' : 'Complete Task'}
+                      </Button>
+                    )}
                   </div>
                 </Card.Body>
               </Card>

@@ -4,6 +4,7 @@ import { FaSearch, FaPlus, FaBuilding, FaCalendarAlt, FaDollarSign, FaEye, FaEdi
 import { useNavigate } from 'react-router-dom';
 import projectService from '../../services/projectService';
 import type { ProjectResponse, CreateProjectPayload, TemplateResponse } from '../../services/projectService';
+import { getRandomProjectImage } from '../../utils/projectImages';
 
 const STATUS_CONFIG: Record<string, { bg: string; text: string; label: string }> = {
   IN_PROGRESS: { bg: 'primary', text: 'text-primary', label: 'In Progress' },
@@ -46,7 +47,12 @@ const CreateProjectModal: React.FC<{ show: boolean; onHide: () => void; onCreate
     if (new Date(form.endDate) <= new Date(form.startDate)) { setError('End date must be after start date.'); return; }
     setSubmitting(true);
     try {
-      const project = await projectService.createProject(form);
+      // Auto-assign a random image from the default collection
+      const payload = {
+        ...form,
+        imageUrl: getRandomProjectImage()
+      };
+      const project = await projectService.createProject(payload);
       onCreated(project);
       onHide();
     } catch { setError('Failed to create project. Please try again.'); }
@@ -188,6 +194,12 @@ export const ProjectsPage: React.FC = () => {
 
   const handleCreated = (project: ProjectResponse) => setProjects(prev => [project, ...prev]);
 
+  // Ensure all projects have an image
+  const projectsWithImages = filtered.map(project => ({
+    ...project,
+    imageUrl: project.imageUrl || getRandomProjectImage()
+  }));
+
   return (
     <div className="p-4">
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
@@ -233,26 +245,43 @@ export const ProjectsPage: React.FC = () => {
         </div>
       ) : (
         <Row className="g-4">
-          {Array.isArray(filtered) && filtered.map(project => {
+          {Array.isArray(projectsWithImages) && projectsWithImages.map(project => {
             const statusCfg = STATUS_CONFIG[project.status] || STATUS_CONFIG.NOT_STARTED;
             const progress = project.totalMilestones > 0 ? Math.round((project.completedMilestones / project.totalMilestones) * 100) : 0;
             const taskProgress = project.totalTasks > 0 ? Math.round((project.completedTasks / project.totalTasks) * 100) : 0;
 
             return (
               <Col md={6} lg={4} key={project.projectId}>
-                <Card className="border-0 shadow-sm rounded-4 h-100" style={{ transition: 'transform 0.2s, box-shadow 0.2s' }}
+                <Card className="border-0 shadow-sm rounded-4 h-100 overflow-hidden" style={{ transition: 'transform 0.2s, box-shadow 0.2s' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 25px rgba(0,0,0,0.1)'; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ''; (e.currentTarget as HTMLElement).style.boxShadow = ''; }}
                 >
-                  <Card.Body className="p-4 d-flex flex-column">
-                    <div className="d-flex justify-content-between align-items-start mb-3">
-                      <div className="bg-primary bg-opacity-10 text-primary p-3 rounded-circle">
-                        <FaBuilding size={18} />
+                  {project.imageUrl && (
+                    <div className="position-relative" style={{ height: '160px', overflow: 'hidden' }}>
+                      <img
+                        src={project.imageUrl}
+                        alt={project.projectName}
+                        className="w-100 h-100 object-fit-cover"
+                        style={{ objectPosition: 'center' }}
+                      />
+                      <div className="position-absolute top-3 end-3">
+                        <Badge bg={statusCfg.bg} className="bg-opacity-90 border px-2 py-1" style={{ color: 'white', borderColor: 'white' }}>
+                          {statusCfg.label}
+                        </Badge>
                       </div>
-                      <Badge bg={statusCfg.bg} className="bg-opacity-10 border px-2 py-1" style={{ color: `var(--bs-${statusCfg.bg})`, borderColor: `var(--bs-${statusCfg.bg})` }}>
-                        {statusCfg.label}
-                      </Badge>
                     </div>
+                  )}
+                  <Card.Body className={`p-4 d-flex flex-column ${!project.imageUrl ? '' : 'pt-3'}`}>
+                    {!project.imageUrl && (
+                      <div className="d-flex justify-content-between align-items-start mb-3">
+                        <div className="bg-primary bg-opacity-10 text-primary p-3 rounded-circle">
+                          <FaBuilding size={18} />
+                        </div>
+                        <Badge bg={statusCfg.bg} className="bg-opacity-10 border px-2 py-1" style={{ color: `var(--bs-${statusCfg.bg})`, borderColor: `var(--bs-${statusCfg.bg})` }}>
+                          {statusCfg.label}
+                        </Badge>
+                      </div>
+                    )}
 
                     <h5 className="fw-bold text-dark mb-1">{project.projectName}</h5>
                     <p className="small text-muted mb-3" style={{ overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{project.description}</p>

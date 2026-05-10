@@ -38,7 +38,8 @@ export const VendorTasksPage: React.FC = () => {
   const handleSubmit = async () => {
     if (!submitTask || !submitDesc.trim()) return;
     setSubmitting(true);
-    await vendorService.submitTask(submitTask.assignedTaskId, submitDesc);
+    const taskId = submitTask.assignedTaskId || (submitTask as any).id || (submitTask as any).taskId;
+    await vendorService.submitTask(taskId, { submissionDescription: submitDesc });
     setSubmitTask(null); setSubmitDesc('');
     await load();
     setSubmitting(false);

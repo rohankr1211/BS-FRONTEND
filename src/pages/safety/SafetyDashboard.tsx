@@ -41,7 +41,37 @@ export const SafetyDashboard: React.FC = () => {
   const [syncMsg, setSyncMsg] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => { safetyService.getKpiSummary().then(setKpi); }, []);
+  const [pieData, setPieData] = useState([
+    { name: 'Low', value: 0, color: '#27ae60' },
+    { name: 'Medium', value: 0, color: '#f39c12' },
+    { name: 'High', value: 0, color: '#e74c3c' },
+    { name: 'Critical', value: 0, color: '#c0392b' },
+  ]);
+
+  const loadData = async () => {
+    const kpiData = await safetyService.getKpiSummary();
+    setKpi(kpiData);
+
+    // Fetch real incidents to build the pie chart
+    const incidentsData = await safetyService.getIncidents({ size: 100 }).catch(() => ({ content: [] }));
+    const incidents = incidentsData?.content || [];
+    
+    const counts = {
+      LOW: incidents.filter((i: any) => i.severity === 'LOW').length,
+      MEDIUM: incidents.filter((i: any) => i.severity === 'MEDIUM').length,
+      HIGH: incidents.filter((i: any) => i.severity === 'HIGH').length,
+      CRITICAL: incidents.filter((i: any) => i.severity === 'CRITICAL').length,
+    };
+
+    setPieData([
+      { name: 'Low', value: counts.LOW, color: '#27ae60' },
+      { name: 'Medium', value: counts.MEDIUM, color: '#f39c12' },
+      { name: 'High', value: counts.HIGH, color: '#e74c3c' },
+      { name: 'Critical', value: counts.CRITICAL, color: '#c0392b' },
+    ]);
+  };
+
+  useEffect(() => { loadData(); }, []);
 
   const handleSync = async () => {
     setSyncing(true);

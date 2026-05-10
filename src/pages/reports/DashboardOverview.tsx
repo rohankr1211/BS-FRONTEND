@@ -67,10 +67,11 @@ export const DashboardOverview: React.FC = () => {
 
       {/* KPI Row */}
       <Row className="g-4 mb-4">
+        {console.log('Current Summary state:', summary)}
         <Col md={3}>
           {renderKpiCard(
             "Active Projects", 
-            loading ? '-' : summary?.activeProjects, 
+            loading ? '-' : (summary as any)?.activeProjects, 
             <FaBuilding size={24} />, 
             "primary"
           )}
@@ -78,11 +79,11 @@ export const DashboardOverview: React.FC = () => {
         <Col md={3}>
           {renderKpiCard(
             "Avg Budget Variance", 
-            loading ? '-' : `${summary?.averageBudgetVariance}%`, 
+            loading ? '-' : `${(summary as any)?.averageBudgetVariance || 0}%`, 
             <FaMoneyBillWave size={24} />, 
-            (summary?.averageBudgetVariance || 0) < 0 ? "danger" : "success",
-            <span className={`fw-bold text-${(summary?.averageBudgetVariance || 0) < 0 ? 'danger' : 'success'}`}>
-              {(summary?.averageBudgetVariance || 0) < 0 ? <FaArrowDown className="me-1" /> : <FaArrowUp className="me-1" />}
+            ((summary as any)?.averageBudgetVariance || 0) < 0 ? "danger" : "success",
+            <span className={`fw-bold text-${((summary as any)?.averageBudgetVariance || 0) < 0 ? 'danger' : 'success'}`}>
+              {((summary as any)?.averageBudgetVariance || 0) < 0 ? <FaArrowDown className="me-1" /> : <FaArrowUp className="me-1" />}
               vs target
             </span>
           )}
@@ -90,21 +91,21 @@ export const DashboardOverview: React.FC = () => {
         <Col md={3}>
           {renderKpiCard(
             "Safety Compliance", 
-            loading ? '-' : `${summary?.safetyComplianceRate}%`, 
+            loading ? '-' : `${(summary as any)?.safetyComplianceRate || 0}%`, 
             <FaShieldAlt size={24} />, 
-            (summary?.safetyComplianceRate || 0) >= 90 ? "success" : "warning"
+            ((summary as any)?.safetyComplianceRate || 0) >= 90 ? "success" : "warning"
           )}
         </Col>
         <Col md={3}>
           {renderKpiCard(
             "Resource Utilization", 
-            loading ? '-' : `${((summary?.resourceUtilization || 0) * 100).toFixed(0)}%`, 
+            loading ? '-' : `${((summary as any)?.resourceUtilizationRate || 0).toFixed(0)}%`, 
             <FaUsersCog size={24} />, 
             "info",
             <div className="progress mt-2" style={{ height: '6px' }}>
               <div 
                 className="progress-bar bg-info" 
-                style={{ width: `${(summary?.resourceUtilization || 0) * 100}%` }}
+                style={{ width: `${((summary as any)?.resourceUtilizationRate || 0)}%` }}
               />
             </div>
           )}

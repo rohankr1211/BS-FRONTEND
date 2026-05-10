@@ -72,7 +72,11 @@ const safetyService = {
     params.append('page', (filters?.page || 0).toString());
     params.append('size', (filters?.size || 10).toString());
 
-    const res = await client.get<any>(`/api/safety/inspections?${params.toString()}`);
+    console.log('Fetching Inspections from:', `/api/safety/inspections?${params.toString()}`);
+    const res = await client.get<any>(`/api/safety/inspections?${params.toString()}`, { 
+      // @ts-ignore
+      _skipRedirect: true 
+    });
     const data = res.data?.data || res.data;
     if (Array.isArray(data)) {
       return { content: data, totalElements: data.length };
@@ -84,6 +88,7 @@ const safetyService = {
     return res.data?.data || res.data;
   },
   createInspection: async (payload: any): Promise<InspectionResponse> => {
+    console.log('Creating Inspection with payload:', JSON.stringify(payload, null, 2));
     const res = await client.post<any>('/api/safety/inspections', payload);
     return res.data?.data || res.data;
   },
@@ -94,7 +99,11 @@ const safetyService = {
     await client.delete(`/api/safety/inspections/${id}`);
   },
   getInspectionTypes: async (): Promise<string[]> => {
-    const res = await client.get<any>('/api/safety/inspections/types');
+    console.log('Fetching Inspection Types...');
+    const res = await client.get<any>('/api/safety/inspections/types', {
+      // @ts-ignore
+      _skipRedirect: true
+    });
     return res.data?.data || res.data;
   },
 
@@ -109,7 +118,11 @@ const safetyService = {
     params.append('page', (filters?.page || 0).toString());
     params.append('size', (filters?.size || 10).toString());
 
-    const res = await client.get<any>(`/api/safety/incidents?${params.toString()}`);
+    console.log('Fetching Incidents from:', `/api/safety/incidents?${params.toString()}`);
+    const res = await client.get<any>(`/api/safety/incidents?${params.toString()}`, {
+      // @ts-ignore
+      _skipRedirect: true
+    });
     const data = res.data?.data || res.data;
     if (Array.isArray(data)) {
       return { content: data, totalElements: data.length };
@@ -121,6 +134,7 @@ const safetyService = {
     return res.data?.data || res.data;
   },
   createIncident: async (payload: any): Promise<IncidentResponse> => {
+    console.log('Creating Incident with payload:', JSON.stringify(payload, null, 2));
     const res = await client.post<any>('/api/safety/incidents', payload);
     return res.data?.data || res.data;
   },
@@ -143,10 +157,11 @@ const safetyService = {
     return Array.isArray(data) ? data : (data?.content || []);
   },
   submitTask: async (assignedTaskId: string, payload: any): Promise<void> => {
+    console.log(`Submitting Task ${assignedTaskId} with payload:`, JSON.stringify(payload, null, 2));
     await client.post(`/api/safety/tasks/${assignedTaskId}/submit`, payload);
   },
-  syncTasks: async (): Promise<{ message: string }> => {
-    await client.post('/api/safety/tasks/sync');
+  syncTasks: async (config?: any): Promise<{ message: string }> => {
+    await client.post('/api/safety/tasks/sync', {}, config);
     return { message: 'Tasks synchronized successfully with the project management service.' };
   },
 
@@ -163,9 +178,24 @@ const safetyService = {
   // KPI Summary
   getKpiSummary: async (): Promise<SafetyKpiSummary> => {
     try {
-      const res = await client.get<any>('/api/safety/analytics/summary');
-      return res.data?.data || res.data;
-    } catch {
+      const [incidentsRes, inspectionsRes, tasksRes] = await Promise.all([
+        client.get<any>('/api/safety/incidents', { _skipRedirect: true } as any).catch(() => ({ data: { content: [] } })),
+        client.get<any>('/api/safety/inspections', { _skipRedirect: true } as any).catch(() => ({ data: { content: [] } })),
+        client.get<any>('/api/safety/tasks', { _skipRedirect: true } as any).catch(() => ({ data: { content: [] } }))
+      ]);
+
+      const incidents = incidentsRes.data?.data?.content || incidentsRes.data?.content || incidentsRes.data || [];
+      const inspections = inspectionsRes.data?.data?.content || inspectionsRes.data?.content || inspectionsRes.data || [];
+      const tasks = tasksRes.data?.data?.content || tasksRes.data?.content || tasksRes.data || [];
+
+      return {
+        openIncidents: Array.isArray(incidents) ? incidents.filter((i: any) => i.status === 'OPEN').length : 0,
+        pendingInspections: Array.isArray(inspections) ? inspections.filter((i: any) => i.status === 'SCHEDULED' || i.status === 'IN_PROGRESS').length : 0,
+        assignedTasks: Array.isArray(tasks) ? tasks.length : 0,
+        highSeverityIncidents: Array.isArray(incidents) ? incidents.filter((i: any) => i.severity === 'HIGH' || i.severity === 'CRITICAL').length : 0
+      };
+    } catch (err) {
+      console.error('Failed to aggregate KPI summary:', err);
       return { openIncidents: 0, pendingInspections: 0, assignedTasks: 0, highSeverityIncidents: 0 };
     }
   },

@@ -8,29 +8,31 @@ export interface Resource {
   type: 'LABOR' | 'EQUIPMENT' | 'MATERIAL';
   availability: 'AVAILABLE' | 'UNAVAILABLE' | 'MAINTENANCE';
   numberOfLabors?: number;
-  skillLevel?: 'BEGINNER' | 'INTERMEDIATE' | 'EXPERT';
+  skillLevel?: 'SKILLED' | 'SEMI_SKILLED' | 'UNSKILLED';
   equipmentName?: string;
   equipmentLevel?: 'BASIC' | 'ADVANCED' | 'SPECIALIZED';
   costPerHour: number;
   totalHours: number;
   totalCost: number;
   projectId: string;
-  projectName: string;
+  projectName?: string;
+  issueId?: string;
+  siteId?: string;
+  siteEngineerUserId?: string;
   purpose: string;
   budgetStatus: 'NONE' | 'BUDGET_PENDING' | 'BUDGET_APPROVED' | 'BUDGET_REJECTED';
   budgetId?: string;
+  budgetRejectionReason?: string;
 }
 
 export interface Allocation {
   id: string;
-  allocationId: string;
   projectId: string;
-  projectName: string;
-  resourceId: string;
-  resourceName: string;
+  resource: Resource;
   assignedDate: string;
   releasedDate: string | null;
-  status: 'ACTIVE' | 'COMPLETED' | 'PENDING' | 'CANCELLED';
+  status: 'Active' | 'Released' | 'Pending';
+  issueId?: string;
   siteId?: string;
 }
 
@@ -86,6 +88,22 @@ export const resourceService = {
     const data = res.data?.data || res.data;
     return Array.isArray(data) ? data : (data?.content || []);
   },
+  getAllocationById: async (id: string): Promise<Allocation> => {
+    const res = await client.get<any>(`/api/allocations/${id}`);
+    return res.data?.data || res.data;
+  },
+  getAllocationsPaginated: async (page = 0, size = 10): Promise<any> => {
+    const res = await client.get<any>(`/api/allocations/page?page=${page}&size=${size}`);
+    return res.data?.data || res.data;
+  },
+  getAllocationEvent: async (id: string): Promise<any> => {
+    const res = await client.get<any>(`/api/allocations/${id}/event`);
+    return res.data?.data || res.data;
+  },
+  getAllocationCost: async (id: string): Promise<AllocationCost> => {
+    const res = await client.get<any>(`/api/allocations/${id}/cost`);
+    return res.data?.data || res.data;
+  },
   createAllocation: async (payload: Partial<Allocation>): Promise<Allocation> => {
     const res = await client.post<any>('/api/allocations', payload);
     return res.data?.data || res.data;
@@ -106,7 +124,7 @@ export const resourceService = {
   deleteAllocation: async (id: string): Promise<void> => {
     await client.delete(`/api/allocations/${id}`);
   },
-  internalResourceCallback: async (payload: any): Promise<void> => {
-    await client.post('/api/internal/resources/callback', payload);
+  internalResourceCallback: async (resourceId: string, payload: any): Promise<void> => {
+    await client.post(`/api/internal/resources/${resourceId}/budget-result`, payload);
   }
 };

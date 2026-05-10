@@ -1,99 +1,125 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Badge, Button, Table, Modal, Form } from 'react-bootstrap';
-import { FaPlus, FaFileInvoiceDollar, FaCheckCircle, FaTrash } from 'react-icons/fa';
+import { FaPlus, FaFileInvoiceDollar, FaCheckCircle, FaTrash, FaExclamationTriangle } from 'react-icons/fa';
 import vendorService from '../../services/vendorService';
 import type { InvoiceResponse, InvoiceLineItem } from '../../services/vendorService';
 
 const STATUS_CONFIG: Record<string, { bg: string; label: string }> = {
   DRAFT:     { bg: 'secondary', label: 'Draft' },
+  PENDING:   { bg: 'warning',   label: 'Pending' },
   SUBMITTED: { bg: 'warning',   label: 'Submitted' },
   APPROVED:  { bg: 'success',   label: 'Approved' },
   REJECTED:  { bg: 'danger',    label: 'Rejected' },
   PAID:      { bg: 'primary',   label: 'Paid' }
 };
 
-const CreateInvoiceModal: React.FC<{ contracts: any[]; show: boolean; onHide: () => void; onCreated: () => void }> = ({ contracts, show, onHide, onCreated }) => {
-  const [form, setForm] = useState({ contractId: '', invoiceNumber: `INV-${Date.now()}`, amount: 0, dueDate: '', description: '' });
-  const [lines, setLines] = useState<InvoiceLineItem[]>([{ description: '', quantity: 1, unitPrice: 0, total: 0 }]);
+const CreateInvoiceModal: React.FC<{ show: boolean; onHide: () => void; onCreated: () => void }> = ({ show, onHide, onCreated }) => {
+  const [form, setForm] = useState({ 
+    contractId: '', 
+    amount: 0, 
+    date: '', 
+    description: '', 
+    taskId: '' 
+  });
   const [submitting, setSubmitting] = useState(false);
-
-  const updateLine = (i: number, field: string, val: string | number) => {
-    setLines(prev => {
-      const updated = [...prev];
-      updated[i] = { ...updated[i], [field]: val };
-      if (field === 'quantity' || field === 'unitPrice') {
-        updated[i].total = updated[i].quantity * updated[i].unitPrice;
-      }
-      const total = updated.reduce((s, l) => s + l.total, 0);
-      setForm(f => ({ ...f, amount: total }));
-      return updated;
-    });
-  };
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    const contract = contracts.find(c => c.contractId === form.contractId);
-    await vendorService.createInvoice({ ...form, lineItems: lines, contractTitle: contract?.contractTitle || '' });
-    onCreated(); onHide();
-    setSubmitting(false);
+    setError(null);
+    try {
+      console.log("Creating Invoice with Swagger-verified payload:", form);
+      await vendorService.createInvoice(form);
+      onCreated(); 
+      onHide();
+      setForm({ contractId: '', amount: 0, date: '', description: '', taskId: '' });
+    } catch (err: any) {
+      const msg = err.response?.data?.message || err.message || "Failed to create invoice";
+      setError(msg);
+      console.error("Failed to create invoice", err);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
-    <Modal show={show} onHide={onHide} centered size="xl">
+    <Modal show={show} onHide={onHide} centered size="lg">
       <Modal.Header closeButton className="border-0">
         <Modal.Title className="fw-bold">Create Invoice</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {error && (
+          <div className="alert alert-danger rounded-3 small d-flex align-items-center gap-2 mb-3">
+            <FaExclamationTriangle /> {error}
+          </div>
+        )}
         <Form onSubmit={handleSubmit}>
-          <Row className="g-3 mb-3">
-            <Col md={4}>
+          <Row className="g-3">
+            <Col md={6}>
               <Form.Group>
-                <Form.Label className="small fw-bold text-muted">CONTRACT *</Form.Label>
-                <Form.Select value={form.contractId} onChange={e => setForm(f => ({ ...f, contractId: e.target.value }))} required className="rounded-3">
-                  <option value="">Select contract...</option>
-                  {contracts.filter(c => c.status === 'ACTIVE').map(c => <option key={c.contractId} value={c.contractId}>{c.contractTitle}</option>)}
-                </Form.Select>
+                <Form.Label className="small fw-bold text-muted">CONTRACT ID *</Form.Label>
+                <Form.Control 
+                  value={form.contractId} 
+                  onChange={e => setForm(f => ({ ...f, contractId: e.target.value }))} 
+                  required 
+                  className="rounded-3" 
+                  placeholder="e.g. CONBS001" 
+                />
               </Form.Group>
             </Col>
-            <Col md={4}>
+            <Col md={6}>
               <Form.Group>
-                <Form.Label className="small fw-bold text-muted">INVOICE NUMBER</Form.Label>
-                <Form.Control value={form.invoiceNumber} onChange={e => setForm(f => ({ ...f, invoiceNumber: e.target.value }))} className="rounded-3" />
+                <Form.Label className="small fw-bold text-muted">TASK ID *</Form.Label>
+                <Form.Control 
+                  value={form.taskId} 
+                  onChange={e => setForm(f => ({ ...f, taskId: e.target.value }))} 
+                  required 
+                  className="rounded-3" 
+                  placeholder="e.g. VN003" 
+                />
               </Form.Group>
             </Col>
-            <Col md={4}>
+            <Col md={6}>
               <Form.Group>
-                <Form.Label className="small fw-bold text-muted">DUE DATE *</Form.Label>
-                <Form.Control type="date" value={form.dueDate} onChange={e => setForm(f => ({ ...f, dueDate: e.target.value }))} required className="rounded-3" />
+                <Form.Label className="small fw-bold text-muted">AMOUNT (USD) *</Form.Label>
+                <Form.Control 
+                  type="number" 
+                  value={form.amount} 
+                  onChange={e => setForm(f => ({ ...f, amount: Number(e.target.value) }))} 
+                  required 
+                  className="rounded-3" 
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label className="small fw-bold text-muted">DATE *</Form.Label>
+                <Form.Control 
+                  type="date" 
+                  value={form.date} 
+                  onChange={e => setForm(f => ({ ...f, date: e.target.value }))} 
+                  required 
+                  className="rounded-3" 
+                />
               </Form.Group>
             </Col>
             <Col md={12}>
               <Form.Group>
-                <Form.Label className="small fw-bold text-muted">DESCRIPTION</Form.Label>
-                <Form.Control value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} className="rounded-3" placeholder="Invoice description..." />
+                <Form.Label className="small fw-bold text-muted">DESCRIPTION *</Form.Label>
+                <Form.Control 
+                  as="textarea" 
+                  rows={2} 
+                  value={form.description} 
+                  onChange={e => setForm(f => ({ ...f, description: e.target.value }))} 
+                  required 
+                  className="rounded-3" 
+                  placeholder="Billing details..." 
+                />
               </Form.Group>
             </Col>
           </Row>
-
-          <h6 className="fw-bold text-muted text-uppercase mb-2">Line Items</h6>
-          <div className="bg-light rounded-3 p-3 mb-3">
-            {lines.map((line, i) => (
-              <Row key={i} className="g-2 mb-2 align-items-center">
-                <Col md={5}><Form.Control size="sm" value={line.description} onChange={e => updateLine(i, 'description', e.target.value)} placeholder="Item description" className="rounded-3" /></Col>
-                <Col md={2}><Form.Control size="sm" type="number" value={line.quantity} onChange={e => updateLine(i, 'quantity', Number(e.target.value))} placeholder="Qty" className="rounded-3" /></Col>
-                <Col md={2}><Form.Control size="sm" type="number" value={line.unitPrice} onChange={e => updateLine(i, 'unitPrice', Number(e.target.value))} placeholder="Unit price" className="rounded-3" /></Col>
-                <Col md={2}><div className="fw-bold text-end small">${line.total.toLocaleString()}</div></Col>
-                <Col md={1}><Button variant="outline-danger" size="sm" className="rounded-3" onClick={() => setLines(prev => prev.filter((_, j) => j !== i))}><FaTrash /></Button></Col>
-              </Row>
-            ))}
-            <Button variant="outline-secondary" size="sm" className="rounded-3 mt-1" onClick={() => setLines(prev => [...prev, { description: '', quantity: 1, unitPrice: 0, total: 0 }])}>
-              <FaPlus className="me-1" /> Add Line
-            </Button>
-            <div className="text-end fw-bold mt-2 border-top pt-2">Total: <span className="text-success fs-5">${form.amount.toLocaleString()}</span></div>
-          </div>
-
-          <div className="d-flex justify-content-end gap-2">
+          <div className="d-flex justify-content-end gap-2 mt-4">
             <Button variant="light" className="rounded-3" onClick={onHide}>Cancel</Button>
             <Button variant="success" type="submit" className="rounded-3" disabled={submitting}>{submitting ? 'Creating...' : 'Create Invoice'}</Button>
           </div>
@@ -112,8 +138,13 @@ export const InvoicesPage: React.FC = () => {
 
   const load = async () => {
     setLoading(true);
-    const [inv, con] = await Promise.all([vendorService.getInvoices(), vendorService.getContracts()]);
-    setInvoices(inv); setContracts(con); setLoading(false);
+    const [invRes, conRes] = await Promise.all([
+      vendorService.getInvoices(), 
+      vendorService.getContracts()
+    ]);
+    setInvoices(invRes?.content || []); 
+    setContracts(conRes?.content || []); 
+    setLoading(false);
   };
   useEffect(() => { load(); }, []);
 
@@ -153,7 +184,7 @@ export const InvoicesPage: React.FC = () => {
             </thead>
             <tbody>
               {invoices.map(inv => {
-                const sta = STATUS_CONFIG[inv.status];
+                const sta = STATUS_CONFIG[inv.status] || { bg: 'secondary', label: inv.status };
                 return (
                   <tr key={inv.invoiceId}>
                     <td className="py-3 px-4">
@@ -167,7 +198,7 @@ export const InvoicesPage: React.FC = () => {
                     </td>
                     <td className="py-3 px-4 small">{inv.contractTitle}</td>
                     <td className="py-3 px-4 fw-bold text-success">${inv.amount.toLocaleString()}</td>
-                    <td className="py-3 px-4 small text-muted">{inv.dueDate}</td>
+                    <td className="py-3 px-4 small text-muted">{(inv as any).date || inv.dueDate}</td>
                     <td className="py-3 px-4">
                       <Badge bg={sta.bg} className={inv.status === 'SUBMITTED' ? 'text-dark' : ''}>{sta.label}</Badge>
                     </td>
@@ -187,7 +218,7 @@ export const InvoicesPage: React.FC = () => {
           </Table>
         </Card>
       )}
-      <CreateInvoiceModal contracts={contracts} show={showCreate} onHide={() => setShowCreate(false)} onCreated={load} />
+      <CreateInvoiceModal show={showCreate} onHide={() => setShowCreate(false)} onCreated={load} />
     </div>
   );
 };

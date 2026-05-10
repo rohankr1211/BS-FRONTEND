@@ -12,23 +12,18 @@ import { ChartCard } from '../../components/common/ChartCard';
 
 export const ProjectAnalytics: React.FC = () => {
   const [projects, setProjects] = useState<ProjectSummaryRecord[]>([]);
-  const [healthData, setHealthData] = useState<ProjectHealthRecord[]>([]);
-  const [loading, setLoading] = useState(true);
-
   const [selectedProject, setSelectedProject] = useState<ProjectSummaryRecord | null>(null);
+  const [selectedHealth, setSelectedHealth] = useState<ProjectHealthRecord | null>(null);
   const [alerts, setAlerts] = useState<BudgetAlertRecord[]>([]);
   const [cashFlow, setCashFlow] = useState<CashFlowRecord[]>([]);
+  const [loading, setLoading] = useState(true);
   const [modalLoading, setModalLoading] = useState(false);
 
   useEffect(() => {
     const fetchBaseData = async () => {
       try {
-        const [projRes, healthRes] = await Promise.all([
-          mockService.getProjectSummaries(),
-          mockService.getAllProjectHealth()
-        ]);
+        const projRes = await mockService.getProjectSummaries();
         setProjects(projRes);
-        setHealthData(healthRes);
       } catch (e) {
         console.error(e);
       } finally {
@@ -39,17 +34,23 @@ export const ProjectAnalytics: React.FC = () => {
   }, []);
 
   const handleProjectClick = async (project: ProjectSummaryRecord) => {
+    console.log('Project Clicked:', project);
     setSelectedProject(project);
     setModalLoading(true);
+    setAlerts([]);
+    setCashFlow([]);
+    setSelectedHealth(null);
     try {
-      const [alertRes, cashFlowRes] = await Promise.all([
+      const [alertRes, cashFlowRes, healthRes] = await Promise.all([
         mockService.getProjectBudgetAlerts(project.projectId),
-        mockService.getProjectCashFlow(project.projectId)
+        mockService.getProjectCashFlow(project.projectId),
+        mockService.getProjectHealth(project.projectId)
       ]);
-      setAlerts(alertRes);
-      setCashFlow(cashFlowRes);
+      setAlerts(Array.isArray(alertRes) ? alertRes : []);
+      setCashFlow(Array.isArray(cashFlowRes) ? cashFlowRes : []);
+      setSelectedHealth(healthRes);
     } catch (e) {
-      console.error(e);
+      console.error('Project Drill-down Error:', e);
     } finally {
       setModalLoading(false);
     }
@@ -76,7 +77,18 @@ export const ProjectAnalytics: React.FC = () => {
 
       <Row className="g-4">
         {loading ? (
-          <div className="text-center py-5 w-100 text-muted">Loading project data...</div>
+          <div className="text-center py-5 w-100">
+            <div className="spinner-border text-primary mb-2" role="status"></div>
+            <p className="text-muted">Loading project data...</p>
+          </div>
+        ) : projects.length === 0 ? (
+          <Col xs={12}>
+            <div className="text-center py-5 bg-white rounded-4 shadow-sm">
+              <FaBuilding size={48} className="text-muted mb-3 opacity-25" />
+              <h5 className="text-muted">No projects found</h5>
+              <p className="text-muted small">Your project summary list is currently empty.</p>
+            </div>
+          </Col>
         ) : (
           projects.map(proj => (
             <Col md={6} lg={4} key={proj.projectId}>
@@ -91,18 +103,18 @@ export const ProjectAnalytics: React.FC = () => {
                       <FaBuilding size={20} />
                     </div>
                     <Badge bg={getStatusColor(proj.status)} className="bg-opacity-10 text-dark border border-secondary border-opacity-10">
-                      {proj.status.replace('_', ' ')}
+                      {(proj.status || 'PLANNING').replace('_', ' ')}
                     </Badge>
                   </div>
-                  <h5 className="fw-bold mb-1">{proj.projectName}</h5>
-                  <p className="small text-muted font-monospace">{proj.projectId}</p>
+                  <h5 className="fw-bold mb-1">{proj.projectName || 'Unnamed Project'}</h5>
+                  <p className="small text-muted font-monospace">{proj.projectId || 'N/A'}</p>
                   
                   <div className="mt-auto">
                     <div className="d-flex justify-content-between align-items-center mb-1">
                       <span className="small fw-semibold text-muted">Progress</span>
-                      <span className="small fw-bold">{proj.progressPercent}%</span>
+                      <span className="small fw-bold">{proj.progressPercent || 0}%</span>
                     </div>
-                    <ProgressBar variant={getStatusColor(proj.status)} now={proj.progressPercent} style={{ height: '6px' }} />
+                    <ProgressBar variant={getStatusColor(proj.status)} now={proj.progressPercent || 0} style={{ height: '6px' }} />
                   </div>
                 </Card.Body>
               </Card>
@@ -128,33 +140,30 @@ export const ProjectAnalytics: React.FC = () => {
                 <Card className="border-0 shadow-sm rounded-4 h-100">
                   <Card.Body className="p-4">
                     <h6 className="fw-bold mb-4">Project Health Index</h6>
-                    {(() => {
-                      const health = healthData.find(h => h.projectId === selectedProject.projectId);
-                      return health ? (
-                        <div className="d-flex flex-column gap-3">
-                          <div className="p-3 bg-light rounded-3 border">
-                            <span className="d-block small text-muted text-uppercase mb-1">Cost Performance (CPI)</span>
-                            <span className={`fs-4 fw-bold text-${health.costPerformanceIndex >= 1 ? 'success' : 'danger'}`}>
-                              {health.costPerformanceIndex.toFixed(2)}
-                            </span>
-                          </div>
-                          <div className="p-3 bg-light rounded-3 border">
-                            <span className="d-block small text-muted text-uppercase mb-1">Schedule Variance</span>
-                            <span className={`fs-4 fw-bold text-${health.scheduleVariance >= 0 ? 'success' : 'danger'}`}>
-                              {health.scheduleVariance > 0 ? '+' : ''}{health.scheduleVariance} days
-                            </span>
-                          </div>
-                          <div className="p-3 bg-light rounded-3 border">
-                            <span className="d-block small text-muted text-uppercase mb-1">Budget Variance</span>
-                            <span className={`fs-4 fw-bold text-${health.budgetVariance >= 0 ? 'success' : 'danger'}`}>
-                              ${health.budgetVariance.toLocaleString()}
-                            </span>
-                          </div>
+                    {selectedHealth ? (
+                      <div className="d-flex flex-column gap-3">
+                        <div className="p-3 bg-light rounded-3 border">
+                          <span className="d-block small text-muted text-uppercase mb-1">Cost Performance (CPI)</span>
+                          <span className={`fs-4 fw-bold text-${(selectedHealth.costPerformanceIndex || 0) >= 1 ? 'success' : 'danger'}`}>
+                            {(selectedHealth.costPerformanceIndex || 0).toFixed(2)}
+                          </span>
                         </div>
-                      ) : (
-                        <div className="text-muted">No health data.</div>
-                      );
-                    })()}
+                        <div className="p-3 bg-light rounded-3 border">
+                          <span className="d-block small text-muted text-uppercase mb-1">Schedule Variance</span>
+                          <span className={`fs-4 fw-bold text-${(selectedHealth.scheduleVariance || 0) >= 0 ? 'success' : 'danger'}`}>
+                            {(selectedHealth.scheduleVariance || 0) > 0 ? '+' : ''}{selectedHealth.scheduleVariance || 0} days
+                          </span>
+                        </div>
+                        <div className="p-3 bg-light rounded-3 border">
+                          <span className="d-block small text-muted text-uppercase mb-1">Budget Variance</span>
+                          <span className={`fs-4 fw-bold text-${(selectedHealth.budgetVariance || 0) >= 0 ? 'success' : 'danger'}`}>
+                            ${(selectedHealth.budgetVariance || 0).toLocaleString()}
+                          </span>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-muted text-center py-4">No health data available for this project.</div>
+                    )}
                   </Card.Body>
                 </Card>
               </Col>

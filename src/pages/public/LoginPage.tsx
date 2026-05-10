@@ -22,21 +22,42 @@ const LoginPage: React.FC = () => {
 
     try {
       const response = await authService.login({ email, password });
-      const data = response.data;
-      console.log('✅ Login response:', JSON.stringify(data)); // inspect field names
+      // Backend might return { success, message, data: { ... } } OR the flat object
+      const data = response.data?.data || response.data;
+      
+      console.log('✅ Login data extracted:', JSON.stringify(data)); 
 
-      // Backend returns: token, type, expiresIn, name, email, role, phone
-      // No userId or status in response — default status to ACTIVE (token proves it)
+      // Strict validation of required fields
+      if (!data || !data.token) {
+        console.error('❌ Missing token in response:', data);
+        setError('Authentication failed: Server did not provide an access token.');
+        return;
+      }
+
+      // Normalize role for robust routing (handle case and spaces/underscores)
+      const backendRole = data.role || '';
+      const normalizedRole = backendRole.toUpperCase().trim().replace(/\s+/g, '_');
+      
+      if (!normalizedRole) {
+        console.error('❌ Missing role in response:', data);
+        setError('Authentication failed: User role is missing.');
+        return;
+      }
+
+      console.log(`🔑 Role mapping: "${backendRole}" -> "${normalizedRole}"`);
+
       login(data.token, {
-        userId: data.userId || data.email,   // fallback to email if userId absent
+        userId: data.userId || data.email,
         name: data.name,
         email: data.email,
         phone: data.phone,
-        role: data.role,
-        status: data.status || 'ACTIVE',     // default to ACTIVE — backend issued token
+        role: normalizedRole as any,
+        status: data.status || 'ACTIVE',
       });
 
-      navigate(DASHBOARD_ROUTES[data.role as keyof typeof DASHBOARD_ROUTES] || '/admin/dashboard');
+      const targetRoute = DASHBOARD_ROUTES[normalizedRole as keyof typeof DASHBOARD_ROUTES] || '/admin/dashboard';
+      console.log(`🚀 Final Route Selection: ${targetRoute}`);
+      navigate(targetRoute);
     } catch (err: any) {
       // Log full error so we can see exact backend response in browser console
       console.error('Login error - Status:', err.response?.status);
@@ -130,10 +151,7 @@ const LoginPage: React.FC = () => {
                     <p className="small text-muted mb-3">
                       New to BuildSmart? <Link to="/signup" className="text-primary fw-bold text-decoration-none">Create an account</Link>
                     </p>
-                    <div className="d-inline-flex align-items-center gap-2 px-3 py-1 bg-light rounded-pill border">
-                      <div className="bg-success rounded-circle" style={{ width: '8px', height: '8px' }}></div>
-                      <span className="small text-muted text-uppercase fw-bold" style={{ fontSize: '0.7rem' }}>Site Servers: Operational</span>
-                    </div>
+
                   </div>
                 </Form>
               </Card.Body>

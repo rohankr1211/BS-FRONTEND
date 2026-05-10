@@ -5,6 +5,7 @@ import { FaFileSignature, FaExclamationTriangle, FaTasks, FaTruckLoading, FaPlus
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, PieChart, Pie } from 'recharts';
 import { siteOpsService } from '../../services/siteOpsService';
 import type { SiteOpsKpi } from '../../services/siteOpsService';
+import { useAuth } from '../../hooks/useAuth';
 
 const progressData = [
   { day: 'Mon', progress: 1.2 }, { day: 'Tue', progress: 0.8 }, { day: 'Wed', progress: 2.5 },
@@ -18,9 +19,32 @@ const issueSeverityData = [
 
 export const SiteOpsDashboard: React.FC = () => {
   const [kpi, setKpi] = useState<SiteOpsKpi | null>(null);
+  const [performance, setPerformance] = useState<any>(null);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => { siteOpsService.getKpi().then(setKpi); }, []);
+  const { user } = useAuth();
+
+  useEffect(() => { 
+    const loadData = async () => {
+      if (!user?.userId) return;
+      
+      setLoading(true);
+      try {
+        const [kpiData, perfData] = await Promise.all([
+          siteOpsService.getKpi(user.userId),
+          siteOpsService.getPerformanceReport()
+        ]);
+        setKpi(kpiData);
+        setPerformance(perfData);
+      } catch (e) {
+        console.error("Dashboard load failed", e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, [user?.userId]);
 
   const KpiCard = ({ label, value, icon: Icon, color, onClick }: any) => (
     <Card className="border-0 shadow-sm rounded-4 h-100" style={{ cursor: onClick ? 'pointer' : 'default' }} onClick={onClick}>
@@ -35,6 +59,14 @@ export const SiteOpsDashboard: React.FC = () => {
       </Card.Body>
     </Card>
   );
+
+  // Process real data for charts
+  const dynamicProgressData = performance?.weeklyProgress || progressData;
+  const dynamicSeverityData = performance?.severityDistribution?.map((d: any) => ({
+    name: d.severity,
+    value: d.count,
+    color: SEVERITY_COLOR_MAP[d.severity] || '#95a5a6'
+  })) || issueSeverityData;
 
   return (
     <div className="p-4">
@@ -81,13 +113,12 @@ export const SiteOpsDashboard: React.FC = () => {
 
       {/* Charts Row */}
       <Row className="g-4">
-        {/* Site Progress Trend */}
         <Col lg={7}>
           <Card className="border-0 shadow-sm rounded-4 h-100">
             <Card.Body className="p-4">
               <h6 className="fw-bold mb-4">Weekly Progress Trend (%)</h6>
               <ResponsiveContainer width="100%" height={220}>
-                <LineChart data={progressData}>
+                <LineChart data={dynamicProgressData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                   <XAxis dataKey="day" tick={{ fontSize: 12 }} />
                   <YAxis tick={{ fontSize: 12 }} />
@@ -99,21 +130,20 @@ export const SiteOpsDashboard: React.FC = () => {
           </Card>
         </Col>
 
-        {/* Issue Severity Distribution */}
         <Col lg={5}>
           <Card className="border-0 shadow-sm rounded-4 h-100">
             <Card.Body className="p-4">
               <h6 className="fw-bold mb-4">Issue Severity Distribution</h6>
               <ResponsiveContainer width="100%" height={200}>
                 <PieChart>
-                  <Pie data={issueSeverityData} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
-                    {issueSeverityData.map((e, i) => <Cell key={i} fill={e.color} />)}
+                  <Pie data={dynamicSeverityData} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
+                    {dynamicSeverityData.map((e: any, i: number) => <Cell key={i} fill={e.color} />)}
                   </Pie>
                   <Tooltip />
                 </PieChart>
               </ResponsiveContainer>
               <div className="d-flex flex-wrap justify-content-center gap-3 mt-3">
-                {issueSeverityData.map(d => (
+                {dynamicSeverityData.map((d: any) => (
                   <div key={d.name} className="d-flex align-items-center gap-1 small">
                     <div className="rounded-circle" style={{ width: 10, height: 10, background: d.color }} />
                     <span>{d.name} ({d.value})</span>
@@ -126,4 +156,11 @@ export const SiteOpsDashboard: React.FC = () => {
       </Row>
     </div>
   );
+};
+
+const SEVERITY_COLOR_MAP: any = {
+  'LOW': '#27ae60',
+  'MEDIUM': '#f39c12',
+  'HIGH': '#e67e22',
+  'CRITICAL': '#e74c3c'
 };

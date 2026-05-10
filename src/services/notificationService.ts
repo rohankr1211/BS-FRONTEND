@@ -28,7 +28,7 @@ export const notificationService = {
       if (eventType) url += `&eventType=${eventType}`;
       if (fromRole) url += `&fromRole=${fromRole}`;
       
-      const res = await client.get<any>(url);
+      const res = await client.get<any>(url, { _skipRedirect: true } as any);
       const data = res.data?.data || res.data;
       if (data && typeof data === 'object' && 'content' in data) {
         return data.content;
@@ -42,15 +42,27 @@ export const notificationService = {
 
   getUnreadCount: async (): Promise<UnreadCountResponse> => {
     try {
-      const res = await client.get<any>('/api/notifications/unread-count');
+      const res = await client.get<any>('/api/notifications/unread-count', { _skipRedirect: true } as any);
       const data = res.data?.data || res.data;
       return {
         totalUnread: data?.totalUnread ?? 0,
         criticalCount: data?.criticalCount ?? 0
       };
     } catch (error) {
-      console.warn("Failed to fetch unread count from backend", error);
-      return { totalUnread: 0, criticalCount: 0 };
+      console.warn("Unread count endpoint failed, falling back to manual count", error);
+      try {
+        // Fallback: Fetch latest notifications and count unread
+        const res = await client.get<any>('/api/notifications?size=50', { _skipRedirect: true } as any);
+        const data = res.data?.data || res.data;
+        const list = Array.isArray(data) ? data : (data?.content || []);
+        const unread = list.filter((n: any) => !n.read);
+        return {
+          totalUnread: unread.length,
+          criticalCount: unread.filter((n: any) => n.priority === 'CRITICAL').length
+        };
+      } catch {
+        return { totalUnread: 0, criticalCount: 0 };
+      }
     }
   },
 
